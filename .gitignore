@@ -42,3 +42,4 @@ crashinfo.txt
 samp.ban
 
 .vscode/
+src/Server/obj/
