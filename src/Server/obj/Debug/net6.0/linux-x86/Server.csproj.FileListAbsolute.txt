@@ -1,0 +1,12 @@
+/home/debian/programming/samprp/gamemodes/net6.0/linux-x86/Server.deps.json
+/home/debian/programming/samprp/gamemodes/net6.0/linux-x86/Server.dll
+/home/debian/programming/samprp/gamemodes/net6.0/linux-x86/Server.pdb
+/home/debian/programming/samprp/src/Server/obj/Debug/net6.0/linux-x86/Server.csproj.AssemblyReference.cache
+/home/debian/programming/samprp/src/Server/obj/Debug/net6.0/linux-x86/Server.GeneratedMSBuildEditorConfig.editorconfig
+/home/debian/programming/samprp/src/Server/obj/Debug/net6.0/linux-x86/Server.AssemblyInfoInputs.cache
+/home/debian/programming/samprp/src/Server/obj/Debug/net6.0/linux-x86/Server.AssemblyInfo.cs
+/home/debian/programming/samprp/src/Server/obj/Debug/net6.0/linux-x86/Server.csproj.CoreCompileInputs.cache
+/home/debian/programming/samprp/src/Server/obj/Debug/net6.0/linux-x86/Server.dll
+/home/debian/programming/samprp/src/Server/obj/Debug/net6.0/linux-x86/refint/Server.dll
+/home/debian/programming/samprp/src/Server/obj/Debug/net6.0/linux-x86/Server.pdb
+/home/debian/programming/samprp/src/Server/obj/Debug/net6.0/linux-x86/ref/Server.dll
