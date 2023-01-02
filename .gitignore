@@ -42,6 +42,6 @@ crashinfo.txt
 samp.ban
 
 .vscode/
-src/Server/obj/
 gamemode/
 runtime/
+.env
