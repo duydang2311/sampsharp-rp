@@ -1,5 +1,6 @@
 using dotenv.net;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Server.Database;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,7 @@ public static class ExtendIServiceCollection
 		{
 			optionsBuilder.UseNpgsql($"Host={host};Username={username};Password={password};Database={database};Port={port}");
 			optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+			optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
 		});
 	}
 }
