@@ -22,11 +22,11 @@ public static class ExtendIServiceCollection
 		{
 			throw new Exception("missing db connection credentials");
 		}
-		return self.AddDbContext<IServerDbContext, ServerDbContext>((optionsBuilder) =>
+		return self.AddPooledDbContextFactory<ServerDbContext>(optionsAction =>
 		{
-			optionsBuilder.UseNpgsql($"Host={host};Username={username};Password={password};Database={database};Port={port}");
-			optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-			optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
-		});
+			optionsAction.UseNpgsql($"Host={host};Username={username};Password={password};Database={database};Port={port}");
+			optionsAction.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+			optionsAction.LogTo(Console.WriteLine, LogLevel.Information);
+		}, 256);
 	}
 }
