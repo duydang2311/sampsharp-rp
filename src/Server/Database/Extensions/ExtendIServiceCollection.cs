@@ -1,13 +1,12 @@
 using dotenv.net;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Server.Database;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ExtendIServiceCollection
+public static partial class ExtendIServiceCollection
 {
-	public static IServiceCollection AddDatabase(this IServiceCollection self)
+	public static IServiceCollection WithDatabase(this IServiceCollection self)
 	{
 		DotEnv.Load(options: new DotEnvOptions(overwriteExistingVars: false));
 		var host = Environment.GetEnvironmentVariable("host");
@@ -26,7 +25,6 @@ public static class ExtendIServiceCollection
 		{
 			optionsAction.UseNpgsql($"Host={host};Username={username};Password={password};Database={database};Port={port}");
 			optionsAction.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-			optionsAction.LogTo(Console.WriteLine, LogLevel.Information);
 		}, 256);
 	}
 }
