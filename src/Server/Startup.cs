@@ -9,7 +9,8 @@ namespace Server
 		public void Configure(IServiceCollection services)
 		{
 			services
-				.AddDatabase()
+				.WithDatabase()
+				.WithLogging()
 				.AddSystemsInAssembly();
 		}
 
