@@ -1,4 +1,5 @@
 using dotenv.net;
+using dotenv.net.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Server.Database;
 
@@ -9,18 +10,20 @@ public static partial class ExtendIServiceCollection
 	public static IServiceCollection WithDatabase(this IServiceCollection self)
 	{
 		DotEnv.Load(options: new DotEnvOptions(overwriteExistingVars: false));
-		var host = Environment.GetEnvironmentVariable("host");
-		var username = Environment.GetEnvironmentVariable("username");
-		var password = Environment.GetEnvironmentVariable("password");
-		var database = Environment.GetEnvironmentVariable("database");
-		var port = Environment.GetEnvironmentVariable("port") ?? "5432";
-		if (host is null
-		|| username is null
-		|| password is null
-		|| database is null)
+		var envVars = DotEnv.Read();
+		if (!EnvReader.HasValue("host")
+		|| !EnvReader.HasValue("username")
+		|| !EnvReader.HasValue("password")
+		|| !EnvReader.HasValue("database"))
 		{
 			throw new Exception("missing db connection credentials");
 		}
+		var host = envVars["host"];
+		var username = envVars["username"];
+		var password = envVars["password"];
+		var database = envVars["database"];
+		var port = EnvReader.HasValue("port") ? envVars["port"] : "5432";
+		
 		return self.AddPooledDbContextFactory<ServerDbContext>(optionsAction =>
 		{
 			optionsAction.UseNpgsql($"Host={host};Username={username};Password={password};Database={database};Port={port}");
