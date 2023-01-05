@@ -11,13 +11,15 @@ namespace Server
 			services
 				.WithDatabase()
 				.WithLogging()
+				.WithChat()
 				.AddSystemsInAssembly();
 		}
 
 		public void Configure(IEcsBuilder builder)
 		{
-			builder.EnableSampEvents() // Enable all stock SA-MP callbacks as events which can be listened to by systems.
-				.EnablePlayerCommands(); // Enable player commands being loaded in systems.
+			builder
+				.UseChatMiddlewares()
+				.EnableSampEvents();
 		}
 	}
 }
