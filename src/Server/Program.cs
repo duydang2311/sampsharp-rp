@@ -1,4 +1,5 @@
-﻿using SampSharp.Core;
+﻿using System.Text;
+using SampSharp.Core;
 using SampSharp.Entities;
 
 namespace Server
@@ -9,6 +10,7 @@ namespace Server
 		{
 			new GameModeBuilder()
 				.UseEcs<Startup>()
+				.UseEncoding(Encoding.UTF8)
 				.Run();
 		}
 	}
