@@ -23,11 +23,15 @@ public static partial class ExtendIServiceCollection
 		var password = envVars["password"];
 		var database = envVars["database"];
 		var port = EnvReader.HasValue("port") ? envVars["port"] : "5432";
-		
+
 		return self.AddPooledDbContextFactory<ServerDbContext>(optionsAction =>
 		{
 			optionsAction.UseNpgsql($"Host={host};Username={username};Password={password};Database={database};Port={port}");
 			optionsAction.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+			optionsAction.EnableDetailedErrors(true);
+#if DEBUG
+			optionsAction.EnableSensitiveDataLogging(true);
+#endif
 		}, 256);
 	}
 }
