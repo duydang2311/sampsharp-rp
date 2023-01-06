@@ -9,8 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      wd: ./src/Server
+    defaults:
+      run:
+        working-directory: ./src/Server
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -19,15 +20,14 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: ${{env.wd}}
     - name: Build
       run: dotnet build --no-restore
-      working-directory: ${{env.wd}}
   
   test:
     runs-on: ubuntu-latest
-    env:
-      wd: ./src/Server.Tests
+    defaults:
+      run:
+        working-directory: ./src/Server.Tests
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -36,7 +36,5 @@ jobs:
         dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
-      working-directory: ${{env.wd}}
     - name: Test
       run: dotnet test --no-restore
-      working-directory: ${{env.wd}}
