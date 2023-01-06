@@ -8,6 +8,6 @@ public static partial class ExtendIServiceCollection
 	{
 		return self
 			.AddSingleton<ICommandService, CommandService>()
-			.AddSingleton<IArgumentParser, CommandArgumentParser>();
+			.AddSingleton<IArgumentParser>(provider => new CommandArgumentParser(1));
 	}
 }
