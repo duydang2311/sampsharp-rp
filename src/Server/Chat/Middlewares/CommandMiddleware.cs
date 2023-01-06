@@ -40,6 +40,7 @@ public sealed class CommandMiddleware
 			throw exception;
 		}
 
+		input = input.Trim();
 		var whitespaceIndex = input.IndexOf(' ');
 		var player = context.EventServices.GetRequiredService<IEntityManager>().GetComponent<Player>(entity);
 		string command;
