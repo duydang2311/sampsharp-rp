@@ -52,7 +52,7 @@ public sealed class CommandArgumentParser : IArgumentParser
 		if (parameterCount > splittedCount)
 		{
 			var i = 0;
-			foreach (var parameter in parameters.Skip(splittedCount))
+			foreach (var parameter in parameters[splittedCount..])
 			{
 				if (parameter.HasDefaultValue)
 				{
