@@ -1,6 +1,7 @@
 using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Server.Tests.Helper;
 
 namespace Server.Tests.Database;
 
@@ -24,8 +25,16 @@ public class TestEnsureCreated
 	[SetUp]
 	public void Setup()
 	{
+		if (EnvironmentHelper.IsOnCI)
+		{
+			return;
+		}
 		var serviceCollection = new ServiceCollection();
-		DotEnv.Load(new DotEnvOptions(envFilePaths: new string[] { Path.Combine(Environment.CurrentDirectory[..Environment.CurrentDirectory.IndexOf("bin")], @"../../.env") }));
+		DotEnv
+			.Fluent()
+			.WithOverwriteExistingVars()
+			.WithEnvFiles(Path.Combine(Environment.CurrentDirectory[..Environment.CurrentDirectory.IndexOf("bin")], @"../../.env"))
+			.Load();
 		serviceCollection.AddDbContext<TestDbContext>();
 		provider = serviceCollection.BuildServiceProvider();
 	}
@@ -33,6 +42,11 @@ public class TestEnsureCreated
 	[Test]
 	public void Database_EnsureCreated_ReturnsTrue()
 	{
+		if (EnvironmentHelper.IsOnCI)
+		{
+			Assert.Ignore("CI");
+			return;
+		}
 		Assert.That(provider.GetRequiredService<TestDbContext>().Database.EnsureCreated(), Is.True);
 	}
 }
