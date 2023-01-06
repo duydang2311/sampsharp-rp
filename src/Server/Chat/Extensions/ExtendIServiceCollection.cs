@@ -6,6 +6,8 @@ public static partial class ExtendIServiceCollection
 {
 	public static IServiceCollection WithChat(this IServiceCollection self)
 	{
-		return self.AddSingleton<ICustomPlayerCommandService, CustomPlayerCommandService>();
+		return self
+			.AddSingleton<ICommandService, CommandService>()
+			.AddSingleton<IArgumentParser>(provider => new CommandArgumentParser(1));
 	}
 }
