@@ -6,6 +6,7 @@ public sealed class CommandService : ICommandService
 {
 	private readonly IDictionary<string, Delegate> commandDict = new Dictionary<string, Delegate>();
 	private readonly IDictionary<string, Delegate> helperDict = new Dictionary<string, Delegate>();
+
 	public bool HasCommand(string command)
 	{
 		return commandDict.ContainsKey(command);
@@ -14,6 +15,11 @@ public sealed class CommandService : ICommandService
 	public bool HasHelper(string command)
 	{
 		return helperDict.ContainsKey(command);
+	}
+
+	public Delegate GetCommandDelegate(string command)
+	{
+		return commandDict[command];
 	}
 
 	public object? InvokeCommand(string command, object?[]? arguments)
