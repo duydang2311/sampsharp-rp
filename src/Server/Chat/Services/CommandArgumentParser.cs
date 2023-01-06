@@ -46,7 +46,9 @@ public sealed class CommandArgumentParser : IArgumentParser
 			arguments = default;
 			return true;
 		}
-		var splitted = input.Split(' ', parameterCount);
+		var splitted = string.IsNullOrEmpty(input)
+			? Array.Empty<string>()
+			: input.Split(' ', parameterCount);
 		var splittedCount = splitted.Length;
 		var results = new object?[parameterCount];
 		if (parameterCount > splittedCount)
