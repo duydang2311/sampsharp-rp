@@ -39,7 +39,7 @@ public sealed class CommandArgumentParser : IArgumentParser
 	public bool TryParse(Delegate @delegate, string input, out object?[]? arguments)
 	{
 		var method = @delegate.Method;
-		var parameters = method.GetParameters().Skip(prefixCount).ToArray();
+		var parameters = method.GetParameters()[prefixCount..];
 		var parameterCount = parameters.Length;
 		if (parameterCount == 0)
 		{
