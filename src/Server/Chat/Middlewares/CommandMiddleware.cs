@@ -40,22 +40,34 @@ public sealed class CommandMiddleware
 			throw exception;
 		}
 
+		var whitespaceIndex = input.IndexOf(' ');
 		var player = context.EventServices.GetRequiredService<IEntityManager>().GetComponent<Player>(entity);
-		if (!commandService.HasCommand(context.Name))
+		string command;
+		if (whitespaceIndex == -1)
+		{
+			command = input[1..];
+			input = string.Empty;
+		}
+		else
+		{
+			command = input[1..whitespaceIndex];
+			input = input[(whitespaceIndex + 1)..];
+		}
+		if (!commandService.HasCommand(command))
 		{
 			player.SendClientMessage(Color.Red, "[Hệ thống] Lệnh không tồn tại.");
 			return true;
 		}
-		if (!parser.TryParse(commandService.GetCommandDelegate(context.Name), input, out var arguments))
+		if (!parser.TryParse(commandService.GetCommandDelegate(command), input, out var arguments))
 		{
-			InvokeHelper(context.Name, player, commandService, logger);
+			InvokeHelper(command, player, commandService, logger);
 			return true;
 		}
 
 		arguments = arguments is null
 			? new object[] { player }
 			: arguments.Prepend(player).ToArray();
-		var result = commandService.InvokeCommand(context.Name, arguments);
+		var result = commandService.InvokeCommand(command, arguments);
 		switch (result)
 		{
 			case Task task:
@@ -72,7 +84,7 @@ public sealed class CommandMiddleware
 				{
 					if (!ok)
 					{
-						InvokeHelper(context.Name, player, commandService, logger);
+						InvokeHelper(command, player, commandService, logger);
 					}
 					break;
 				}
