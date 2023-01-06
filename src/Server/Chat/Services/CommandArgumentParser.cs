@@ -40,7 +40,7 @@ public sealed class CommandArgumentParser : IArgumentParser
 	{
 		var method = @delegate.Method;
 		var parameters = method.GetParameters().Skip(prefixCount).ToArray();
-		var parameterCount = parameters.Count();
+		var parameterCount = parameters.Length;
 		if (parameterCount == 0)
 		{
 			arguments = default;
