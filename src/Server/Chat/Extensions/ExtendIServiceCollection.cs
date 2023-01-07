@@ -8,6 +8,8 @@ public static partial class ExtendIServiceCollection
 	{
 		return self
 			.AddSingleton<ICommandService, CommandService>()
+			.AddSingleton<IChatService, ChatService>()
+			.AddSingleton<IChatMessageModelFactory, ChatMessageModelFactory>()
 			.AddSingleton<IArgumentParser>(provider => new CommandArgumentParser(1));
 	}
 }
