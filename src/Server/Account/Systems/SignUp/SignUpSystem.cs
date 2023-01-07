@@ -56,5 +56,7 @@ public sealed class SignUpSystem : ISignUpSystem
         await using var context = await contextFactory.CreateDbContextAsync();
         await context.Accounts.AddAsync(model);
         await context.SaveChangesAsync();
+
+        // TODO: to character selection
     }
 }
