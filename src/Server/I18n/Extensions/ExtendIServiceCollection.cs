@@ -14,6 +14,7 @@ public static partial class ExtendIServiceCollection
 			.AddSingleton<IGlobalCultureServiceOptions>(provider => globalCultureOptions)
 			.AddSingleton<ITextLocalizerServiceOptions>(provider => textLocalizerOptions)
 			.AddSingleton<IGlobalCultureService, GlobalCultureService>()
-			.AddSingleton<ITextLocalizerService, TextLocalizerService>();
+			.AddSingleton<ITextLocalizerService, TextLocalizerService>()
+			.AddSingleton<ITextNameIdentifierService, TextNameIdentifierService>();
 	}
 }
