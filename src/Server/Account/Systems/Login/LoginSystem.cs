@@ -9,10 +9,12 @@ public sealed class LoginSystem : ILoginSystem
 {
     private readonly IDbContextFactory<ServerDbContext> contextFactory;
     private readonly IDialogService dialogService;
-    public LoginSystem(IDbContextFactory<ServerDbContext> contextFactory, IDialogService dialogService)
+    private readonly ILoginEvent loginEvent;
+    public LoginSystem(IDbContextFactory<ServerDbContext> contextFactory, IDialogService dialogService, ILoginEvent loginEvent)
     {
         this.dialogService = dialogService;
         this.contextFactory = contextFactory;
+        this.loginEvent = loginEvent;
     }
 
     public void Login(Player player)
@@ -30,20 +32,24 @@ public sealed class LoginSystem : ILoginSystem
             if (response.Response == DialogResponse.LeftButton)
             {
                 await using var context = await contextFactory.CreateDbContextAsync();
-                var password = await context.Characters.Where(model => player.Name == model.Name).Select(model => model.Password).FirstOrDefaultAsync();
+                var account = (await context.Accounts.Where(model => player.Name == model.Name).Select(model => new { model.Password, model.Id }).FirstOrDefaultAsync())!;
                 var success = await Task.Run(() =>
                 {
-                    return BCrypt.EnhancedVerify(response.InputText, password);
+                    return BCrypt.EnhancedVerify(response.InputText, account.Password);
                 });
 
-
-                //TODO: to character selection
+                if (success)
+                {
+                    loginEvent.Invoke(player, account.Id);
+                }
+                else
+                {
+                    player.Kick();
+                }
                 return;
             }
 
             player.Kick();
         });
-
-
     }
 }
