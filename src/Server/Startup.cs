@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Globalization;
+using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 
@@ -12,6 +13,13 @@ namespace Server
 				.WithDatabase()
 				.WithLogging()
 				.WithChat()
+				.WithI18n((globalOptions, textLocalizerOptions) =>
+				{
+					globalOptions.AddCulture("vi");
+					globalOptions.AddCulture("vi-VN");
+					textLocalizerOptions.BaseName = "Server.Resources.Text";
+					textLocalizerOptions.DefaultCulture = CultureInfo.GetCultureInfo("vi");
+				})
 				.AddSystemsInAssembly();
 		}
 
