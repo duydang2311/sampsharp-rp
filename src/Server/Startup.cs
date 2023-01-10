@@ -26,16 +26,16 @@ namespace Server
 			var logger = provider.GetRequiredService<ILogger<Startup>>();
 			foreach (var service in services)
 			{
+				if (service.Lifetime != ServiceLifetime.Singleton)
+				{
+					continue;
+				}
 				var serviceType = service.ServiceType;
 				var implType = service.ImplementationType;
-				if (implType is not null
-				&& implType.Namespace!.StartsWith("Server")
-				&& implType.IsAssignableTo(typeof(ISystem)))
-				{
-					logger.LogInformation("Enabled system {System}", serviceType.FullName);
-					provider.GetRequiredService(serviceType);
-				}
-				else if (serviceType.Namespace!.StartsWith("Server") && serviceType.IsAssignableTo(typeof(ISystem)))
+				if (serviceType.Namespace!.StartsWith("Server")
+				&& serviceType.IsAssignableTo(typeof(ISystem))
+				|| (implType is not null
+					&& implType.IsAssignableTo(typeof(ISystem))))
 				{
 					logger.LogInformation("Enabled system {System}", serviceType.FullName);
 					provider.GetRequiredService(serviceType);
