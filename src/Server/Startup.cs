@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 
@@ -19,8 +20,27 @@ namespace Server
 					globalOptions.AddCulture("vi-VN");
 					textLocalizerOptions.BaseName = "Server.Resources.Text";
 					textLocalizerOptions.DefaultCulture = CultureInfo.GetCultureInfo("vi");
-				})
-				.AddSystemsInAssembly();
+				});
+
+			var provider = services.BuildServiceProvider();
+			var logger = provider.GetRequiredService<ILogger<Startup>>();
+			foreach (var service in services)
+			{
+				var serviceType = service.ServiceType;
+				var implType = service.ImplementationType;
+				if (implType is not null
+				&& implType.Namespace!.StartsWith("Server")
+				&& implType.IsAssignableTo(typeof(ISystem)))
+				{
+					logger.LogInformation("Enabled system {System}", serviceType.FullName);
+					provider.GetRequiredService(serviceType);
+				}
+				else if (serviceType.Namespace!.StartsWith("Server") && serviceType.IsAssignableTo(typeof(ISystem)))
+				{
+					logger.LogInformation("Enabled system {System}", serviceType.FullName);
+					provider.GetRequiredService(serviceType);
+				}
+			}
 		}
 
 		public void Configure(IEcsBuilder builder)
