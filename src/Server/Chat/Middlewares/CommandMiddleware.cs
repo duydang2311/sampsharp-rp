@@ -59,12 +59,16 @@ public sealed class CommandMiddleware
 			player.SendClientMessage(Color.Red, "[Hệ thống] Lệnh không tồn tại.");
 			return true;
 		}
-		if (!parser.TryParse(commandService.GetCommandDelegate(command), input, out var arguments))
+		var @delegate = commandService.GetCommandModel(command).Delegate;
+		if (@delegate is null)
+		{
+			return true;
+		}
+		if (!parser.TryParse(@delegate, input, out var arguments))
 		{
 			InvokeHelper(command, player, commandService, logger);
 			return true;
 		}
-
 		arguments = arguments is null
 			? new object[] { player }
 			: arguments.Prepend(player).ToArray();
