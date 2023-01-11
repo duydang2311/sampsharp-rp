@@ -28,7 +28,7 @@ public sealed class CommandMiddleware
 		}
 	}
 
-	public object Invoke(EventContext context, ICommandService commandService, IArgumentParser parser, ILogger<CommandMiddleware> logger)
+	public object Invoke(EventContext context, ICommandService commandService, IArgumentParser parser, ILogger<CommandMiddleware> logger, IChatService chatService)
 	{
 		var response = _next(context);
 		if (EventHelper.IsSuccessResponse(response))
@@ -57,7 +57,7 @@ public sealed class CommandMiddleware
 		}
 		if (!commandService.HasCommand(command))
 		{
-			player.SendClientMessage(Color.Red, "[Hệ thống] Lệnh không tồn tại.");
+			chatService.SendMessage(player, Color.Red, m => m.Command_NotFound);
 			return true;
 		}
 
@@ -71,7 +71,7 @@ public sealed class CommandMiddleware
 		if (permissionComponent is null
 		|| (permissionComponent.Level & model.PermissionLevel) == 0)
 		{
-			player.SendClientMessage(Color.Red, "[Hệ thống] Bạn cần quyền hạn thích hợp để sử dụng lệnh này.");
+			chatService.SendMessage(player, Color.Red, m => m.Command_Denied);
 			return true;
 		}
 		if (!parser.TryParse(@delegate, input, out var arguments))
