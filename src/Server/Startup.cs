@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
+using Server.I18n.Localization.Services;
 
 namespace Server
 {
@@ -36,6 +37,7 @@ namespace Server
 				if (serviceType.Namespace!.StartsWith("Server")
 				&& serviceType.IsAssignableTo(typeof(ISystem))
 				|| (implType is not null
+					&& implType.Namespace!.StartsWith("Server")
 					&& implType.IsAssignableTo(typeof(ISystem))))
 				{
 					logger.LogInformation("Enabled system {System}", serviceType.FullName);
