@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
+using Server.Chat.Components;
 using Server.Chat.Services;
 
 namespace Server.Chat.Middlewares;
@@ -27,7 +28,7 @@ public sealed class CommandMiddleware
 		}
 	}
 
-	public object Invoke(EventContext context, ICommandService commandService, IArgumentParser parser, ILogger<CommandMiddleware> logger)
+	public object Invoke(EventContext context, ICommandService commandService, IArgumentParser parser, ILogger<CommandMiddleware> logger, IChatService chatService)
 	{
 		var response = _next(context);
 		if (EventHelper.IsSuccessResponse(response))
@@ -56,15 +57,28 @@ public sealed class CommandMiddleware
 		}
 		if (!commandService.HasCommand(command))
 		{
-			player.SendClientMessage(Color.Red, "[Hệ thống] Lệnh không tồn tại.");
+			chatService.SendMessage(player, Color.Red, m => m.Command_NotFound);
 			return true;
 		}
-		if (!parser.TryParse(commandService.GetCommandDelegate(command), input, out var arguments))
+
+		var model = commandService.GetCommandModel(command);
+		var @delegate = model.Delegate;
+		if (@delegate is null)
+		{
+			return true;
+		}
+		var permissionComponent = player.GetComponent<PermissionComponent>();
+		if (permissionComponent is null
+		|| (permissionComponent.Level & model.PermissionLevel) == 0)
+		{
+			chatService.SendMessage(player, Color.Red, m => m.Command_Denied);
+			return true;
+		}
+		if (!parser.TryParse(@delegate, input, out var arguments))
 		{
 			InvokeHelper(command, player, commandService, logger);
 			return true;
 		}
-
 		arguments = arguments is null
 			? new object[] { player }
 			: arguments.Prepend(player).ToArray();
