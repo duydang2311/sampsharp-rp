@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+	<!-- Badge -->
+	<data name="Badge_System">
+		<value>[Hệ thống]</value>
+	</data>
+
+	<!-- Command -->
 	<data name="Command_NotFound">
 		<value>Lệnh không tồn tại.</value>
 	</data>
