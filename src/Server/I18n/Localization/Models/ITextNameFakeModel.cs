@@ -2,5 +2,6 @@ namespace Server.I18n.Localization.Models;
 
 public interface ITextNameFakeModel
 {
-	object Server_Info_Name { get; set; }
+	object Command_NotFound { get; set; }
+	object Command_Denied { get; set; }
 }
