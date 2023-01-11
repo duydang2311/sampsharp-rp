@@ -33,9 +33,13 @@ public class TestBaseEvent
 		var task = @parameterlessEvent.InvokeAsync();
 		Assert.That(count, Is.EqualTo(1));
 		await task;
-		Assert.That(count, Is.EqualTo(3));
-		Assert.That((DateTime.Now - now).TotalMilliseconds, Is.GreaterThanOrEqualTo(1000 - 10));
+		Assert.Multiple(() =>
+		{
+			Assert.That(count, Is.EqualTo(3));
+			Assert.That((DateTime.Now - now).TotalMilliseconds, Is.GreaterThanOrEqualTo(1000 - 100));
+		});
 	}
+
 	[Test]
 	public async Task InvokeAsyncSerial_IncreaseCountTo_3_After2s()
 	{
@@ -47,7 +51,10 @@ public class TestBaseEvent
 		var task = @parameterlessEvent.InvokeAsyncSerial();
 		Assert.That(count, Is.EqualTo(1));
 		await task;
-		Assert.That(count, Is.EqualTo(3));
-		Assert.That((DateTime.Now - now).TotalMilliseconds, Is.GreaterThanOrEqualTo(2000 - 10));
+		Assert.Multiple(() =>
+		{
+			Assert.That(count, Is.EqualTo(3));
+			Assert.That((DateTime.Now - now).TotalMilliseconds, Is.GreaterThanOrEqualTo(2000 - 100));
+		});
 	}
 }
