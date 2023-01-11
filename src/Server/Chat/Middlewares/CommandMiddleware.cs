@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
+using Server.Chat.Components;
 using Server.Chat.Services;
 
 namespace Server.Chat.Middlewares;
@@ -59,9 +60,18 @@ public sealed class CommandMiddleware
 			player.SendClientMessage(Color.Red, "[Hệ thống] Lệnh không tồn tại.");
 			return true;
 		}
-		var @delegate = commandService.GetCommandModel(command).Delegate;
+
+		var model = commandService.GetCommandModel(command);
+		var @delegate = model.Delegate;
 		if (@delegate is null)
 		{
+			return true;
+		}
+		var permissionComponent = player.GetComponent<PermissionComponent>();
+		if (permissionComponent is null
+		|| (permissionComponent.Level & model.PermissionLevel) == 0)
+		{
+			player.SendClientMessage(Color.Red, "[Hệ thống] Bạn cần quyền hạn thích hợp để sử dụng lệnh này.");
 			return true;
 		}
 		if (!parser.TryParse(@delegate, input, out var arguments))
