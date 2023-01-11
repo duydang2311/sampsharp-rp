@@ -20,7 +20,8 @@ namespace Server
 					globalOptions.AddCulture("vi-VN");
 					textLocalizerOptions.BaseName = "Server.Resources.Text";
 					textLocalizerOptions.DefaultCulture = CultureInfo.GetCultureInfo("vi");
-				});
+				})
+				.WithSAMP();
 
 			var provider = services.BuildServiceProvider();
 			var logger = provider.GetRequiredService<ILogger<Startup>>();
