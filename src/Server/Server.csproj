@@ -22,4 +22,7 @@
     <PackageReference Include="System.Text.Json" Version="7.0.0" />
     <PackageReference Include="TaskTupleAwaiter" Version="2.0.2" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources/Text.vi.resources" />
+  </ItemGroup>
 </Project>
