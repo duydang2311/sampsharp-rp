@@ -57,7 +57,10 @@ public sealed class CommandMiddleware
 		}
 		if (!commandService.HasCommand(command))
 		{
-			chatService.SendMessage(player, Color.Red, m => m.Command_NotFound);
+			chatService.SendInlineMessages(player, f => new[] {
+				f.Create(Color.Gray, m => m.Badge_System),
+				f.Create(Color.Red, m => m.Command_NotFound),
+			});
 			return true;
 		}
 
@@ -71,7 +74,10 @@ public sealed class CommandMiddleware
 		if (permissionComponent is null
 		|| (permissionComponent.Level & model.PermissionLevel) == 0)
 		{
-			chatService.SendMessage(player, Color.Red, m => m.Command_Denied);
+			chatService.SendInlineMessages(player, f => new[] {
+				f.Create(Color.Gray, m => m.Badge_System),
+				f.Create(Color.Red, m => m.Command_Denied),
+			});
 			return true;
 		}
 		if (!parser.TryParse(@delegate, input, out var arguments))
