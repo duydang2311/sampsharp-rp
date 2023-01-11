@@ -6,7 +6,8 @@ namespace Server.Chat.Components;
 public enum PermissionLevel : int
 {
 	None = 0b_0000,
-	Admin = 0b_0001
+	Player = 0b_0001,
+	Admin = 0b_0010
 }
 
 public sealed class PermissionComponent : Component
