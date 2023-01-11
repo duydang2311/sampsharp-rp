@@ -1,3 +1,4 @@
+using Server.Chat.Components;
 using Server.Chat.Models;
 
 namespace Server.Chat.Services;
@@ -54,6 +55,7 @@ public sealed class CommandService : ICommandService
 	public void RegisterCommand(Action<CommandModel> modelAction)
 	{
 		var model = commandModelFactory.Create();
+		model.PermissionLevel = PermissionLevel.Player;
 		modelAction(model);
 		commandDict.Add(model.Name, model);
 	}
