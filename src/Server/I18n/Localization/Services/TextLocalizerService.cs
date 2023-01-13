@@ -26,12 +26,7 @@ public sealed class TextLocalizerService : ITextLocalizerService
 
 	public string Get(CultureInfo culture, string key, params object[] args)
 	{
-		var text = resourceManagerDict[culture].GetString(key);
-		if (text is null)
-		{
-			return string.Empty;
-		}
-		return string.Format(text, args);
+        return string.Format(Get(culture, key), args);
 	}
 
 	public string Get(string key)
