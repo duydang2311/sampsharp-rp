@@ -1,4 +1,4 @@
-namespace Server.I18n.Localization.Models;
+namespace Server.I18N.Localization.Models;
 
 public interface ITextNameFakeModel
 {

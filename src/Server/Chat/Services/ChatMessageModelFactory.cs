@@ -1,8 +1,8 @@
 using System.Linq.Expressions;
 using SampSharp.Entities.SAMP;
 using Server.Chat.Models;
-using Server.I18n.Localization.Models;
-using Server.I18n.Localization.Services;
+using Server.I18N.Localization.Models;
+using Server.I18N.Localization.Services;
 
 namespace Server.Chat.Services;
 

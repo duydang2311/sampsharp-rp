@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace Server.I18n.Localization.Services;
+namespace Server.I18N.Localization.Services;
 
 public sealed class TextLocalizerServiceOptions : ITextLocalizerServiceOptions
 {

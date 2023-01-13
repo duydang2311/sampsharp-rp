@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
-using Server.I18n.Localization.Models;
+using Server.I18N.Localization.Models;
 
-namespace Server.I18n.Localization.Services;
+namespace Server.I18N.Localization.Services;
 
 public interface ITextNameIdentifierService
 {

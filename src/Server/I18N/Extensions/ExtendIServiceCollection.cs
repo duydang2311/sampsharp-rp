@@ -1,5 +1,5 @@
-using Server.I18n.Globalization.Services;
-using Server.I18n.Localization.Services;
+using Server.I18N.Globalization.Services;
+using Server.I18N.Localization.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

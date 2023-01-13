@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace Server.I18n.Globalization.Services;
+namespace Server.I18N.Globalization.Services;
 
 public interface IGlobalCultureService
 {

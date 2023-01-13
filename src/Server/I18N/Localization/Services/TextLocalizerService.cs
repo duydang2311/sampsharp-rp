@@ -1,9 +1,9 @@
 using System.Globalization;
 using System.Reflection;
 using System.Resources;
-using Server.I18n.Globalization.Services;
+using Server.I18N.Globalization.Services;
 
-namespace Server.I18n.Localization.Services;
+namespace Server.I18N.Localization.Services;
 
 public sealed class TextLocalizerService : ITextLocalizerService
 {

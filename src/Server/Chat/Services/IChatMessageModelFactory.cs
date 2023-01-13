@@ -1,7 +1,7 @@
 using System.Linq.Expressions;
 using SampSharp.Entities.SAMP;
 using Server.Chat.Models;
-using Server.I18n.Localization.Models;
+using Server.I18N.Localization.Models;
 
 namespace Server.Chat.Services;
 

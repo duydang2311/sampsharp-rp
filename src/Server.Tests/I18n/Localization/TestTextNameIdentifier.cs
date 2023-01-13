@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using Server.I18n.Localization.Services;
+using Server.I18N.Localization.Services;
 
 namespace Server.Tests.I18n.Localization;
 

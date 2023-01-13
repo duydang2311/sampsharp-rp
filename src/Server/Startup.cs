@@ -1,9 +1,9 @@
-﻿using System.Globalization;
+using System.Globalization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
-using Server.I18n.Localization.Services;
+using Server.I18N.Localization.Services;
 
 namespace Server
 {
