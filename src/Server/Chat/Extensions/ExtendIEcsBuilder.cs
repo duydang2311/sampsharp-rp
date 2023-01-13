@@ -7,6 +7,8 @@ public static partial class ExtendIEcsBuilder
 {
 	public static IEcsBuilder UseChatMiddlewares(this IEcsBuilder self)
 	{
-		return self.UseMiddleware<CommandMiddleware>("OnPlayerCommandText");
+		return self
+            .UseMiddleware<CommandMiddleware>("OnPlayerCommandText")
+            .UseMiddleware<TextMiddleware>("OnPlayerText");
 	}
 }
