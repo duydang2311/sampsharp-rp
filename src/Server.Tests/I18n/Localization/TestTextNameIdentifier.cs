@@ -11,7 +11,7 @@ public class TestTextNameIdentifier
 	[SetUp]
 	public void Setup()
 	{
-		var serviceCollection = new ServiceCollection().WithLogging().WithI18n((_, _) =>
+		var serviceCollection = new ServiceCollection().WithLogging().WithI18N((_, _) =>
 		{
 
 		});
