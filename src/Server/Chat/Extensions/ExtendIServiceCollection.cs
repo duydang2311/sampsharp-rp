@@ -10,6 +10,6 @@ public static partial class ExtendIServiceCollection
 			.AddSingleton<ICommandService, CommandService>()
 			.AddSingleton<IChatService, ChatService>()
 			.AddSingleton<IChatMessageModelFactory, ChatMessageModelFactory>()
-			.AddSingleton<IArgumentParser>(provider => new CommandArgumentParser(1));
+			.AddSingleton<IArgumentParser>(_ => new CommandArgumentParser(1));
 	}
 }

@@ -11,8 +11,8 @@ public static partial class ExtendIServiceCollection
 		var textLocalizerOptions = new TextLocalizerServiceOptions();
 		configI18N(globalCultureOptions, textLocalizerOptions);
 		return self
-			.AddSingleton<IGlobalCultureServiceOptions>(provider => globalCultureOptions)
-			.AddSingleton<ITextLocalizerServiceOptions>(provider => textLocalizerOptions)
+			.AddSingleton<IGlobalCultureServiceOptions>(_ => globalCultureOptions)
+			.AddSingleton<ITextLocalizerServiceOptions>(_ => textLocalizerOptions)
 			.AddSingleton<IGlobalCultureService, GlobalCultureService>()
 			.AddSingleton<ITextLocalizerService, TextLocalizerService>()
 			.AddSingleton<ITextNameIdentifierService, TextNameIdentifierService>();
