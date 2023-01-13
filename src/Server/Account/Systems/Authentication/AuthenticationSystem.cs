@@ -1,8 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
-using Server.Account.Systems.Login;
-using Server.Account.Systems.SignUp;
 using Server.Chat.Services;
 using Server.Database;
 
@@ -24,16 +22,11 @@ public sealed class AuthenticationSytem : ISystem
     }
 
     [Event]
-    private void OnPlayerConnect(Player player)
+    private async void OnPlayerConnect(Player player)
     {
         chatService.SendMessage(player, f => f.Create("Đang tải, vui lòng đợi trong giây lát..."));
-    }
-
-    [Event]
-    private async Task OnPlayerRequestClass(Player player, int classid)
-    {
         player.ToggleSpectating(true);
-        await using var context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false);
+        await using var context = await contextFactory.CreateDbContextAsync();
         var exist = await context.Characters.AnyAsync(model => player.Name == model.Name);
         await authenticatedEvent.InvokeAsync(player, exist);
     }
