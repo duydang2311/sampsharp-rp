@@ -2,6 +2,7 @@ using dotenv.net;
 using dotenv.net.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Server.Database;
+using Server.Database.Systems;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -28,9 +29,9 @@ public static partial class ExtendIServiceCollection
 		{
 			optionsAction.UseNpgsql($"Host={host};Username={username};Password={password};Database={database};Port={port}");
 			optionsAction.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-			optionsAction.EnableDetailedErrors(true);
+			optionsAction.EnableDetailedErrors();
 #if DEBUG
-			optionsAction.EnableSensitiveDataLogging(true);
+			optionsAction.EnableSensitiveDataLogging();
 #endif
 		}, 256);
 	}
