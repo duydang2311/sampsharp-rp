@@ -5,11 +5,11 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static partial class ExtendIServiceCollection
 {
-	public static IServiceCollection WithI18n(this IServiceCollection self, Action<IGlobalCultureServiceOptions, ITextLocalizerServiceOptions> configI18n)
+	public static IServiceCollection WithI18N(this IServiceCollection self, Action<IGlobalCultureServiceOptions, ITextLocalizerServiceOptions> configI18N)
 	{
 		var globalCultureOptions = new GlobalCultureServiceOptions();
 		var textLocalizerOptions = new TextLocalizerServiceOptions();
-		configI18n(globalCultureOptions, textLocalizerOptions);
+		configI18N(globalCultureOptions, textLocalizerOptions);
 		return self
 			.AddSingleton<IGlobalCultureServiceOptions>(provider => globalCultureOptions)
 			.AddSingleton<ITextLocalizerServiceOptions>(provider => textLocalizerOptions)
