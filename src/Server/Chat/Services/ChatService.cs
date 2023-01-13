@@ -39,7 +39,7 @@ public sealed class ChatService : IChatService
 		var stringBuilder = new StringBuilder(144);
 		foreach (var model in models)
 		{
-			stringBuilder.AppendFormat("{{0}}{1} ", model.Color.ToString(), model.Text);
+			stringBuilder.AppendFormat("{{{0}}}{1} ", model.Color.ToString(), model.Text);
 		}
 		stringBuilder.Remove(stringBuilder.Length - 1, 1);
 		SendMessage(player, Color.White, stringBuilder.ToString());
