@@ -2,7 +2,6 @@ using dotenv.net;
 using dotenv.net.Utilities;
 using Microsoft.EntityFrameworkCore;
 using Server.Database;
-using Server.Database.Systems;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
