@@ -12,4 +12,8 @@
 	<data name="CommandDenied">
 		<value>Bạn cần quyền hạn thích hợp để sử dụng lệnh này.</value>
 	</data>
+    <data name="Chat_Message">
+		<value>{0} nói: {1}</value>
+	</data>
+
 </root>
