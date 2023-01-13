@@ -5,11 +5,15 @@
 		<value>[Hệ thống]</value>
 	</data>
 
-	<!-- Command -->
+    <!-- Chat -->
 	<data name="CommandNotFound">
 		<value>Lệnh không tồn tại.</value>
 	</data>
 	<data name="CommandDenied">
 		<value>Bạn cần quyền hạn thích hợp để sử dụng lệnh này.</value>
 	</data>
+    <data name="ChatMessage">
+		<value>{0} nói: {1}</value>
+	</data>
+
 </root>
