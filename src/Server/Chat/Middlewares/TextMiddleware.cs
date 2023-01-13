@@ -14,7 +14,8 @@ public sealed class TextMiddleware
         this.next = next;
     }
 
-    public object Invoke(EventContext context, ILogger<CommandMiddleware> logger, IChatService chatService, IEntityManager entityManager)
+    public object Invoke(EventContext context, ILogger<CommandMiddleware> logger, IChatService chatService,
+        IEntityManager entityManager)
     {
         var response = next(context);
         if (EventHelper.IsSuccessResponse(response))
@@ -28,7 +29,9 @@ public sealed class TextMiddleware
 
         var sourcePlayer = entityManager.GetComponent<Player>(entity);
         var distanceSquared = 15f * 15f;
-        chatService.SendMessage(player => Vector3.DistanceSquared(player.Position, sourcePlayer.Position) <= distanceSquared, f => f.Create(i => i.ChatMessage, sourcePlayer.Name, input));
+        chatService.SendMessage(
+            player => Vector3.DistanceSquared(player.Position, sourcePlayer.Position) <= distanceSquared,
+            f => f.Create(i => i.ChatMessage, sourcePlayer.Name, input));
         return 0;
     }
 }
