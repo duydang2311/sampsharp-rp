@@ -3,7 +3,6 @@ using Server.Common.Event;
 
 namespace Server.Account.Systems.Login;
 
-public sealed class LoginEvent : BaseEvent<Player, long>, ILoginEvent
+public sealed class LoginEvent : BaseEvent<Player>, ILoginEvent
 {
-    
 }
