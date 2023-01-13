@@ -58,8 +58,8 @@ public sealed class CommandMiddleware
 		if (!commandService.HasCommand(command))
 		{
 			chatService.SendInlineMessages(player, f => new[] {
-				f.Create(Color.Gray, m => m.Badge_System),
-				f.Create(Color.Red, m => m.Command_NotFound),
+				f.Create(Color.Gray, m => m.BadgeSystem),
+				f.Create(Color.Red, m => m.CommandNotFound),
 			});
 			return true;
 		}
@@ -75,8 +75,8 @@ public sealed class CommandMiddleware
 		|| (permissionComponent.Level & model.PermissionLevel) == 0)
 		{
 			chatService.SendInlineMessages(player, f => new[] {
-				f.Create(Color.Gray, m => m.Badge_System),
-				f.Create(Color.Red, m => m.Command_Denied),
+				f.Create(Color.Gray, m => m.BadgeSystem),
+				f.Create(Color.Red, m => m.CommandDenied),
 			});
 			return true;
 		}
