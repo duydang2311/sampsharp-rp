@@ -1,4 +1,5 @@
 using System.Text;
+using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Chat.Models;
 
@@ -7,10 +8,12 @@ namespace Server.Chat.Services;
 public sealed class ChatService : IChatService
 {
 	private readonly IChatMessageModelFactory factory;
+    private readonly IEntityManager entityManager;
 
-	public ChatService(IChatMessageModelFactory factory)
+	public ChatService(IChatMessageModelFactory factory, IEntityManager entityManager)
 	{
 		this.factory = factory;
+        this.entityManager = entityManager;
 	}
 
 	private static void SendMessage(Player player, Color color, string message)
@@ -44,4 +47,37 @@ public sealed class ChatService : IChatService
 		stringBuilder.Remove(stringBuilder.Length - 1, 1);
 		SendMessage(player, Color.White, stringBuilder.ToString());
 	}
+
+    public void SendMessage(Predicate<Player> filter, Func<IChatMessageModelFactory, ChatMessageModel> messageCreator)
+    {
+        foreach(var i in entityManager.GetComponents<Player>())
+        {
+            if (filter(i))
+            {
+                SendMessage(i, messageCreator);
+            }
+        }
+    }
+
+    public void SendMessages(Predicate<Player> filter, Func<IChatMessageModelFactory, ChatMessageModel[]> messageCreator)
+    {
+        foreach(var i in entityManager.GetComponents<Player>())
+        {
+            if (filter(i))
+            {
+                SendMessages(i, messageCreator);
+            }
+        }
+    }
+
+    public void SendInlineMessages(Predicate<Player> filter, Func<IChatMessageModelFactory, ChatMessageModel[]> messageCreator)
+    {
+        foreach(var i in entityManager.GetComponents<Player>())
+        {
+            if (filter(i))
+            {
+                SendInlineMessages(i, messageCreator);
+            }
+        }
+    }
 }
