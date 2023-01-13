@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- Badge -->
-	<data name="Badge_System">
+	<data name="BadgeSystem">
 		<value>[Hệ thống]</value>
 	</data>
 
 	<!-- Command -->
-	<data name="Command_NotFound">
+	<data name="CommandNotFound">
 		<value>Lệnh không tồn tại.</value>
 	</data>
-	<data name="Command_Denied">
+	<data name="CommandDenied">
 		<value>Bạn cần quyền hạn thích hợp để sử dụng lệnh này.</value>
 	</data>
 </root>
