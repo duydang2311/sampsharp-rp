@@ -1,8 +1,8 @@
 using SampSharp.Entities.SAMP;
+using Server.Common.Event;
 
 namespace Server.Account.Systems.SignUp;
 
-public interface ISignUpSystem
+public interface ISignedUpEvent : IEvent<Player>
 {
-    Task SignUp(Player player);
 }
