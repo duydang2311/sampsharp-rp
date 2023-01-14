@@ -2,8 +2,15 @@ namespace Server.Common.Event;
 
 public class BaseEvent : IEvent
 {
+    private readonly IEventInvoker invoker;
+
 	protected event Action? Event;
 	protected event Func<Task>? AsyncEvent;
+
+    public BaseEvent(IEventInvoker invoker)
+    {
+        this.invoker = invoker;
+    }
 
 	public void AddHandler(Action handler)
 	{
@@ -29,47 +36,42 @@ public class BaseEvent : IEvent
 	{
 		if (Event is not null)
 		{
-			Event();
+            invoker.Invoke(Event);
 		}
 		if (AsyncEvent is not null)
 		{
-			AsyncEvent();
+            invoker.Invoke(AsyncEvent);
 		}
 	}
 
 	public Task InvokeAsync()
 	{
-		var tasks = new LinkedList<Task>();
+        Task? task = null;
 		if (AsyncEvent is not null)
 		{
-			foreach (var @delegate in AsyncEvent.GetInvocationList())
-			{
-				tasks.AddLast((Task)@delegate.Method.Invoke(@delegate.Target, null)!);
-			}
+            task = invoker.InvokeAsync(AsyncEvent);
 		}
 		if (Event is not null)
 		{
-			Event();
+            invoker.Invoke(Event);
 		}
-		if (AsyncEvent is not null)
+		if (task is not null)
 		{
-			return Task.WhenAll(tasks);
+			return task;
 		}
 		return Task.CompletedTask;
 	}
 
-	public async Task InvokeAsyncSerial()
+	public Task InvokeAsyncSerial()
 	{
 		if (Event is not null)
 		{
-			Event();
+            invoker.Invoke(Event);
 		}
 		if (AsyncEvent is not null)
 		{
-			foreach (var @delegate in AsyncEvent.GetInvocationList())
-			{
-				await (Task)@delegate.Method.Invoke(@delegate.Target, null)!;
-			}
+            return invoker.InvokeAsyncSerial(AsyncEvent);
 		}
-	}
+        return Task.CompletedTask;
+    }
 }
