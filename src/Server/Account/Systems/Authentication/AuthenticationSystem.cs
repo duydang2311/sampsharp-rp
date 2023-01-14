@@ -27,7 +27,7 @@ public sealed class AuthenticationSytem : ISystem
         chatService.SendMessage(player, f => f.Create("Đang tải, vui lòng đợi trong giây lát..."));
         player.ToggleSpectating(true);
         await using var context = await contextFactory.CreateDbContextAsync();
-        var exist = await context.Characters.AnyAsync(model => player.Name == model.Name);
+        var exist = await context.Accounts.AnyAsync(model => player.Name == model.Name);
         await authenticatedEvent.InvokeAsync(player, exist);
     }
 }
