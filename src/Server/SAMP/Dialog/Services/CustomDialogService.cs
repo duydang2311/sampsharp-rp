@@ -14,10 +14,10 @@ public sealed class CustomDialogService : ICustomDialogService
 		this.sampSharpDialogService = sampSharpDialogService;
 	}
 
-	public Task<TResponse> Show<TResponse>(EntityId player, Func<ICustomDialogFactory, IDialog<TResponse>> dialogCreator)
+	public Task<TResponse> ShowAsync<TResponse>(EntityId player, Func<ICustomDialogFactory, IDialog<TResponse>> dialogCreator)
 	where TResponse : struct
 	{
-		return Show(player, dialogCreator(dialogFactory));
+		return ShowAsync(player, dialogCreator(dialogFactory));
 	}
 
 	public void Show<TResponse>(EntityId player, Func<ICustomDialogFactory, IDialog<TResponse>> dialogCreator, Action<TResponse> responseHandler)
@@ -26,7 +26,7 @@ public sealed class CustomDialogService : ICustomDialogService
 		Show(player, dialogCreator(dialogFactory), responseHandler);
 	}
 
-	public Task<TResponse> Show<TResponse>(EntityId player, IDialog<TResponse> dialog)
+	public Task<TResponse> ShowAsync<TResponse>(EntityId player, IDialog<TResponse> dialog)
 	where TResponse : struct
 	{
 		return sampSharpDialogService.Show(player, dialog);
