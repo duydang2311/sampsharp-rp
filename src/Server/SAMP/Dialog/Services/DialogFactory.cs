@@ -4,8 +4,6 @@ namespace Server.SAMP.Dialog.Services;
 
 public sealed class DialogFactory : IDialogFactory
 {
-	public DialogFactory() { }
-
 	public ListDialog CreateList(Action<ListDialog> dialogAction)
 	{
 		var dialog = new ListDialog(string.Empty, string.Empty);
