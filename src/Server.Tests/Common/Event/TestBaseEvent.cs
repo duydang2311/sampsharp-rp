@@ -9,7 +9,7 @@ public class TestBaseEvent
 	[SetUp]
 	public void Setup()
 	{
-		@parameterlessEvent = new BaseEvent();
+		@parameterlessEvent = new BaseEvent(new EventInvoker());
 	}
 
 	[Test]
