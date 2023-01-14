@@ -3,11 +3,11 @@ using SampSharp.Entities.SAMP;
 
 namespace Server.SAMP.Dialog.Services;
 
-public interface IDialogService
+public interface ICustomDialogService
 {
-	Task<TResponse> Show<TResponse>(EntityId player, Func<IDialogFactory, IDialog<TResponse>> dialogCreator)
+	Task<TResponse> Show<TResponse>(EntityId player, Func<ICustomDialogFactory, IDialog<TResponse>> dialogCreator)
 	where TResponse : struct;
-	void Show<TResponse>(EntityId player, Func<IDialogFactory, IDialog<TResponse>> dialogCreator, Action<TResponse> responseHandler)
+	void Show<TResponse>(EntityId player, Func<ICustomDialogFactory, IDialog<TResponse>> dialogCreator, Action<TResponse> responseHandler)
 	where TResponse : struct;
 	Task<TResponse> Show<TResponse>(EntityId player, IDialog<TResponse> dialog)
 	where TResponse : struct;

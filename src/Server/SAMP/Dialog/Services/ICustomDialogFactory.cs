@@ -2,7 +2,7 @@ using SampSharp.Entities.SAMP;
 
 namespace Server.SAMP.Dialog.Services;
 
-public interface IDialogFactory
+public interface ICustomDialogFactory
 {
 	ListDialog CreateList(Action<ListDialog> dialogAction);
 	InputDialog CreateInput(Action<InputDialog> dialogAction);

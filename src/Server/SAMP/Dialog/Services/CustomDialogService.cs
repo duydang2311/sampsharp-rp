@@ -3,26 +3,24 @@ using SampSharp.Entities.SAMP;
 
 namespace Server.SAMP.Dialog.Services;
 
-using ISampSharpDialogService = SampSharp.Entities.SAMP.IDialogService;
-
-public sealed class DialogService : IDialogService
+public sealed class CustomDialogService : ICustomDialogService
 {
-	private readonly IDialogFactory dialogFactory;
-	private readonly ISampSharpDialogService sampSharpDialogService;
+	private readonly ICustomDialogFactory dialogFactory;
+	private readonly IDialogService sampSharpDialogService;
 
-	public DialogService(IDialogFactory dialogFactory, ISampSharpDialogService sampSharpDialogService)
+	public CustomDialogService(ICustomDialogFactory dialogFactory, IDialogService sampSharpDialogService)
 	{
 		this.dialogFactory = dialogFactory;
 		this.sampSharpDialogService = sampSharpDialogService;
 	}
 
-	public Task<TResponse> Show<TResponse>(EntityId player, Func<IDialogFactory, IDialog<TResponse>> dialogCreator)
+	public Task<TResponse> Show<TResponse>(EntityId player, Func<ICustomDialogFactory, IDialog<TResponse>> dialogCreator)
 	where TResponse : struct
 	{
 		return Show(player, dialogCreator(dialogFactory));
 	}
 
-	public void Show<TResponse>(EntityId player, Func<IDialogFactory, IDialog<TResponse>> dialogCreator, Action<TResponse> responseHandler)
+	public void Show<TResponse>(EntityId player, Func<ICustomDialogFactory, IDialog<TResponse>> dialogCreator, Action<TResponse> responseHandler)
 	where TResponse : struct
 	{
 		Show(player, dialogCreator(dialogFactory), responseHandler);
