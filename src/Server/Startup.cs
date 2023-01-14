@@ -21,7 +21,8 @@ namespace Server
                     textLocalizerOptions.BaseName = "Server.Resources.Text";
                     textLocalizerOptions.DefaultCulture = CultureInfo.GetCultureInfo("vi");
                 })
-                .WithSAMP();
+                .WithSAMP()
+                .WithCommon();
         }
 
         public void Configure(IEcsBuilder builder)
