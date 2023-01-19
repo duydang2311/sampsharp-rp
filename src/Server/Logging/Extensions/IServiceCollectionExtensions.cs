@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static partial class ExtendIServiceCollection
+public static partial class IServiceCollectionExtensions
 {
 	public static IServiceCollection WithLogging(this IServiceCollection self)
 	{

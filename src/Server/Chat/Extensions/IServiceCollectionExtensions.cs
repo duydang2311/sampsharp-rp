@@ -2,7 +2,7 @@ using Server.Chat.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static partial class ExtendIServiceCollection
+public static partial class IServiceCollectionExtensions
 {
 	public static IServiceCollection WithChat(this IServiceCollection self)
 	{

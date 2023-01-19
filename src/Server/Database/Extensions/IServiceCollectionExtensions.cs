@@ -5,7 +5,7 @@ using Server.Database;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static partial class ExtendIServiceCollection
+public static partial class IServiceCollectionExtensions
 {
 	public static IServiceCollection WithDatabase(this IServiceCollection self)
 	{

@@ -3,7 +3,7 @@ using Server.I18N.Localization.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static partial class ExtendIServiceCollection
+public static partial class IServiceCollectionExtensions
 {
 	public static IServiceCollection WithI18N(this IServiceCollection self, Action<IGlobalCultureServiceOptions, ITextLocalizerServiceOptions> configI18N)
 	{
