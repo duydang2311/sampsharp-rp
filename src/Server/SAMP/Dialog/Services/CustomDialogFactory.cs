@@ -2,10 +2,8 @@ using SampSharp.Entities.SAMP;
 
 namespace Server.SAMP.Dialog.Services;
 
-public sealed class DialogFactory : IDialogFactory
+public sealed class CustomDialogFactory : ICustomDialogFactory
 {
-	public DialogFactory() { }
-
 	public ListDialog CreateList(Action<ListDialog> dialogAction)
 	{
 		var dialog = new ListDialog(string.Empty, string.Empty);
