@@ -235,4 +235,10 @@ khẩu mới vào khung bên duới.
 	<data name="AmeCommand_Help">
 		<value>/ame [hành động]</value>
 	</data>
+    <data name="MeCommandText">
+        <value>* {0} {1}</value>
+    </data>
+    <data name="MeCommandHelp">
+        <value>Hướng dẫn: /me [hành động]</value>
+    </data>
 </root>

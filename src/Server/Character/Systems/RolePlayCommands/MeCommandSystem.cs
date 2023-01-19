@@ -3,6 +3,7 @@ using SampSharp.Entities.SAMP;
 using Server.Chat.Components;
 using Server.Chat.Models;
 using Server.Chat.Services;
+using Server.Common.Colors;
 
 
 using Server.Common.Colors;
@@ -35,7 +36,10 @@ public sealed class MeCommandSystem : ISystem
 	{
 		chatService.SendMessage(p => (Vector3.DistanceSquared(p.Position, player.Position) < 15f * 15f),
 			action => action.Add(Color.FromInteger(0xC2A2DA, ColorFormat.RGB), model => model.MeCommandText,
-				player.Name, text)
+				player.Name, text));
+		chatService.SendMessage(
+			p  => (Vector3.Distance(p.Position, player.Position) < 15f * 15f),
+			a => a.Add(SemanticColor.Roleplay, model => model.MeCommandText, player.Name, text)
 		);
 	}
 
@@ -45,5 +49,7 @@ public sealed class MeCommandSystem : ISystem
 		chatService.SendMessage(player, b => b
 			.Add(model => model.Badge_Help)
 			.Inline(SemanticColor.Roleplay, model => model.MeCommandHelp));
+//		chatService.SendMessage(
+//			player, factory => factory.Create(Color.FromInteger(0xC2A2DA, ColorFormat.RGB), "Usage: /me [action]."));
 	}
 }
