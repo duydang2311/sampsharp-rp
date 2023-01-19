@@ -2,8 +2,15 @@ namespace Server.Common.Event;
 
 public class BaseEvent<T1, T2, T3> : IEvent<T1, T2, T3>
 {
+    private readonly IEventInvoker invoker;
+
     protected event Action<T1, T2, T3>? Event;
     protected event Func<T1, T2, T3, Task>? AsyncEvent;
+
+    public BaseEvent(IEventInvoker invoker)
+    {
+        this.invoker = invoker;
+    }
 
     public void AddHandler(Action<T1, T2, T3> handler)
     {
@@ -29,49 +36,42 @@ public class BaseEvent<T1, T2, T3> : IEvent<T1, T2, T3>
     {
         if (Event is not null)
         {
-            Event(arg1, arg2, arg3);
+            invoker.Invoke(Event, arg1, arg2, arg3);
         }
         if (AsyncEvent is not null)
         {
-            AsyncEvent(arg1, arg2, arg3);
+            invoker.Invoke(AsyncEvent, arg1, arg2, arg3);
         }
     }
 
     public Task InvokeAsync(T1 arg1, T2 arg2, T3 arg3)
     {
-        var tasks = new LinkedList<Task>();
+        Task? task = null;
         if (AsyncEvent is not null)
         {
-            var args = new object?[] { arg1, arg2, arg3 };
-            foreach (var @delegate in AsyncEvent.GetInvocationList())
-            {
-                tasks.AddLast((Task)@delegate.Method.Invoke(@delegate.Target, args)!);
-            }
+            task = invoker.InvokeAsync(AsyncEvent, arg1, arg2, arg3);
         }
         if (Event is not null)
         {
-            Event(arg1, arg2, arg3);
+            invoker.Invoke(Event, arg1, arg2, arg3);
         }
-        if (AsyncEvent is not null)
+        if (task is not null)
         {
-            return Task.WhenAll(tasks);
+            return task;
         }
         return Task.CompletedTask;
     }
 
-    public async Task InvokeAsyncSerial(T1 arg1, T2 arg2, T3 arg3)
+    public Task InvokeAsyncSerial(T1 arg1, T2 arg2, T3 arg3)
     {
         if (Event is not null)
         {
-            Event(arg1, arg2, arg3);
+            invoker.Invoke(Event, arg1, arg2, arg3);
         }
         if (AsyncEvent is not null)
         {
-            var args = new object?[] { arg1, arg2, arg3 };
-            foreach (var @delegate in AsyncEvent.GetInvocationList())
-            {
-                await (Task)@delegate.Method.Invoke(@delegate.Target, args)!;
-            }
+            return invoker.InvokeAsyncSerial(AsyncEvent, arg1, arg2, arg3);
         }
+        return Task.CompletedTask;
     }
 }
