@@ -3,6 +3,7 @@ using SampSharp.Entities.SAMP;
 using Server.Chat.Components;
 using Server.Chat.Models;
 using Server.Chat.Services;
+using Server.Common.Colors;
 
 namespace Server.Character.Systems.RolePlayCommands;
 
@@ -23,17 +24,16 @@ public sealed class MeCommandSystem : ISystem
 
 	public void MeCommand(Player player, string text)
 	{
-		string message = $"* {player.Name} {text}";
-//        player.SendClientMessage(Color.FromInteger(0xC2A2DA, ColorFormat.RGB), message);
 		chatService.SendMessage(
-			p => (Vector3.DistanceSquared(p.Position, player.Position) < 15f * 15f),
-			factory => factory.Create(Color.FromInteger(0xC2A2DA, ColorFormat.RGB), message));
+			p  => (Vector3.Distance(p.Position, player.Position) < 15f * 15f),
+			a => a.Add(SemanticColor.Roleplay, model => model.MeCommandText, player.Name, text)
+		);
 	}
 
 // 123 gh
 	public void HelpMeCommand(Player player)
 	{
-		chatService.SendMessage(
-			player, factory => factory.Create(Color.FromInteger(0xC2A2DA, ColorFormat.RGB), "Usage: /me [action]."));
+//		chatService.SendMessage(
+//			player, factory => factory.Create(Color.FromInteger(0xC2A2DA, ColorFormat.RGB), "Usage: /me [action]."));
 	}
 }

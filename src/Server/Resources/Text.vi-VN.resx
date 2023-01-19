@@ -204,4 +204,10 @@ khẩu mới vào khung bên duới.
 	<data name="Dialog_Character_Creation_Age_Button2">
 		<value>Quay lại</value>
 	</data>
+	<data name="MeCommandText">
+		<value>* {0} {1}</value>
+	</data>
+	<data name="MeCommandHelp">
+		<value>Hướng dẫn: /me [hành động]</value>
+	</data>
 </root>
