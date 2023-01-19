@@ -2,76 +2,76 @@ namespace Server.Common.Event;
 
 public class BaseEvent<T1> : IEvent<T1>
 {
-	protected event Action<T1>? Event;
-	protected event Func<T1, Task>? AsyncEvent;
+    private readonly IEventInvoker invoker;
 
-	public void AddHandler(Action<T1> handler)
-	{
-		Event += handler;
-	}
+    protected event Action<T1>? Event;
+    protected event Func<T1, Task>? AsyncEvent;
 
-	public void AddHandler(Func<T1, Task> handler)
-	{
-		AsyncEvent += handler;
-	}
+    public BaseEvent(IEventInvoker invoker)
+    {
+        this.invoker = invoker;
+    }
 
-	public void RemoveHandler(Action<T1> handler)
-	{
-		Event -= handler;
-	}
+    public void AddHandler(Action<T1> handler)
+    {
+        Event += handler;
+    }
 
-	public void RemoveHandler(Func<T1, Task> handler)
-	{
-		AsyncEvent -= handler;
-	}
+    public void AddHandler(Func<T1, Task> handler)
+    {
+        AsyncEvent += handler;
+    }
 
-	public void Invoke(T1 arg1)
-	{
-		if (Event is not null)
-		{
-			Event(arg1);
-		}
-		if (AsyncEvent is not null)
-		{
-			AsyncEvent(arg1);
-		}
-	}
+    public void RemoveHandler(Action<T1> handler)
+    {
+        Event -= handler;
+    }
 
-	public Task InvokeAsync(T1 arg1)
-	{
-		var tasks = new LinkedList<Task>();
-		if (AsyncEvent is not null)
-		{
-			var args = new object?[] { arg1 };
-			foreach (var @delegate in AsyncEvent.GetInvocationList())
-			{
-				tasks.AddLast((Task)@delegate.Method.Invoke(@delegate.Target, args)!);
-			}
-		}
-		if (Event is not null)
-		{
-			Event(arg1);
-		}
-		if (AsyncEvent is not null)
-		{
-			return Task.WhenAll(tasks);
-		}
-		return Task.CompletedTask;
-	}
+    public void RemoveHandler(Func<T1, Task> handler)
+    {
+        AsyncEvent -= handler;
+    }
 
-	public async Task InvokeAsyncSerial(T1 arg1)
-	{
-		if (Event is not null)
-		{
-			Event(arg1);
-		}
-		if (AsyncEvent is not null)
-		{
-			var args = new object?[] { arg1 };
-			foreach (var @delegate in AsyncEvent.GetInvocationList())
-			{
-				await (Task)@delegate.Method.Invoke(@delegate.Target, args)!;
-			}
-		}
-	}
+    public void Invoke(T1 arg1)
+    {
+        if (Event is not null)
+        {
+            invoker.Invoke(Event, arg1);
+        }
+        if (AsyncEvent is not null)
+        {
+            invoker.Invoke(AsyncEvent, arg1);
+        }
+    }
+
+    public Task InvokeAsync(T1 arg1)
+    {
+        Task? task = null;
+        if (AsyncEvent is not null)
+        {
+            task = invoker.InvokeAsync(AsyncEvent, arg1);
+        }
+        if (Event is not null)
+        {
+            invoker.Invoke(Event, arg1);
+        }
+        if (task is not null)
+        {
+            return task;
+        }
+        return Task.CompletedTask;
+    }
+
+    public Task InvokeAsyncSerial(T1 arg1)
+    {
+        if (Event is not null)
+        {
+            invoker.Invoke(Event, arg1);
+        }
+        if (AsyncEvent is not null)
+        {
+            return invoker.InvokeAsyncSerial(AsyncEvent, arg1);
+        }
+        return Task.CompletedTask;
+    }
 }

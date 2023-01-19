@@ -5,4 +5,7 @@ namespace Server.Account.Systems.Authentication;
 
 public sealed class AuthenticatedEvent : BaseEvent<Player, bool>, IAuthenticatedEvent
 {
+    public AuthenticatedEvent(IEventInvoker invoker) : base(invoker)
+    {
+    }
 }
