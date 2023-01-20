@@ -8,6 +8,7 @@ public sealed partial class DoorFactory : IDoorFactory
 {
 	private readonly IStreamerService streamerService;
 	private readonly ILogger<DoorFactory> logger;
+	private readonly IDictionary<long, IDoor> doorDictionary = new Dictionary<long, IDoor>();
 
 	[LoggerMessage(
 		EventId = 0,
@@ -29,6 +30,10 @@ public sealed partial class DoorFactory : IDoorFactory
 		{
 			LogInvalidDoorCreation(typeof(ILogicalDoor), door.Id);
 		}
+		else
+		{
+			doorDictionary.Add(door.Id, door);
+		}
 		return door;
 	}
 
@@ -39,6 +44,10 @@ public sealed partial class DoorFactory : IDoorFactory
 		if (door.Id == 0)
 		{
 			LogInvalidDoorCreation(typeof(IPhysicalDoor), door.Id);
+		}
+		else
+		{
+			doorDictionary.Add(door.Id, door);
 		}
 		return door;
 	}
