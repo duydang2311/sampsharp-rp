@@ -1,4 +1,5 @@
 
+using SampSharp.Streamer.Entities;
 using Server.SAMP.Dialog.Services;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -9,6 +10,7 @@ public static partial class IServiceCollectionExtensions
 	{
 		return self
 			.AddSingleton<ICustomDialogFactory, CustomDialogFactory>()
-			.AddSingleton<ICustomDialogService, CustomDialogService>();
+			.AddSingleton<ICustomDialogService, CustomDialogService>()
+			.AddSingleton<IStreamerService, StreamerService>();
 	}
 }
