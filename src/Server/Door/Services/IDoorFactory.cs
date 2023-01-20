@@ -7,4 +7,6 @@ public interface IDoorFactory
 {
 	ILogicalDoor CreateLogicalDoor(Action<ILogicalDoor, IStreamerService> doorAction);
 	IPhysicalDoor CreatePhysicalDoor(Action<IPhysicalDoor, IStreamerService> doorAction);
+	bool DestroyDoor(IDoor door);
+	bool DestroyDoor(long id);
 }

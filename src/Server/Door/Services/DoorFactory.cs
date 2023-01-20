@@ -51,4 +51,30 @@ public sealed partial class DoorFactory : IDoorFactory
 		}
 		return door;
 	}
+
+	public bool DestroyDoor(IDoor door)
+	{
+		switch (door)
+		{
+			case ILogicalDoor logicalDoor:
+				{
+					logicalDoor.EntranceCheckpoint?.DestroyEntity();
+					logicalDoor.ExitCheckpoint?.DestroyEntity();
+					break;
+				}
+			case IPhysicalDoor physicalDoor:
+				{
+					physicalDoor.Object?.DestroyEntity();
+					break;
+				}
+			default:
+				break;
+		}
+		return doorDictionary.Remove(door.Id);
+	}
+
+	public bool DestroyDoor(long id)
+	{
+		return doorDictionary.TryGetValue(id, out var door) && DestroyDoor(door);
+	}
 }
