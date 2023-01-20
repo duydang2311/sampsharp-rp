@@ -17,10 +17,10 @@
 	</data>
 
 	<!-- /door -->
-	<data name="DoorCommandHelp">
+	<data name="DoorCommand_Help">
 		<value>Huớng dẫn: /door [lệnh].</value>
 	</data>
-	<data name="DoorCommandOptions">
+	<data name="DoorCommand_Options">
 		<value>Lựa chọn lệnh: create, destroy, nearby.</value>
 	</data>
 </root>
