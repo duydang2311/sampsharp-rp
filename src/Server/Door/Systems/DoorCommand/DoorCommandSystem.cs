@@ -38,14 +38,14 @@ public sealed partial class DoorCommandSystem : ISystem
 		chatService.SendMessage(player, Color.Gray, m => m.DoorCommand_Options);
 	}
 
-	private void DoorCommand(Player player, string argument)
+	private Task DoorCommand(Player player, string argument)
 	{
 		var (option, rest, _) = argument.Split(' ', 2);
 		switch (option)
 		{
 			case "create":
 				{
-					break;
+					return CreateDoor(player, rest);
 				}
 			case "destroy":
 				{
@@ -61,5 +61,6 @@ public sealed partial class DoorCommandSystem : ISystem
 					break;
 				}
 		}
+		return Task.CompletedTask;
 	}
 }
