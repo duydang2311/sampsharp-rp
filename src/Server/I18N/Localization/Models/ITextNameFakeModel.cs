@@ -5,5 +5,7 @@ public interface ITextNameFakeModel
 	object BadgeSystem { get; }
 	object CommandNotFound { get; }
 	object CommandDenied { get; }
-    object ChatMessage { get; }
+	object ChatMessage { get; }
+	object DoorCommandHelp { get; }
+	object DoorCommandOptions { get; }
 }

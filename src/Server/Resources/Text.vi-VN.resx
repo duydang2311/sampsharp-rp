@@ -16,4 +16,11 @@
 		<value>{0} nói: {1}</value>
 	</data>
 
+	<!-- /door -->
+	<data name="DoorCommandHelp">
+		<value>Huớng dẫn: /door [lệnh].</value>
+	</data>
+	<data name="DoorCommandOptions">
+		<value>Lựa chọn lệnh: create, destroy, nearby.</value>
+	</data>
 </root>
