@@ -20,7 +20,8 @@ public sealed partial class DoorCommandSystem : ISystem
 			case "logical":
 				{
 					await using var ctx = await dbContextFactory.CreateDbContextAsync();
-					var model = new DoorModel() {
+					var model = new DoorModel()
+					{
 						EntranceX = player.Position.X,
 						EntranceY = player.Position.Y,
 						EntranceZ = player.Position.Z,
@@ -28,7 +29,7 @@ public sealed partial class DoorCommandSystem : ISystem
 						EntranceWorld = player.VirtualWorld,
 						EntranceInterior = player.Interior,
 					};
-					await ctx.Doors.AddAsync(model);
+					_ = await ctx.Doors.AddAsync(model);
 					if (model.Id == 0)
 					{
 						chatService.SendMessage(player, SemanticColor.Info, m => m.DoorCommand_Create_NoEffect);
