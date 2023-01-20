@@ -15,6 +15,10 @@ public interface IChatService
 	void SendMessage(Player player, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args);
 	void SendMessage(Player player, Color color, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args);
 	void SendMessage(Predicate<Player> filter, Func<IChatMessageModelFactory, ChatMessageModel> messageCreator);
+	void SendMessage(Predicate<Player> filter, Expression<Func<ITextNameFakeModel, object>> textIdentifier);
+	void SendMessage(Predicate<Player> filter, Color color, Expression<Func<ITextNameFakeModel, object>> textIdentifier);
+	void SendMessage(Predicate<Player> filter, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args);
+	void SendMessage(Predicate<Player> filter, Color color, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args);
 	void SendMessages(Predicate<Player> filter, Func<IChatMessageModelFactory, ChatMessageModel[]> messageCreator);
 	void SendInlineMessages(Predicate<Player> filter, Func<IChatMessageModelFactory, ChatMessageModel[]> messageCreator);
 }

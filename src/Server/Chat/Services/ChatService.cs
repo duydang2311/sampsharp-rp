@@ -106,13 +106,12 @@ public sealed class ChatService : IChatService
 
 	public void SendMessage(Player player, Expression<Func<ITextNameFakeModel, object>> textIdentifier)
 	{
-		SendMessage(player, Color.White, textIdentifier);
+		SendMessage(player, Color.White, textIdentifier, Array.Empty<object>());
 	}
 
 	public void SendMessage(Player player, Color color, Expression<Func<ITextNameFakeModel, object>> textIdentifier)
 	{
-		var component = player.GetComponent<CultureComponent>();
-		SendMessage(player, color, localizerService.Get(component.Culture, identifierService.Identify(textIdentifier)));
+		SendMessage(player, color, textIdentifier, Array.Empty<object>());
 	}
 
 	public void SendMessage(Player player, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args)
@@ -124,5 +123,32 @@ public sealed class ChatService : IChatService
 	{
 		var component = player.GetComponent<CultureComponent>();
 		SendMessage(player, color, localizerService.Get(component.Culture, identifierService.Identify(textIdentifier), args));
+	}
+
+	public void SendMessage(Predicate<Player> filter, Expression<Func<ITextNameFakeModel, object>> textIdentifier)
+	{
+		SendMessage(filter, Color.White, textIdentifier, Array.Empty<object>());
+	}
+
+	public void SendMessage(Predicate<Player> filter, Color color, Expression<Func<ITextNameFakeModel, object>> textIdentifier)
+	{
+		SendMessage(filter, Color.White, textIdentifier, Array.Empty<object>());
+	}
+
+	public void SendMessage(Predicate<Player> filter, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args)
+	{
+		SendMessage(filter, Color.White, textIdentifier, args);
+	}
+
+
+	public void SendMessage(Predicate<Player> filter, Color color, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args)
+	{
+		foreach (var i in entityManager.GetComponents<Player>())
+		{
+			if (filter(i))
+			{
+				SendMessage(i, color, textIdentifier, args);
+			}
+		}
 	}
 }
