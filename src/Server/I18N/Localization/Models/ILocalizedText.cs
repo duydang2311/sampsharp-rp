@@ -32,4 +32,6 @@ public interface ILocalizedText : ILocalizedBadge
 	object LanguageCommand_Success { get; }
 	object MeCommandText { get; }
 	object MeCommandHelp { get; }
+	object DoCommandText { get; }
+	object DoCommandHelp { get; }
 }
