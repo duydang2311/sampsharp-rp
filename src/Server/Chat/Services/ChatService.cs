@@ -53,7 +53,7 @@ public sealed class ChatService : IChatService
 		{
 			if (filter(p))
 			{
-				foreach(var text in BuildChatMessageBuilder(p, builder))
+				foreach (var text in BuildChatMessageBuilder(p, builder))
 				{
 					SendMessage(p, Color.White, text);
 				}
