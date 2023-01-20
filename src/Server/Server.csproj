@@ -19,6 +19,7 @@
     <PackageReference Include="Npgsql" Version="7.0.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.1" />
     <PackageReference Include="SampSharp.Entities" Version="0.10.1" />
+    <PackageReference Include="SampSharp.Streamer.Entities" Version="0.10.0" />
     <PackageReference Include="System.Text.Json" Version="7.0.0" />
     <PackageReference Include="TaskTupleAwaiter" Version="2.0.2" />
   </ItemGroup>
