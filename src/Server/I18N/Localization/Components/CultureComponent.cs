@@ -1,7 +1,7 @@
 using System.Globalization;
 using SampSharp.Entities;
 
-namespace Server.I18n.Localization.Components;
+namespace Server.I18N.Localization.Components;
 
 public class CultureComponent : Component
 {
