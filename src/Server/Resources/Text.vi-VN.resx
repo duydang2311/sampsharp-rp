@@ -21,6 +21,18 @@
 		<value>Huớng dẫn: /door [lệnh].</value>
 	</data>
 	<data name="DoorCommand_Options">
-		<value>Lựa chọn lệnh: create, destroy, nearby.</value>
+		<value>Lựa chọn lệnh: 'create', 'destroy', 'nearby'.</value>
+	</data>
+	<data name="DoorCommand_Create_Help">
+		<value>Huớng dẫn: /door create [phân loại].</value>
+	</data>
+	<data name="DoorCommand_Create_Options">
+		<value>Phân loại door: 'logical', 'physical'.</value>
+	</data>
+	<data name="DoorCommand_Create_NoEffect">
+		<value>Không thể thêm door vào cơ sở dữ liệu.</value>
+	</data>
+	<data name="DoorCommand_Create_Success">
+		<value>Door#{0} đã đuợc tạo thành công.</value>
 	</data>
 </root>
