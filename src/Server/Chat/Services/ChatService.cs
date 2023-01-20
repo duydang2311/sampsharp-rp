@@ -114,4 +114,15 @@ public sealed class ChatService : IChatService
 		var component = player.GetComponent<CultureComponent>();
 		SendMessage(player, color, localizerService.Get(component.Culture, identifierService.Identify(textIdentifier)));
 	}
+
+	public void SendMessage(Player player, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args)
+	{
+		SendMessage(player, Color.White, textIdentifier, args);
+	}
+
+	public void SendMessage(Player player, Color color, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args)
+	{
+		var component = player.GetComponent<CultureComponent>();
+		SendMessage(player, color, localizerService.Get(component.Culture, identifierService.Identify(textIdentifier), args));
+	}
 }
