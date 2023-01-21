@@ -8,4 +8,6 @@ public static class SemanticColor
 	public static Color Info => new(0, 0, 0xFF);
 	public static Color Success => new(0, 0xFF, 0);
 	public static Color Error => new(0xFF, 0, 0);
+	public static Color Neutral => Color.White;
+	public static Color LowAttention => Color.SlateGray;
 }
