@@ -10,14 +10,18 @@ namespace Server.Chat.Services;
 
 public sealed class ChatMessageBuilder : IChatMessageBuilder
 {
-	private class BuilderChatMessageModel : ChatMessageModel
+	private class BaseBuilderChatMessageModel : ChatMessageModel
 	{
 		public bool IsInline { get; set; }
+	}
+	private class I18NBuilderChatMessageModel : BaseBuilderChatMessageModel
+	{
 		public object[] Args { get; set; } = Array.Empty<object>();
 	}
 	private readonly ITextLocalizerService localizerService;
 	private readonly ITextNameIdentifierService identifierService;
-	private readonly LinkedList<BuilderChatMessageModel> models = new();
+	private readonly LinkedList<BaseBuilderChatMessageModel
+	> models = new();
 
 	public ChatMessageBuilder(ITextLocalizerService localizerService, ITextNameIdentifierService identifierService)
 	{
@@ -32,7 +36,7 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 
 	public IChatMessageBuilder Add(Color color, Expression<Func<ITextNameFakeModel, object>> textNameIdentifier, params object[] args)
 	{
-		models.AddLast(new BuilderChatMessageModel() { Color = color, Text = identifierService.Identify(textNameIdentifier), Args = args, IsInline = false });
+		models.AddLast(new I18NBuilderChatMessageModel() { Color = color, Text = identifierService.Identify(textNameIdentifier), Args = args, IsInline = false });
 		return this;
 	}
 
@@ -43,13 +47,16 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 
 	public IChatMessageBuilder Inline(Color color, Expression<Func<ITextNameFakeModel, object>> textNameIdentifier, params object[] args)
 	{
-		models.AddLast(new BuilderChatMessageModel() { Color = color, Text = identifierService.Identify(textNameIdentifier), Args = args, IsInline = true });
+		models.AddLast(new I18NBuilderChatMessageModel() { Color = color, Text = identifierService.Identify(textNameIdentifier), Args = args, IsInline = true });
 		return this;
 	}
 
-	private string BuildModelInternal(CultureInfo cultureInfo, BuilderChatMessageModel model)
+	private string BuildModelInternal(CultureInfo cultureInfo, BaseBuilderChatMessageModel
+		model)
 	{
-		return model.Color.ToString(ColorFormat.RGB) + localizerService.Get(cultureInfo, model.Text, model.Args);
+		return model is I18NBuilderChatMessageModel i18nModel
+			? i18nModel.Color.ToString(ColorFormat.RGB) + (i18nModel.Args.Length == 0 ? localizerService.Get(cultureInfo, i18nModel.Text) : localizerService.Get(cultureInfo, i18nModel.Text, i18nModel.Args))
+			: model.Color.ToString(ColorFormat.RGB) + model.Text;
 	}
 
 	public IEnumerable<string> Build(CultureInfo cultureInfo)
@@ -80,5 +87,27 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 			text += BuildModelInternal(cultureInfo, m);
 		}
 		return list;
+	}
+
+	public IChatMessageBuilder Add(string text, params object[] args)
+	{
+		return Add(SemanticColor.Neutral, text, args);
+	}
+
+	public IChatMessageBuilder Add(Color color, string text, params object[] args)
+	{
+		models.AddLast(new BaseBuilderChatMessageModel() { Color = color, Text = args.Length == 0 ? text : string.Format(CultureInfo.InvariantCulture, text, args), IsInline = false });
+		return this;
+	}
+
+	public IChatMessageBuilder Inline(string text, params object[] args)
+	{
+		return Inline(SemanticColor.Neutral, text, args);
+	}
+
+	public IChatMessageBuilder Inline(Color color, string text, params object[] args)
+	{
+		models.AddLast(new BaseBuilderChatMessageModel() { Color = color, Text = args.Length == 0 ? text : string.Format(CultureInfo.InvariantCulture, text, args), IsInline = true });
+		return this;
 	}
 }
