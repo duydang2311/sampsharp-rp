@@ -36,6 +36,45 @@ public sealed class CommandArgumentParser : IArgumentParser
 		return false;
 	}
 
+	private static bool TryParseTypesInternal(Type[] types, string input, out object?[]? arguments)
+	{
+		var typesCount = types.Length;
+		if (typesCount == 0)
+		{
+			arguments = default;
+			return true;
+		}
+		var splitted = string.IsNullOrEmpty(input)
+			? Array.Empty<string>()
+			: input.Split(' ', typesCount);
+		var splittedCount = splitted.Length;
+		var results = new object?[typesCount];
+		if (typesCount > splittedCount)
+		{
+			var i = 0;
+			foreach (var type in types[splittedCount..])
+			{
+				if (Nullable.GetUnderlyingType(type) is not null)
+				{
+					results[splittedCount + i++] = null;
+					continue;
+				}
+				arguments = default;
+				return false;
+			}
+		}
+		for (var i = 0; i != splittedCount; ++i)
+		{
+			if (!TryConvertInternal(splitted[i], types[i], out results[i]))
+			{
+				arguments = default;
+				return false;
+			}
+		}
+		arguments = results;
+		return true;
+	}
+
 	public bool TryParse(Delegate @delegate, string input, out object?[]? arguments)
 	{
 		var method = @delegate.Method;
@@ -82,101 +121,66 @@ public sealed class CommandArgumentParser : IArgumentParser
 		return true;
 	}
 
-	public bool TryParse<T1>(Delegate @delegate, string input, out T1 argument)
+	public bool TryParse<T1>(string input, out T1 argument)
 	{
-		var success = TryParse(@delegate, input, out object?[]? arguments);
-		if (!success || arguments is null)
-		{
-			argument = default!;
-		}
-		else
-		{
-			argument = (T1)arguments![0]!;
-		}
+		var success = TryParseTypesInternal(new[] { typeof(T1) }, input, out var arguments);
+		argument = !success || arguments is null
+			? default!
+			: (T1)arguments![0]!;
 		return success;
 	}
 
-	public bool TryParse<T1, T2>(Delegate @delegate, string input, out (T1, T2) argument)
+	public bool TryParse<T1, T2>(string input, out ValueTuple<T1, T2> argument)
 	{
-		var success = TryParse(@delegate, input, out object?[]? arguments);
-		if (!success || arguments is null)
-		{
-			argument = default!;
-		}
-		else
-		{
-			argument = ((T1)arguments[0]!, (T2)arguments[1]!);
-		}
+		var success = TryParseTypesInternal(new[] { typeof(T1), typeof(T2) }, input, out var arguments);
+		argument = !success || arguments is null
+			? default!
+			: ((T1)arguments![0]!, (T2)arguments[1]!);
 		return success;
 	}
 
-	public bool TryParse<T1, T2, T3>(Delegate @delegate, string input, out (T1, T2, T3) argument)
+	public bool TryParse<T1, T2, T3>(string input, out ValueTuple<T1, T2, T3> argument)
 	{
-		var success = TryParse(@delegate, input, out object?[]? arguments);
-		if (!success || arguments is null)
-		{
-			argument = default!;
-		}
-		else
-		{
-			argument = ((T1)arguments[0]!, (T2)arguments[1]!, (T3)arguments[2]!);
-		}
+		var success = TryParseTypesInternal(new[] { typeof(T1), typeof(T2), typeof(T3) }, input, out var arguments);
+		argument = !success || arguments is null
+			? default!
+			: ((T1)arguments![0]!, (T2)arguments[1]!, (T3)arguments[2]!);
 		return success;
 	}
 
-	public bool TryParse<T1, T2, T3, T4>(Delegate @delegate, string input, out (T1, T2, T3, T4) argument)
+	public bool TryParse<T1, T2, T3, T4>(string input, out ValueTuple<T1, T2, T3, T4> argument)
 	{
-		var success = TryParse(@delegate, input, out object?[]? arguments);
-		if (!success || arguments is null)
-		{
-			argument = default!;
-		}
-		else
-		{
-			argument = ((T1)arguments[0]!, (T2)arguments[1]!, (T3)arguments[2]!, (T4)arguments[3]!);
-		}
+		var success = TryParseTypesInternal(new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4) }, input, out var arguments);
+		argument = !success || arguments is null
+			? default!
+			: ((T1)arguments![0]!, (T2)arguments[1]!, (T3)arguments[2]!, (T4)arguments[3]!);
 		return success;
 	}
 
-	public bool TryParse<T1, T2, T3, T4, T5>(Delegate @delegate, string input, out (T1, T2, T3, T4, T5) argument)
+	public bool TryParse<T1, T2, T3, T4, T5>(string input, out ValueTuple<T1, T2, T3, T4, T5> argument)
 	{
-		var success = TryParse(@delegate, input, out object?[]? arguments);
-		if (!success || arguments is null)
-		{
-			argument = default!;
-		}
-		else
-		{
-			argument = ((T1)arguments[0]!, (T2)arguments[1]!, (T3)arguments[2]!, (T4)arguments[3]!, (T5)arguments[4]!);
-		}
+		var success = TryParseTypesInternal(new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5) }, input, out var arguments);
+		argument = !success || arguments is null
+			? default!
+			: ((T1)arguments![0]!, (T2)arguments[1]!, (T3)arguments[2]!, (T4)arguments[3]!, (T5)arguments[4]!);
 		return success;
 	}
 
-	public bool TryParse<T1, T2, T3, T4, T5, T6>(Delegate @delegate, string input, out (T1, T2, T3, T4, T5, T6) argument)
+	public bool TryParse<T1, T2, T3, T4, T5, T6>(string input, out ValueTuple<T1, T2, T3, T4, T5, T6> argument)
 	{
-		var success = TryParse(@delegate, input, out object?[]? arguments);
-		if (!success || arguments is null)
-		{
-			argument = default!;
-		}
-		else
-		{
-			argument = ((T1)arguments[0]!, (T2)arguments[1]!, (T3)arguments[2]!, (T4)arguments[3]!, (T5)arguments[4]!, (T6)arguments[5]!);
-		}
+		var success = TryParseTypesInternal(new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6) }, input, out var arguments);
+		argument = !success || arguments is null
+			? default!
+			: ((T1)arguments![0]!, (T2)arguments[1]!, (T3)arguments[2]!, (T4)arguments[3]!, (T5)arguments[4]!, (T6)arguments[5]!);
 		return success;
 	}
 
-	public bool TryParse<T1, T2, T3, T4, T5, T6, T7>(Delegate @delegate, string input, out (T1, T2, T3, T4, T5, T6, T7) argument)
+	public bool TryParse<T1, T2, T3, T4, T5, T6, T7>(string input, out ValueTuple<T1, T2, T3, T4, T5, T6, T7> argument)
 	{
-		var success = TryParse(@delegate, input, out object?[]? arguments);
-		if (!success || arguments is null)
-		{
-			argument = default!;
-		}
-		else
-		{
-			argument = ((T1)arguments[0]!, (T2)arguments[1]!, (T3)arguments[2]!, (T4)arguments[3]!, (T5)arguments[4]!, (T6)arguments[5]!, (T7)arguments[6]!);
-		}
+		var success = TryParseTypesInternal(new[] { typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7) }, input, out var arguments);
+		argument = !success || arguments is null
+			? default!
+			: ((T1)arguments![0]!, (T2)arguments[1]!, (T3)arguments[2]!, (T4)arguments[3]!, (T5)arguments[4]!, (T6)arguments[5]!, (T7)arguments[6]!);
 		return success;
 	}
 }
