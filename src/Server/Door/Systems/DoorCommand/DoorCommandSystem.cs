@@ -49,7 +49,7 @@ public sealed partial class DoorCommandSystem : ISystem
 				}
 			case "destroy":
 				{
-					break;
+					return DestroyDoor(player, rest);
 				}
 			case "nearby":
 				{
