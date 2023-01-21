@@ -1,98 +1,53 @@
-using System.Text;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
-using Server.Chat.Models;
+using Server.I18N.Localization.Components;
 
 namespace Server.Chat.Services;
 
 public sealed class ChatService : IChatService
 {
-	private readonly IChatMessageModelFactory factory;
-    private readonly IEntityManager entityManager;
+	private readonly IEntityManager entityManager;
+	private readonly IChatMessageBuilderFactory builderFactory;
 
-	public ChatService(IChatMessageModelFactory factory, IEntityManager entityManager)
+	public ChatService(IEntityManager entityManager, IChatMessageBuilderFactory builderFactory)
 	{
-		this.factory = factory;
-        this.entityManager = entityManager;
+		this.entityManager = entityManager;
+		this.builderFactory = builderFactory;
 	}
 
-    private static void SendMessage(Player player, Color color, string text)
-    {
-        player.SendClientMessage(color, text);
-    }
-
-    private static void SendMessage(Player player, ChatMessageModel model)
-    {
-        player.SendClientMessage(model.Color, model.Text);
-    }
-
-    private static void SendMessages(Player player, ChatMessageModel[] models)
-    {
-        foreach (var model in models)
-        {
-            SendMessage(player, model);
-        }
-    }
-
-    private static void SendInlineMessages(Player player, ChatMessageModel[] models)
-    {
-        var stringBuilder = new StringBuilder(144);
-        foreach (var model in models)
-        {
-            stringBuilder.AppendFormat("{{{0}}}{1} ", model.Color.ToString(), model.Text);
-        }
-        stringBuilder.Remove(stringBuilder.Length - 1, 1);
-        SendMessage(player, Color.White, stringBuilder.ToString());
-    }
-
-	public void SendMessage(Player player, Func<IChatMessageModelFactory, ChatMessageModel> messageCreator)
+	private static void SendMessage(Player player, Color color, string text)
 	{
-        SendMessage(player, messageCreator(factory));
+		player.SendClientMessage(color, text);
 	}
 
-	public void SendMessages(Player player, Func<IChatMessageModelFactory, ChatMessageModel[]> messageCreator)
+	private static IEnumerable<string> BuildChatMessageBuilder(Player player, IChatMessageBuilder builder)
 	{
-        SendMessages(player, messageCreator(factory));
+		return builder.Build(player.GetComponent<CultureComponent>().Culture);
 	}
 
-	public void SendInlineMessages(Player player, Func<IChatMessageModelFactory, ChatMessageModel[]> messageCreator)
+	public void SendMessage(Player player, Action<IChatMessageBuilder> buildActions)
 	{
-        SendInlineMessages(player, messageCreator(factory));
+		var builder = builderFactory.CreateBuilder();
+		buildActions(builder);
+		foreach(var text in BuildChatMessageBuilder(player, builder))
+		{
+			SendMessage(player, Color.White, text);
+		}
 	}
 
-    public void SendMessage(Predicate<Player> filter, Func<IChatMessageModelFactory, ChatMessageModel> messageCreator)
-    {
-        var model = messageCreator(factory);
-        foreach(var i in entityManager.GetComponents<Player>())
-        {
-            if (filter(i))
-            {
-                SendMessage(i, model);
-            }
-        }
-    }
-
-    public void SendMessages(Predicate<Player> filter, Func<IChatMessageModelFactory, ChatMessageModel[]> messageCreator)
-    {
-        var model = messageCreator(factory);
-        foreach(var i in entityManager.GetComponents<Player>())
-        {
-            if (filter(i))
-            {
-                SendMessages(i, model);
-            }
-        }
-    }
-
-    public void SendInlineMessages(Predicate<Player> filter, Func<IChatMessageModelFactory, ChatMessageModel[]> messageCreator)
-    {
-        var model = messageCreator(factory);
-        foreach(var i in entityManager.GetComponents<Player>())
-        {
-            if (filter(i))
-            {
-                SendInlineMessages(i, model);
-            }
-        }
-    }
+	public void SendMessage(Predicate<Player> filter, Action<IChatMessageBuilder> buildActions)
+	{
+		var builder = builderFactory.CreateBuilder();
+		buildActions(builder);
+		foreach (var p in entityManager.GetComponents<Player>())
+		{
+			if (filter(p))
+			{
+				foreach(var text in BuildChatMessageBuilder(p, builder))
+				{
+					SendMessage(p, Color.White, text);
+				}
+			}
+		}
+	}
 }
