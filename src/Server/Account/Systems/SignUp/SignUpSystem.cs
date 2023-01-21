@@ -1,5 +1,6 @@
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
+using Server.Account.Components;
 using Server.Account.Systems.Authentication;
 
 namespace Server.Account.Systems.SignUp;
@@ -67,6 +68,7 @@ public sealed class SignUpSystem : ISystem
         await context.Accounts.AddAsync(model).ConfigureAwait(false);
         await context.SaveChangesAsync().ConfigureAwait(false);
 
+        player.AddComponent<AccountComponent>(model.Id);
         await signedUpEvent.InvokeAsync(player);
     }
 }

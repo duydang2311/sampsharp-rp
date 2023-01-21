@@ -56,7 +56,7 @@ public sealed class LoginSystem : ISystem
 
                     if (success)
                     {
-                        player.AddComponent<AccountComponent>(new AccountComponent() { Id = account.Id });
+                        player.AddComponent<AccountComponent>(account.Id);
                         await loginEvent.InvokeAsync(player);
                     }
                     else
