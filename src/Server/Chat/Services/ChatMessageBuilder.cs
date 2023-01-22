@@ -86,6 +86,10 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 			}
 			text += BuildModelInternal(cultureInfo, m);
 		}
+		if (!string.IsNullOrEmpty(text))
+		{
+			list.AddLast(text);
+		}
 		return list;
 	}
 
