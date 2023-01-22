@@ -9,8 +9,9 @@ public sealed partial class DoorCommandSystem : ISystem
 {
 	private void HelpCreateDoor(Player player)
 	{
-		chatService.SendMessage(player, SemanticColor.Info, m => m.DoorCommand_Create_Help);
-		chatService.SendMessage(player, SemanticColor.Info, m => m.DoorCommand_Create_Options);
+		chatService.SendMessage(player, b => b
+			.Add(SemanticColor.Info, m => m.DoorCommand_Create_Help)
+			.Add(SemanticColor.Info, m => m.DoorCommand_Create_Options));
 	}
 
 	private async Task CreateDoor(Player player, string argument)
@@ -32,10 +33,12 @@ public sealed partial class DoorCommandSystem : ISystem
 					_ = await ctx.Doors.AddAsync(model);
 					if (model.Id == 0)
 					{
-						chatService.SendMessage(player, SemanticColor.Info, m => m.DoorCommand_Create_NoEffect);
+						chatService.SendMessage(player, b => b
+							.Add(SemanticColor.Info, m => m.DoorCommand_Create_NoEffect));
 						return;
 					}
-					chatService.SendMessage(player, SemanticColor.Success, m => m.DoorCommand_Create_Success, model.Id);
+					chatService.SendMessage(player, b => b
+						.Add(SemanticColor.Success, m => m.DoorCommand_Create_Success, model.Id));
 					break;
 				}
 			case "physical":

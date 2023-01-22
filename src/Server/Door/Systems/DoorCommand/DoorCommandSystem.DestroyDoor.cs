@@ -9,7 +9,8 @@ public sealed partial class DoorCommandSystem : ISystem
 {
 	private void HelpDestroyDoor(Player player)
 	{
-		chatService.SendMessage(player, SemanticColor.Info, m => m.DoorCommand_Destroy_Help);
+		chatService.SendMessage(player, b => b
+			.Add(SemanticColor.Info, m => m.DoorCommand_Destroy_Help));
 	}
 
 	private async Task DestroyDoor(Player player, string argument)
@@ -23,7 +24,8 @@ public sealed partial class DoorCommandSystem : ISystem
 		var ok = doorFactory.DestroyDoor(id);
 		if (!ok)
 		{
-			chatService.SendMessage(player, SemanticColor.LowAttention, m => m.DoorCommand_Destroy_InvalidId, id);
+			chatService.SendMessage(player, b => b
+				.Add(SemanticColor.LowAttention, m => m.DoorCommand_Destroy_InvalidId, id));
 			return;
 		}
 
@@ -31,11 +33,13 @@ public sealed partial class DoorCommandSystem : ISystem
 		var affected = await ctx.Doors.Where(m => m.Id == id).ExecuteDeleteAsync();
 		if (affected == 0)
 		{
-			chatService.SendMessage(player, SemanticColor.Success, m => m.DoorCommand_Destroy_SuccessNoEffect, id);
+			chatService.SendMessage(player, b => b
+				.Add(SemanticColor.Success, m => m.DoorCommand_Destroy_SuccessNoEffect, id));
 		}
 		else
 		{
-			chatService.SendMessage(player, SemanticColor.Success, m => m.DoorCommand_Destroy_Success, id);
+			chatService.SendMessage(player, b => b
+				.Add(SemanticColor.Success, m => m.DoorCommand_Destroy_Success, id));
 		}
 	}
 }

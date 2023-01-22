@@ -34,8 +34,9 @@ public sealed partial class DoorCommandSystem : ISystem
 
 	private void HelpDoorCommand(Player player)
 	{
-		chatService.SendMessage(player, SemanticColor.Info, m => m.DoorCommand_Help);
-		chatService.SendMessage(player, Color.Gray, m => m.DoorCommand_Options);
+		chatService.SendMessage(player, b => b
+			.Add(SemanticColor.Info, m => m.DoorCommand_Help)
+			.Add(Color.Gray, m => m.DoorCommand_Options));
 	}
 
 	private Task DoorCommand(Player player, string argument)
