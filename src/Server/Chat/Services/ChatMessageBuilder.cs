@@ -52,11 +52,19 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 	}
 
 	private string BuildModelInternal(CultureInfo cultureInfo, BaseBuilderChatMessageModel
-		model)
+		model, BaseBuilderChatMessageModel? lastModel = default)
 	{
-		return model is I18NBuilderChatMessageModel i18nModel
-			? i18nModel.Color.ToString(ColorFormat.RGB) + (i18nModel.Args.Length == 0 ? localizerService.Get(cultureInfo, i18nModel.Text) : localizerService.Get(cultureInfo, i18nModel.Text, i18nModel.Args))
-			: model.Color.ToString(ColorFormat.RGB) + model.Text;
+		var appendedColor = string.Empty;
+		if (lastModel is null || lastModel.Color != model.Color)
+		{
+			appendedColor = model.Color.ToString(ColorFormat.RGB);
+		}
+		return appendedColor +
+			(model is I18NBuilderChatMessageModel i18nModel
+				? (i18nModel.Args.Length == 0
+						? localizerService.Get(cultureInfo, i18nModel.Text)
+						: localizerService.Get(cultureInfo, i18nModel.Text, i18nModel.Args))
+				: model.Text);
 	}
 
 	public IEnumerable<string> Build(CultureInfo cultureInfo)
@@ -73,18 +81,20 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 		}
 
 		var list = new LinkedList<string>();
+		var lastModel = models.First.Value;
 		foreach (var m in models.Skip(1))
 		{
 			if (!m.IsInline)
 			{
 				list.AddLast(text);
 				text = string.Empty;
+				lastModel = null;
 			}
 			else
 			{
 				text += ' ';
 			}
-			text += BuildModelInternal(cultureInfo, m);
+			text += BuildModelInternal(cultureInfo, m, lastModel);
 		}
 		if (!string.IsNullOrEmpty(text))
 		{
