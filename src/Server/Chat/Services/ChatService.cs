@@ -1,27 +1,18 @@
-using System.Linq.Expressions;
-using System.Text;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
-using Server.Chat.Models;
 using Server.I18N.Localization.Components;
-using Server.I18N.Localization.Models;
-using Server.I18N.Localization.Services;
 
 namespace Server.Chat.Services;
 
 public sealed class ChatService : IChatService
 {
-	private readonly IChatMessageModelFactory factory;
 	private readonly IEntityManager entityManager;
-	private readonly ITextNameIdentifierService identifierService;
-	private readonly ITextLocalizerService localizerService;
+	private readonly IChatMessageBuilderFactory builderFactory;
 
-	public ChatService(IChatMessageModelFactory factory, IEntityManager entityManager, ITextNameIdentifierService identifierService, ITextLocalizerService localizerService)
+	public ChatService(IEntityManager entityManager, IChatMessageBuilderFactory builderFactory)
 	{
-		this.factory = factory;
 		this.entityManager = entityManager;
-		this.identifierService = identifierService;
-		this.localizerService = localizerService;
+		this.builderFactory = builderFactory;
 	}
 
 	private static void SendMessage(Player player, Color color, string text)
@@ -29,125 +20,33 @@ public sealed class ChatService : IChatService
 		player.SendClientMessage(color, text);
 	}
 
-	private static void SendMessage(Player player, ChatMessageModel model)
+	private static IEnumerable<string> BuildChatMessageBuilder(Player player, IChatMessageBuilder builder)
 	{
-		player.SendClientMessage(model.Color, model.Text);
+		return builder.Build(player.GetComponent<CultureComponent>().Culture);
 	}
 
-	private static void SendMessages(Player player, ChatMessageModel[] models)
+	public void SendMessage(Player player, Action<IChatMessageBuilder> buildActions)
 	{
-		foreach (var model in models)
+		var builder = builderFactory.CreateBuilder();
+		buildActions(builder);
+		foreach(var text in BuildChatMessageBuilder(player, builder))
 		{
-			SendMessage(player, model);
+			SendMessage(player, Color.White, text);
 		}
 	}
 
-	private static void SendInlineMessages(Player player, ChatMessageModel[] models)
+	public void SendMessage(Predicate<Player> filter, Action<IChatMessageBuilder> buildActions)
 	{
-		var stringBuilder = new StringBuilder(144);
-		foreach (var model in models)
+		var builder = builderFactory.CreateBuilder();
+		buildActions(builder);
+		foreach (var p in entityManager.GetComponents<Player>())
 		{
-			stringBuilder.AppendFormat("{{{0}}}{1} ", model.Color.ToString(), model.Text);
-		}
-		stringBuilder.Remove(stringBuilder.Length - 1, 1);
-		SendMessage(player, Color.White, stringBuilder.ToString());
-	}
-
-	public void SendMessage(Player player, Func<IChatMessageModelFactory, ChatMessageModel> messageCreator)
-	{
-		SendMessage(player, messageCreator(factory));
-	}
-
-	public void SendMessages(Player player, Func<IChatMessageModelFactory, ChatMessageModel[]> messageCreator)
-	{
-		SendMessages(player, messageCreator(factory));
-	}
-
-	public void SendInlineMessages(Player player, Func<IChatMessageModelFactory, ChatMessageModel[]> messageCreator)
-	{
-		SendInlineMessages(player, messageCreator(factory));
-	}
-
-	public void SendMessage(Predicate<Player> filter, Func<IChatMessageModelFactory, ChatMessageModel> messageCreator)
-	{
-		var model = messageCreator(factory);
-		foreach (var i in entityManager.GetComponents<Player>())
-		{
-			if (filter(i))
+			if (filter(p))
 			{
-				SendMessage(i, model);
-			}
-		}
-	}
-
-	public void SendMessages(Predicate<Player> filter, Func<IChatMessageModelFactory, ChatMessageModel[]> messageCreator)
-	{
-		var model = messageCreator(factory);
-		foreach (var i in entityManager.GetComponents<Player>())
-		{
-			if (filter(i))
-			{
-				SendMessages(i, model);
-			}
-		}
-	}
-
-	public void SendInlineMessages(Predicate<Player> filter, Func<IChatMessageModelFactory, ChatMessageModel[]> messageCreator)
-	{
-		var model = messageCreator(factory);
-		foreach (var i in entityManager.GetComponents<Player>())
-		{
-			if (filter(i))
-			{
-				SendInlineMessages(i, model);
-			}
-		}
-	}
-
-	public void SendMessage(Player player, Expression<Func<ITextNameFakeModel, object>> textIdentifier)
-	{
-		SendMessage(player, Color.White, textIdentifier, Array.Empty<object>());
-	}
-
-	public void SendMessage(Player player, Color color, Expression<Func<ITextNameFakeModel, object>> textIdentifier)
-	{
-		SendMessage(player, color, textIdentifier, Array.Empty<object>());
-	}
-
-	public void SendMessage(Player player, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args)
-	{
-		SendMessage(player, Color.White, textIdentifier, args);
-	}
-
-	public void SendMessage(Player player, Color color, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args)
-	{
-		var component = player.GetComponent<CultureComponent>();
-		SendMessage(player, color, localizerService.Get(component.Culture, identifierService.Identify(textIdentifier), args));
-	}
-
-	public void SendMessage(Predicate<Player> filter, Expression<Func<ITextNameFakeModel, object>> textIdentifier)
-	{
-		SendMessage(filter, Color.White, textIdentifier, Array.Empty<object>());
-	}
-
-	public void SendMessage(Predicate<Player> filter, Color color, Expression<Func<ITextNameFakeModel, object>> textIdentifier)
-	{
-		SendMessage(filter, Color.White, textIdentifier, Array.Empty<object>());
-	}
-
-	public void SendMessage(Predicate<Player> filter, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args)
-	{
-		SendMessage(filter, Color.White, textIdentifier, args);
-	}
-
-
-	public void SendMessage(Predicate<Player> filter, Color color, Expression<Func<ITextNameFakeModel, object>> textIdentifier, params object[] args)
-	{
-		foreach (var i in entityManager.GetComponents<Player>())
-		{
-			if (filter(i))
-			{
-				SendMessage(i, color, textIdentifier, args);
+				foreach(var text in BuildChatMessageBuilder(p, builder))
+				{
+					SendMessage(p, Color.White, text);
+				}
 			}
 		}
 	}

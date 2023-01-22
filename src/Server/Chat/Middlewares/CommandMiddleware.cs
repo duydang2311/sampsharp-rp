@@ -4,6 +4,7 @@ using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Chat.Components;
 using Server.Chat.Services;
+using Server.Common.Colors;
 
 namespace Server.Chat.Middlewares;
 
@@ -57,10 +58,9 @@ public sealed class CommandMiddleware
 		}
 		if (!commandService.HasCommand(command))
 		{
-			chatService.SendInlineMessages(player, f => new[] {
-				f.Create(Color.Gray, m => m.BadgeSystem),
-				f.Create(Color.Red, m => m.CommandNotFound),
-			});
+			chatService.SendMessage(player, b => b
+				.Add(SemanticColor.LowAttention, m => m.BadgeSystem)
+				.Inline(SemanticColor.Error, m => m.CommandNotFound));
 			return true;
 		}
 
@@ -74,10 +74,9 @@ public sealed class CommandMiddleware
 		if (permissionComponent is null
 		|| (permissionComponent.Level & model.PermissionLevel) == 0)
 		{
-			chatService.SendInlineMessages(player, f => new[] {
-				f.Create(Color.Gray, m => m.BadgeSystem),
-				f.Create(Color.Red, m => m.CommandDenied),
-			});
+			chatService.SendMessage(player, b => b
+				.Add(SemanticColor.LowAttention, m => m.BadgeSystem)
+				.Inline(SemanticColor.Error, m => m.CommandDenied));
 			return true;
 		}
 		if (!parser.TryParse(@delegate, input, out var arguments))
