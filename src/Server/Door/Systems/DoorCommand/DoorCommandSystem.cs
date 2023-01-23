@@ -11,17 +11,17 @@ namespace Server.Door.Systems.DoorCommand;
 
 public sealed partial class DoorCommandSystem : ISystem
 {
-	private readonly IArgumentParser argumentParser;
 	private readonly IChatService chatService;
 	private readonly IDbContextFactory<ServerDbContext> dbContextFactory;
 	private readonly DoorFactory doorFactory;
+	private readonly IChatMessageBuilderFactory chatMessageBuilderFactory;
 
-	public DoorCommandSystem(ICommandService commandService, IChatService chatService, IArgumentParser argumentParser, IDbContextFactory<ServerDbContext> dbContextFactory, DoorFactory doorFactory)
+	public DoorCommandSystem(ICommandService commandService, IChatService chatService, IDbContextFactory<ServerDbContext> dbContextFactory, DoorFactory doorFactory, IChatMessageBuilderFactory chatMessageBuilderFactory)
 	{
 		this.chatService = chatService;
-		this.argumentParser = argumentParser;
 		this.dbContextFactory = dbContextFactory;
 		this.doorFactory = doorFactory;
+		this.chatMessageBuilderFactory = chatMessageBuilderFactory;
 
 		commandService.RegisterCommand(m =>
 		{
@@ -54,7 +54,7 @@ public sealed partial class DoorCommandSystem : ISystem
 				}
 			case "nearby":
 				{
-					break;
+					return NearbyDoor(player, rest);
 				}
 			default:
 				{
