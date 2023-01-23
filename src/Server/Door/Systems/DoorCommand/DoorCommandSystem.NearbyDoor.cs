@@ -16,7 +16,7 @@ public sealed partial class DoorCommandSystem : ISystem
 
 	private async Task NearbyDoor(Player player, string argument)
 	{
-		float distanceSquared = 15f * 15f;
+		var distanceSquared = 15f * 15f;
 		if (!float.TryParse(argument, out var dist))
 		{
 			distanceSquared = dist * dist;
@@ -43,12 +43,13 @@ public sealed partial class DoorCommandSystem : ISystem
 			chatService.SendMessage(player, b => b.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_Empty));
 			return;
 		}
-		chatService.SendMessage(player, b => b.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_Found));
-		var builder = chatMessageBuilderFactory.CreateBuilder();
-		foreach (var model in models)
+		chatService.SendMessage(player, b =>
 		{
-			builder.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_ForEachInfo, model.Id, model.EntranceX, model.EntranceY, model.EntranceZ, Math.Sqrt(Math.Pow(x - model.EntranceX, 2) + Math.Pow(x - model.EntranceY, 2) + Math.Pow(z - model.EntranceZ, 2)));
-		}
-		chatService.SendMessage(player, builder);
+			b.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_Found);
+			foreach (var model in models)
+			{
+				b.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_ForEachInfo, model.Id, model.EntranceX, model.EntranceY, model.EntranceZ, Math.Sqrt(Math.Pow(x - model.EntranceX, 2) + Math.Pow(x - model.EntranceY, 2) + Math.Pow(z - model.EntranceZ, 2)));
+			}
+		});
 	}
 }

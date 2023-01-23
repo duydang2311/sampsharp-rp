@@ -14,14 +14,12 @@ public sealed partial class DoorCommandSystem : ISystem
 	private readonly IChatService chatService;
 	private readonly IDbContextFactory<ServerDbContext> dbContextFactory;
 	private readonly IDoorFactory doorFactory;
-	private readonly IChatMessageBuilderFactory chatMessageBuilderFactory;
 
-	public DoorCommandSystem(ICommandService commandService, IChatService chatService, IDbContextFactory<ServerDbContext> dbContextFactory, IDoorFactory doorFactory, IChatMessageBuilderFactory chatMessageBuilderFactory)
+	public DoorCommandSystem(ICommandService commandService, IChatService chatService, IDbContextFactory<ServerDbContext> dbContextFactory, IDoorFactory doorFactory)
 	{
 		this.chatService = chatService;
 		this.dbContextFactory = dbContextFactory;
 		this.doorFactory = doorFactory;
-		this.chatMessageBuilderFactory = chatMessageBuilderFactory;
 
 		commandService.RegisterCommand(m =>
 		{
