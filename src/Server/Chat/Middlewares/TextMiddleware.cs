@@ -5,7 +5,7 @@ using Server.Chat.Services;
 
 namespace Server.Chat.Middlewares;
 
-public sealed class TextMiddleware
+public sealed partial class TextMiddleware
 {
 	private readonly EventDelegate next;
 
@@ -14,17 +14,25 @@ public sealed class TextMiddleware
 		this.next = next;
 	}
 
+	[LoggerMessage(
+		EventId = 0,
+		Level = LogLevel.Error,
+		Message = "Invalid command middleware input argument types!")]
+	public static partial void LogInvalidArguments(ILogger<CommandMiddleware> logger);
+
 	public object Invoke(EventContext context, ILogger<CommandMiddleware> logger, IChatService chatService,
 		IEntityManager entityManager)
 	{
 		var response = next(context);
 		if (EventHelper.IsSuccessResponse(response))
+		{
 			return response;
+		}
+
 		if (context.Arguments[0] is not EntityId entity || context.Arguments[1] is not string input)
 		{
-			var exception = new ArgumentException("Invalid command middleware input argument types!");
-			logger.LogError(exception, "");
-			throw exception;
+			LogInvalidArguments(logger);
+			return 0;
 		}
 
 		var sourcePlayer = entityManager.GetComponent<Player>(entity);

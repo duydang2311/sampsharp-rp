@@ -8,7 +8,7 @@ using Server.Common.Colors;
 
 namespace Server.Chat.Middlewares;
 
-public sealed class CommandMiddleware
+public sealed partial class CommandMiddleware
 {
 	private readonly EventDelegate _next;
 
@@ -16,6 +16,24 @@ public sealed class CommandMiddleware
 	{
 		_next = next;
 	}
+
+	[LoggerMessage(
+		EventId = 0,
+		Level = LogLevel.Warning,
+		Message = "Command {CommandName} is incorrectly used but missing helper method")]
+	public static partial void LogMissingHelper(ILogger<CommandMiddleware> logger, string commandName);
+
+	[LoggerMessage(
+		EventId = 1,
+		Level = LogLevel.Error,
+		Message = "Invalid command middleware input argument types!")]
+	public static partial void LogInvalidArguments(ILogger<CommandMiddleware> logger);
+
+	[LoggerMessage(
+		EventId = 2,
+		Level = LogLevel.Error,
+		Message = "Command handler exception: {Exception}")]
+	public static partial void LogCommandHandlerException(ILogger<CommandMiddleware> logger, Exception? skip, Exception exception);
 
 	private static void InvokeHelper(string command, Player player, ICommandService commandService, ILogger<CommandMiddleware> logger)
 	{
@@ -25,7 +43,7 @@ public sealed class CommandMiddleware
 		}
 		else
 		{
-			logger.LogWarning("Command {commandName} is incorrectly used but missing helper method", command);
+			LogMissingHelper(logger, command);
 		}
 	}
 
@@ -33,13 +51,14 @@ public sealed class CommandMiddleware
 	{
 		var response = _next(context);
 		if (EventHelper.IsSuccessResponse(response))
+		{
 			return response;
+		}
 
 		if (context.Arguments[0] is not EntityId entity || context.Arguments[1] is not string input)
 		{
-			var exception = new ArgumentException("Invalid command middleware input argument types!");
-			logger.LogError(exception, "");
-			throw exception;
+			LogInvalidArguments(logger);
+			return true;
 		}
 
 		input = input.Trim();
@@ -94,9 +113,7 @@ public sealed class CommandMiddleware
 				{
 					task.ContinueWith(t =>
 					{
-						var exception = t.Exception!;
-						logger.LogError(exception, "");
-						throw exception;
+						LogCommandHandlerException(logger, null, t.Exception!);
 					}, TaskContinuationOptions.OnlyOnFaulted);
 					break;
 				}
@@ -108,6 +125,8 @@ public sealed class CommandMiddleware
 					}
 					break;
 				}
+			default:
+				break;
 		}
 		return true;
 	}
