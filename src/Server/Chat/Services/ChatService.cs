@@ -29,6 +29,11 @@ public sealed class ChatService : IChatService
 	{
 		var builder = builderFactory.CreateBuilder();
 		buildActions(builder);
+		SendMessage(player, builder);
+	}
+
+	public void SendMessage(Player player, IChatMessageBuilder builder)
+	{
 		foreach(var text in BuildChatMessageBuilder(player, builder))
 		{
 			SendMessage(player, Color.White, text);
@@ -39,6 +44,11 @@ public sealed class ChatService : IChatService
 	{
 		var builder = builderFactory.CreateBuilder();
 		buildActions(builder);
+		SendMessage(filter, builder);
+	}
+
+	public void SendMessage(Predicate<Player> filter, IChatMessageBuilder builder)
+	{
 		foreach (var p in entityManager.GetComponents<Player>())
 		{
 			if (filter(p))
