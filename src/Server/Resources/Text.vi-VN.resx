@@ -47,4 +47,13 @@
 	<data name="DoorCommand_Destroy_Success">
 		<value>Door#{0} đã đuợc xóa thành công.</value>
 	</data>
+	<data name="DoorCommand_Nearby_Empty">
+		<value>Không tìm thấy bất kỳ Door nào trong bán kính {0} mét.</value>
+	</data>
+	<data name="DoorCommand_Nearby_Found">
+		<value>Danh sách các Door trong bán kính {0} mét:</value>
+	</data>
+	<data name="DoorCommand_Nearby_ForEachInfo">
+		<value>+ Door#{0}: {1}, {2}, {3} | cách {4} mét.</value>
+	</data>
 </root>

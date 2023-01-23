@@ -16,4 +16,7 @@ public interface ITextNameFakeModel
 	object DoorCommand_Destroy_InvalidId { get; }
 	object DoorCommand_Destroy_SuccessNoEffect { get; }
 	object DoorCommand_Destroy_Success { get; }
+	object DoorCommand_Nearby_Empty { get; }
+	object DoorCommand_Nearby_Found { get; }
+	object DoorCommand_Nearby_ForEachInfo { get; }
 }
