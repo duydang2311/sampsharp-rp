@@ -10,6 +10,8 @@ public sealed partial class DoorFactory : IDoorFactory
 	private readonly ILogger<DoorFactory> logger;
 	private readonly IDictionary<long, IDoor> doorDictionary = new Dictionary<long, IDoor>();
 
+	public IEnumerable<IDoor> Doors => doorDictionary.Values;
+
 	[LoggerMessage(
 		EventId = 0,
 		Level = LogLevel.Warning,

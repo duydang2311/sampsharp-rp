@@ -5,6 +5,7 @@ namespace Server.Door.Services;
 
 public interface IDoorFactory
 {
+	IEnumerable<IDoor> Doors { get; }
 	ILogicalDoor CreateLogicalDoor(Action<ILogicalDoor, IStreamerService> doorAction);
 	IPhysicalDoor CreatePhysicalDoor(Action<IPhysicalDoor, IStreamerService> doorAction);
 	IDoor? FindOne(Predicate<IDoor> filter);
