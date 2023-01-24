@@ -77,4 +77,29 @@ public sealed partial class DoorFactory : IDoorFactory
 	{
 		return doorDictionary.TryGetValue(id, out var door) && DestroyDoor(door);
 	}
+
+	public IDoor? FindOne(Predicate<IDoor> filter)
+	{
+		foreach(var (_, door) in doorDictionary)
+		{
+			if (filter(door))
+			{
+				return door;
+			}
+		}
+		return default;
+	}
+
+	public IEnumerable<IDoor> FindMany(Predicate<IDoor> filter)
+	{
+		var doors = new LinkedList<IDoor>();
+		foreach(var (_, door) in doorDictionary)
+		{
+			if (filter(door))
+			{
+				doors.AddLast(door);
+			}
+		}
+		return doors;
+	}
 }
