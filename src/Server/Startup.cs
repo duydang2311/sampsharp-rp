@@ -14,6 +14,7 @@ namespace Server
 				.WithLogging()
 				.WithChat()
 				.WithAccount()
+				.WithCharacter()
 				.WithI18N((globalOptions, textLocalizerOptions) =>
 				{
 					globalOptions.AddCulture("vi");
