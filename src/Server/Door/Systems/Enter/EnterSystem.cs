@@ -61,6 +61,7 @@ public sealed partial class EnterSystem : ISystem
 		var model = await ctx.Doors
 			.Where(m => m.Id == closestDoor.Id)
 			.Select(m => new { m.ExitX, m.ExitY, m.ExitZ, m.ExitWorld, m.ExitInterior })
+			.AsNoTracking()
 			.FirstOrDefaultAsync();
 		if (model is null)
 		{
