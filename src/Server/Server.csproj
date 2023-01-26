@@ -31,7 +31,6 @@
     <EmbeddedResource Include="Resources/Text.vi.resources" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SampSharp-streamer\src\SampSharp.Streamer.Entities\SampSharp.Streamer.Entities.csproj" />
     <ProjectReference Include="..\SampSharp-streamer\src\SampSharp.Streamer.Entities\SampSharp.Streamer.Entities.csproj" />
   </ItemGroup>
 </Project>
