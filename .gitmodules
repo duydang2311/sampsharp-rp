@@ -1,0 +1,3 @@
+[submodule "src/SampSharp-streamer"]
+	path = src/SampSharp-streamer
+	url = git@github.com:duydang2311/SampSharp-streamer.git
