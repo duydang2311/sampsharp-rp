@@ -1,8 +1,8 @@
 ﻿using SampSharp.Entities;
 
-namespace Server.SpatialGrid;
+namespace Server.SpatialGrid.Entities;
 
-public class Cell : BaseCell, ICell
+public sealed class Cell : BaseCell, ICell
 {
 	private readonly LinkedList<Component> components = new();
 	public IEnumerable<Component> Components => components;

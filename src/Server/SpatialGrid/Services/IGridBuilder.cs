@@ -1,4 +1,4 @@
-namespace Server.SpatialGrid;
+namespace Server.SpatialGrid.Services;
 
 public interface IGridBuilder
 {

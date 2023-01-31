@@ -1,6 +1,6 @@
 ﻿using SampSharp.Entities;
 
-namespace Server.SpatialGrid;
+namespace Server.SpatialGrid.Entities;
 
 public interface ICell : IBaseCell
 {

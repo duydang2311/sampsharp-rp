@@ -1,3 +1,3 @@
-namespace Server.SpatialGrid;
+namespace Server.SpatialGrid.Entities;
 
 public class BaseCell : IBaseCell { }

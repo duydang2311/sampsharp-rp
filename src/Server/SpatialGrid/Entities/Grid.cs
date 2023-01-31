@@ -1,9 +1,9 @@
 ﻿using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 
-namespace Server.SpatialGrid;
+namespace Server.SpatialGrid.Entities;
 
-public class Grid : BaseCell, IGrid
+public sealed class Grid : BaseCell, IGrid
 {
 	private readonly IBaseCell[,] cells;
 

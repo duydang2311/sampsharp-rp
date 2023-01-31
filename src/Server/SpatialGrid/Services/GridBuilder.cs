@@ -1,6 +1,6 @@
-namespace Server.SpatialGrid;
+namespace Server.SpatialGrid.Services;
 
-public class GridBuilder : IGridBuilder
+public sealed class GridBuilder : IGridBuilder
 {
 	public float Top { get; private set; }
 	public float Left { get; private set; }
