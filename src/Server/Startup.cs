@@ -24,7 +24,8 @@ namespace Server
 				})
 				.WithSAMP()
 				.WithCommon()
-				.WithDoor();
+				.WithDoor()
+				.WithSpatialGrid();
 		}
 
 		public void Configure(IEcsBuilder builder)
