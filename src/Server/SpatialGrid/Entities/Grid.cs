@@ -1,5 +1,6 @@
 ﻿using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
+using Server.SpatialGrid.Services;
 
 namespace Server.SpatialGrid.Entities;
 

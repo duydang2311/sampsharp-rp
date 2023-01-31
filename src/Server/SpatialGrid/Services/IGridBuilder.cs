@@ -1,3 +1,5 @@
+using Server.SpatialGrid.Entities;
+
 namespace Server.SpatialGrid.Services;
 
 public interface IGridBuilder
