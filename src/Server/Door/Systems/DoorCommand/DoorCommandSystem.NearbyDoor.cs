@@ -7,13 +7,6 @@ namespace Server.Door.Systems.DoorCommand;
 
 public sealed partial class DoorCommandSystem : ISystem
 {
-	private void HelpNearbyDoor(Player player)
-	{
-		chatService.SendMessage(player, b => b
-			.Add(SemanticColor.Info, m => m.DoorCommand_Create_Help)
-			.Add(SemanticColor.Info, m => m.DoorCommand_Create_Options));
-	}
-
 	private async Task NearbyDoor(Player player, string argument)
 	{
 		var distanceSquared = 15f * 15f;
@@ -27,14 +20,14 @@ public sealed partial class DoorCommandSystem : ISystem
 		var z = player.Position.Z;
 		var world = player.VirtualWorld;
 		var interior = player.Interior;
-		using var ctx = await dbContextFactory.CreateDbContextAsync();
+		await using var ctx = await dbContextFactory.CreateDbContextAsync();
 		var models = await ctx.Doors
 			.Where(m =>
-					world == m.EntranceWorld &&
-					interior == m.EntranceInterior &&
-					Math.Pow(x - m.EntranceX, 2) +
-					Math.Pow(y - m.EntranceY, 2) +
-					Math.Pow(z - m.EntranceZ, 2) <= distanceSquared)
+				world == m.EntranceWorld &&
+				interior == m.EntranceInterior &&
+				Math.Pow(x - m.EntranceX, 2) +
+				Math.Pow(y - m.EntranceY, 2) +
+				Math.Pow(z - m.EntranceZ, 2) <= distanceSquared)
 			.Select(m => new { m.Id, m.EntranceX, m.EntranceY, m.EntranceZ })
 			.AsNoTracking()
 			.ToArrayAsync();
@@ -43,12 +36,16 @@ public sealed partial class DoorCommandSystem : ISystem
 			chatService.SendMessage(player, b => b.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_Empty));
 			return;
 		}
+
 		chatService.SendMessage(player, b =>
 		{
 			b.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_Found);
 			foreach (var model in models)
 			{
-				b.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_ForEachInfo, model.Id, model.EntranceX, model.EntranceY, model.EntranceZ, Math.Sqrt(Math.Pow(x - model.EntranceX, 2) + Math.Pow(x - model.EntranceY, 2) + Math.Pow(z - model.EntranceZ, 2)));
+				b.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_ForEachInfo, model.Id, model.EntranceX,
+					model.EntranceY, model.EntranceZ,
+					Math.Sqrt(Math.Pow(x - model.EntranceX, 2) + Math.Pow(x - model.EntranceY, 2) +
+					          Math.Pow(z - model.EntranceZ, 2)));
 			}
 		});
 	}
