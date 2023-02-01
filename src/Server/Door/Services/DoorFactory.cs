@@ -69,8 +69,6 @@ public sealed partial class DoorFactory : IDoorFactory
 					physicalDoor.Object?.DestroyEntity();
 					break;
 				}
-			default:
-				break;
 		}
 		return doorDictionary.Remove(door.Id);
 	}

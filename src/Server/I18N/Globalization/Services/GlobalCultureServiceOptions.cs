@@ -4,8 +4,8 @@ namespace Server.I18N.Globalization.Services;
 
 public sealed class GlobalCultureServiceOptions : IGlobalCultureServiceOptions
 {
-	public LinkedList<CultureInfo> cultures = new();
-	IEnumerable<CultureInfo> IGlobalCultureServiceOptions.Cultures { get => cultures; }
+	private readonly LinkedList<CultureInfo> cultures = new();
+	IEnumerable<CultureInfo> IGlobalCultureServiceOptions.Cultures => cultures;
 
 	public void AddCulture(string name)
 	{

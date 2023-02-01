@@ -12,7 +12,7 @@ public enum PermissionLevel : int
 
 public sealed class PermissionComponent : Component
 {
-	public PermissionLevel Level { get; set; } = PermissionLevel.None;
+	public PermissionLevel Level { get; set; }
     public PermissionComponent(PermissionLevel level)
     {
         Level = level;
