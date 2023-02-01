@@ -5,7 +5,7 @@ using Server.I18N.Localization.Systems.Connect;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static partial class IServiceCollectionExtensions
+public static partial class ServiceCollectionExtensions
 {
 	public static IServiceCollection WithI18N(this IServiceCollection self, Action<IGlobalCultureServiceOptions, ITextLocalizerServiceOptions> configI18N)
 	{

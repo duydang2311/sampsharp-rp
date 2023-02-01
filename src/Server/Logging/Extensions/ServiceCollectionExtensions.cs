@@ -5,7 +5,7 @@ using Serilog.Templates.Themes;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static partial class IServiceCollectionExtensions
+public static partial class ServiceCollectionExtensions
 {
 	public static IServiceCollection WithLogging(this IServiceCollection self)
 	{

@@ -5,7 +5,7 @@ using Server.Account.Systems.SignUp;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static partial class IServiceCollectionExtensions
+public static partial class ServiceCollectionExtensions
 {
 	public static IServiceCollection WithAccount(this IServiceCollection self)
 	{

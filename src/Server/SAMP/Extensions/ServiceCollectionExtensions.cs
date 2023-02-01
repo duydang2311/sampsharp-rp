@@ -5,7 +5,7 @@ using Server.SAMP.Streamer.Systems.ItemUpdate;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
-public static partial class IServiceCollectionExtensions
+public static partial class ServiceCollectionExtensions
 {
 	public static IServiceCollection WithSAMP(this IServiceCollection self)
 	{
