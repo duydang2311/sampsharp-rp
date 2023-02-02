@@ -1,5 +1,5 @@
-﻿using SampSharp.Entities;
-using SampSharp.Entities.SAMP;
+﻿using SampSharp.Entities.SAMP;
+using Server.SpatialGrid.Components;
 
 namespace Server.SpatialGrid.Entities;
 
@@ -17,6 +17,6 @@ public interface IGrid : IBaseCell
 	IBaseCell? FindCell(Vector2 position);
 	IBaseCell? FindCell(Predicate<IBaseCell> cellPredicate);
 	bool TryComputeIndex(Vector2 position, out int row, out int column);
-	bool Add(Vector2 position, Component component);
-	bool Remove(Vector2 position, Component component);
+	bool Add(Vector2 position, BaseSpatialComponent component);
+	bool Remove(Vector2 position, BaseSpatialComponent component);
 }

@@ -1,5 +1,5 @@
-﻿using SampSharp.Entities;
-using SampSharp.Entities.SAMP;
+﻿using SampSharp.Entities.SAMP;
+using Server.SpatialGrid.Components;
 using Server.SpatialGrid.Services;
 
 namespace Server.SpatialGrid.Entities;
@@ -114,7 +114,7 @@ public sealed class Grid : BaseCell, IGrid
 		return default;
 	}
 
-	public bool Add(Vector2 position, Component component)
+	public bool Add(Vector2 position, BaseSpatialComponent component)
 	{
 		if (!TryComputeIndex(position, out var row, out var col))
 		{
@@ -133,7 +133,7 @@ public sealed class Grid : BaseCell, IGrid
 		return false;
 	}
 
-	public bool Remove(Vector2 position, Component component)
+	public bool Remove(Vector2 position, BaseSpatialComponent component)
 	{
 		if (!TryComputeIndex(position, out var row, out var col))
 		{

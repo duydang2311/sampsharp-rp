@@ -1,11 +1,11 @@
-﻿using SampSharp.Entities;
+﻿using Server.SpatialGrid.Components;
 
 namespace Server.SpatialGrid.Entities;
 
 public interface ICell : IBaseCell
 {
-	IEnumerable<Component> Components { get; }
-	void Add(Component component);
-	bool Remove(Component component);
+	IEnumerable<BaseSpatialComponent> Components { get; }
+	void Add(BaseSpatialComponent component);
+	bool Remove(BaseSpatialComponent component);
 	void Clear();
 }

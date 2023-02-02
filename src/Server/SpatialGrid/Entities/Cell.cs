@@ -1,13 +1,13 @@
-﻿using SampSharp.Entities;
+﻿using Server.SpatialGrid.Components;
 
 namespace Server.SpatialGrid.Entities;
 
 public sealed class Cell : BaseCell, ICell
 {
-	private readonly LinkedList<Component> components = new();
-	public IEnumerable<Component> Components => components;
+	private readonly LinkedList<BaseSpatialComponent> components = new();
+	public IEnumerable<BaseSpatialComponent> Components => components;
 
-	public void Add(Component component)
+	public void Add(BaseSpatialComponent component)
 	{
 		components.AddLast(component);
 	}
@@ -17,7 +17,7 @@ public sealed class Cell : BaseCell, ICell
 		components.Clear();
 	}
 
-	public bool Remove(Component component)
+	public bool Remove(BaseSpatialComponent component)
 	{
 		return components.Remove(component);
 	}
