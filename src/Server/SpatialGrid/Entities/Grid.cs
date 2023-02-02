@@ -115,9 +115,9 @@ public sealed class Grid : BaseCell, IGrid
 		return default;
 	}
 
-	public bool Add(Vector2 position, BaseSpatialComponent component)
+	public override bool Add(BaseSpatialComponent component)
 	{
-		if (!TryComputeIndex(position, out var row, out var col))
+		if (!TryComputeIndex(component.Position, out var row, out var col))
 		{
 			return false;
 		}
@@ -129,14 +129,14 @@ public sealed class Grid : BaseCell, IGrid
 		}
 		if (baseCell is IGrid grid)
 		{
-			return grid.Add(position, component);
+			return grid.Add(component);
 		}
 		return false;
 	}
 
-	public bool Remove(Vector2 position, BaseSpatialComponent component)
+	public override bool Remove(BaseSpatialComponent component)
 	{
-		if (!TryComputeIndex(position, out var row, out var col))
+		if (!TryComputeIndex(component.Position, out var row, out var col))
 		{
 			return false;
 		}
@@ -147,8 +147,19 @@ public sealed class Grid : BaseCell, IGrid
 		}
 		if (baseCell is IGrid grid)
 		{
-			return grid.Remove(position, component);
+			return grid.Remove(component);
 		}
 		return false;
+	}
+
+	public override void Clear()
+	{
+		for (var row = 0; row != Rows; ++row)
+		{
+			for (var col = 0; col != Columns; ++col)
+			{
+				cells[row, col].Clear();
+			}
+		}
 	}
 }

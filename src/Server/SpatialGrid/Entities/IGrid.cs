@@ -17,6 +17,4 @@ public interface IGrid : IBaseCell
 	IBaseCell? FindCell(Vector2 position);
 	IBaseCell? FindCell(Predicate<IBaseCell> cellPredicate);
 	bool TryComputeIndex(Vector2 position, out int row, out int column);
-	bool Add(Vector2 position, BaseSpatialComponent component);
-	bool Remove(Vector2 position, BaseSpatialComponent component);
 }

@@ -7,9 +7,10 @@ public sealed class Cell : BaseCell, ICell
 	private readonly LinkedList<BaseSpatialComponent> components = new();
 	public IEnumerable<BaseSpatialComponent> Components => components;
 
-	public void Add(BaseSpatialComponent component)
+	public bool Add(BaseSpatialComponent component)
 	{
 		components.AddLast(component);
+		return true;
 	}
 
 	public void Clear()
