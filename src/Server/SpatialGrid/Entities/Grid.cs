@@ -34,11 +34,12 @@ public sealed class Grid : BaseCell, IGrid
 				{
 					var top = grid.Top + (row * grid.CellHeight);
 					var left = grid.Left + (col * grid.CellWidth);
-					innerBuilder.SetTop(top);
-					innerBuilder.SetLeft(left);
-					innerBuilder.SetRight(left + grid.CellWidth);
-					innerBuilder.SetBottom(top + grid.CellHeight);
-					grid.cells[row, col] = innerBuilder.BuildGrid();
+					grid.cells[row, col] = innerBuilder
+						.SetTop(top)
+						.SetLeft(left)
+						.SetRight(left + grid.CellWidth)
+						.SetBottom(top + grid.CellHeight)
+						.BuildGrid();
 				}
 				else
 				{
