@@ -8,12 +8,11 @@ public sealed class Grid : BaseCell, IGrid
 {
 	private readonly IBaseCell[,] cells;
 
-	public float Right { get; }
-	public float Bottom { get; }
+	public Vector2 End { get; }
 	public int Columns { get; }
 	public int Rows { get; }
-	public float CellWidth => (Right - Left) / Columns;
-	public float CellHeight => (Bottom - Top) / Rows;
+	public float CellWidth => (End.X - Start.X) / Columns;
+	public float CellHeight => (End.Y - Start.Y) / Rows;
 
 	public static IGrid From(IGridBuilder builder)
 	{
@@ -22,10 +21,10 @@ public sealed class Grid : BaseCell, IGrid
 		{
 			for (var col = 0; col != grid.Columns; ++col)
 			{
+				var top = grid.Start.Y + (row * grid.CellHeight);
+				var left = grid.Start.X + (col * grid.CellWidth);
 				if (builder.InnerGrids.TryGetValue((row, col), out var innerBuilder))
 				{
-					var top = grid.Top + (row * grid.CellHeight);
-					var left = grid.Left + (col * grid.CellWidth);
 					grid.cells[row, col] = innerBuilder
 						.SetTop(top)
 						.SetLeft(left)
@@ -35,19 +34,18 @@ public sealed class Grid : BaseCell, IGrid
 				}
 				else
 				{
-					grid.cells[row, col] = new Cell();
+					grid.cells[row, col] = new Cell(left, top);
 				}
 			}
 		}
 		return grid;
 	}
 
-	private Grid(int rows, int columns, float top, float left, float right, float bottom) : base(top, left)
+	private Grid(int rows, int columns, float top, float left, float right, float bottom) : base(left, top)
 	{
 		Columns = columns;
 		Rows = rows;
-		Right = right;
-		Bottom = bottom;
+		End = new Vector2(right, bottom);
 		cells = new BaseCell[rows, columns];
 	}
 
@@ -90,14 +88,15 @@ public sealed class Grid : BaseCell, IGrid
 
 	public bool TryComputeIndex(Vector2 position, out int row, out int column)
 	{
-		if (position.X < Left || position.X >= Right || position.Y < Top || position.Y >= Bottom)
+		Console.WriteLine($"{position} vs {Start}, {End}");
+		if (position.X < Start.X || position.X >= End.X || position.Y < Start.Y || position.Y >= End.Y)
 		{
 			row = default;
 			column = default;
 			return false;
 		}
-		column = (int)((position.X - Left) / CellWidth);
-		row = (int)((position.Y - Top) / CellHeight);
+		column = (int)((position.X - Start.X) / CellWidth);
+		row = (int)((position.Y - Start.Y) / CellHeight);
 		return true;
 	}
 
@@ -126,8 +125,8 @@ public sealed class Grid : BaseCell, IGrid
 		var baseCells = GetSurroundingCells(component);
 		foreach(var baseCell in baseCells)
 		{
-			if (!TryComputeIndex(new Vector2(baseCell.Left, baseCell.Top), out var row, out var col)
-			|| !IsIntersect(component, cells[row, col].Left, cells[row, col].Top, CellWidth, CellHeight)
+			if (!TryComputeIndex(new Vector2(baseCell.Start.X, baseCell.Start.Y), out var row, out var col)
+			|| !IsIntersect(component, cells[row, col]))
 			{
 				continue;
 			}
@@ -148,8 +147,8 @@ public sealed class Grid : BaseCell, IGrid
 		var baseCells = GetSurroundingCells(component);
 		foreach(var baseCell in baseCells)
 		{
-			if (!TryComputeIndex(new Vector2(baseCell.Left, baseCell.Top), out var row, out var col)
-			|| !IsIntersect(component, cells[row, col].Left, cells[row, col].Top, CellWidth, CellHeight)
+			if (!TryComputeIndex(new Vector2(baseCell.Start.X, baseCell.Start.Y), out var row, out var col)
+			|| !IsIntersect(component, cells[row, col]))
 			{
 				continue;
 			}
@@ -176,12 +175,14 @@ public sealed class Grid : BaseCell, IGrid
 		}
 	}
 
-	private static bool IsIntersect(BaseSpatialComponent component, float x, float y, float width, float height)
+	private bool IsIntersect(BaseSpatialComponent component, IBaseCell cell)
 	{
-		var dx = Math.Abs(component.Position.X - x);
-		var dy = Math.Abs(component.Position.Y - y);
+		var width = CellWidth;
+		var height = CellHeight;
+		var dx = Math.Abs(component.Position.X - cell.Start.X);
+		var dy = Math.Abs(component.Position.Y - cell.Start.Y);
 		if (dx > ((width / 2) + component.Range)
-		|| dy > ((height / 2) + component.Range)
+		|| dy > ((height / 2) + component.Range))
 		{
 			return false;
 		}

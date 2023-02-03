@@ -7,6 +7,8 @@ public sealed class Cell : BaseCell, ICell
 	private readonly LinkedList<BaseSpatialComponent> components = new();
 	public IEnumerable<BaseSpatialComponent> Components => components;
 
+	public Cell(float x, float y) : base(x, y) { }
+
 	public override bool Add(BaseSpatialComponent component)
 	{
 		components.AddLast(component);

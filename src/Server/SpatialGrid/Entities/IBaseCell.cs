@@ -1,11 +1,11 @@
+using SampSharp.Entities.SAMP;
 using Server.SpatialGrid.Components;
 
 namespace Server.SpatialGrid.Entities;
 
 public interface IBaseCell
 {
-	float Top { get; }
-	float Left { get; }
+	Vector2 Start { get; }
 	bool Add(BaseSpatialComponent component);
 	bool Remove(BaseSpatialComponent component);
 	void Clear();

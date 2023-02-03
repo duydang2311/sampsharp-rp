@@ -1,16 +1,15 @@
+using SampSharp.Entities.SAMP;
 using Server.SpatialGrid.Components;
 
 namespace Server.SpatialGrid.Entities;
 
 public abstract class BaseCell : IBaseCell
 {
-	public float Top { get; }
-	public float Left { get; }
+	public Vector2 Start { get; }
 
-	public BaseCell(float top, float left)
+	public BaseCell(float x, float y)
 	{
-		Top = top;
-		Left = left;
+		Start = new Vector2(x, y);
 	}
 
 	public abstract bool Add(BaseSpatialComponent component);

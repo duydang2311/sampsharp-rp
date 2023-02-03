@@ -5,8 +5,7 @@ namespace Server.SpatialGrid.Entities;
 
 public interface IGrid : IBaseCell
 {
-	float Right { get; }
-	float Bottom { get; }
+	Vector2 End { get; }
 	float CellWidth { get; }
 	float CellHeight { get; }
 	int Columns { get; }
