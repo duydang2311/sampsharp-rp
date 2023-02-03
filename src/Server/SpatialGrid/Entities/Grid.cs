@@ -4,7 +4,7 @@ using Server.SpatialGrid.Services;
 
 namespace Server.SpatialGrid.Entities;
 
-public sealed class Grid : BaseCell, IGrid
+public class Grid : BaseCell, IGrid
 {
 	private readonly IBaseCell[,] cells;
 
@@ -14,39 +14,33 @@ public sealed class Grid : BaseCell, IGrid
 	public float CellWidth => (End.X - Start.X) / Columns;
 	public float CellHeight => (End.Y - Start.Y) / Rows;
 
-	public static IGrid From(IGridBuilder builder)
+	public Grid(IGridBuilder builder) : base(builder.Left, builder.Top)
 	{
-		var grid = new Grid(builder.Rows, builder.Columns, builder.Top, builder.Left, builder.Right, builder.Bottom);
-		for (var row = 0; row != grid.Rows; ++row)
+		Columns = builder.Columns;
+		Rows = builder.Rows;
+		End = new Vector2(builder.Right, builder.Bottom);
+		cells = new BaseCell[Rows, Columns];
+		for (var row = 0; row != Rows; ++row)
 		{
-			for (var col = 0; col != grid.Columns; ++col)
+			for (var col = 0; col != Columns; ++col)
 			{
-				var top = grid.Start.Y + (row * grid.CellHeight);
-				var left = grid.Start.X + (col * grid.CellWidth);
+				var cellTop = Start.Y + (row * CellHeight);
+				var cellLeft = Start.X + (col * CellWidth);
 				if (builder.InnerGrids.TryGetValue((row, col), out var innerBuilder))
 				{
-					grid.cells[row, col] = innerBuilder
-						.SetTop(top)
-						.SetLeft(left)
-						.SetRight(left + grid.CellWidth)
-						.SetBottom(top + grid.CellHeight)
+					cells[row, col] = innerBuilder
+						.SetTop(cellTop)
+						.SetLeft(cellLeft)
+						.SetRight(cellLeft + CellWidth)
+						.SetBottom(cellTop + CellHeight)
 						.BuildGrid();
 				}
 				else
 				{
-					grid.cells[row, col] = new Cell(left, top);
+					cells[row, col] = new Cell(cellLeft, cellTop);
 				}
 			}
 		}
-		return grid;
-	}
-
-	private Grid(int rows, int columns, float top, float left, float right, float bottom) : base(left, top)
-	{
-		Columns = columns;
-		Rows = rows;
-		End = new Vector2(right, bottom);
-		cells = new BaseCell[rows, columns];
 	}
 
 	private IEnumerable<IBaseCell> GetSurroundingCells(int row, int col, int depth)
@@ -122,7 +116,7 @@ public sealed class Grid : BaseCell, IGrid
 	public override bool Add(BaseSpatialComponent component)
 	{
 		var baseCells = GetSurroundingCells(component);
-		foreach(var baseCell in baseCells)
+		foreach (var baseCell in baseCells)
 		{
 			if (!TryComputeIndex(new Vector2(baseCell.Start.X, baseCell.Start.Y), out var row, out var col)
 			|| !IsIntersect(component, cells[row, col]))
@@ -144,7 +138,7 @@ public sealed class Grid : BaseCell, IGrid
 	public override bool Remove(BaseSpatialComponent component)
 	{
 		var baseCells = GetSurroundingCells(component);
-		foreach(var baseCell in baseCells)
+		foreach (var baseCell in baseCells)
 		{
 			if (!TryComputeIndex(new Vector2(baseCell.Start.X, baseCell.Start.Y), out var row, out var col)
 			|| !IsIntersect(component, cells[row, col]))
