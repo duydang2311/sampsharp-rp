@@ -8,10 +8,8 @@ public sealed class Grid : BaseCell, IGrid
 {
 	private readonly IBaseCell[,] cells;
 
-	public float Top { get; set; }
-	public float Left { get; set; }
-	public float Right { get; set; }
-	public float Bottom { get; set; }
+	public float Right { get; }
+	public float Bottom { get; }
 	public int Columns { get; }
 	public int Rows { get; }
 	public float CellWidth => (Right - Left) / Columns;
@@ -19,13 +17,7 @@ public sealed class Grid : BaseCell, IGrid
 
 	public static IGrid From(IGridBuilder builder)
 	{
-		var grid = new Grid(builder.Rows, builder.Columns)
-		{
-			Top = builder.Top,
-			Left = builder.Left,
-			Right = builder.Right,
-			Bottom = builder.Bottom,
-		};
+		var grid = new Grid(builder.Rows, builder.Columns, builder.Top, builder.Left, builder.Right, builder.Bottom);
 		for (var row = 0; row != grid.Rows; ++row)
 		{
 			for (var col = 0; col != grid.Columns; ++col)
@@ -50,10 +42,12 @@ public sealed class Grid : BaseCell, IGrid
 		return grid;
 	}
 
-	private Grid(int rows, int columns)
+	private Grid(int rows, int columns, float top, float left, float right, float bottom) : base(top, left)
 	{
 		Columns = columns;
 		Rows = rows;
+		Right = right;
+		Bottom = bottom;
 		cells = new BaseCell[rows, columns];
 	}
 
