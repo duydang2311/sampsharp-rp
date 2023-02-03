@@ -171,4 +171,16 @@ public sealed class Grid : BaseCell, IGrid
 			}
 		}
 	}
+
+	private static bool IsIntersect(BaseSpatialComponent component, float x, float y, float width, float height)
+	{
+		var dx = Math.Abs(component.Position.X - x);
+		var dy = Math.Abs(component.Position.Y - y);
+		if (dx > ((width / 2) + component.Range)
+		|| dy > ((height / 2) + component.Range)
+		{
+			return false;
+		}
+		return dx <= width / 2 || dy <= height / 2;
+	}
 }
