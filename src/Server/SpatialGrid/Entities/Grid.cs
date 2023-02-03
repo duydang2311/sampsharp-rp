@@ -126,6 +126,11 @@ public sealed class Grid : BaseCell, IGrid
 		var baseCells = GetSurroundingCells(component);
 		foreach(var baseCell in baseCells)
 		{
+			if (!TryComputeIndex(new Vector2(baseCell.Left, baseCell.Top), out var row, out var col)
+			|| !IsIntersect(component, cells[row, col].Left, cells[row, col].Top, CellWidth, CellHeight)
+			{
+				continue;
+			}
 			if (baseCell is ICell cell)
 			{
 				cell.Add(component);
@@ -143,6 +148,11 @@ public sealed class Grid : BaseCell, IGrid
 		var baseCells = GetSurroundingCells(component);
 		foreach(var baseCell in baseCells)
 		{
+			if (!TryComputeIndex(new Vector2(baseCell.Left, baseCell.Top), out var row, out var col)
+			|| !IsIntersect(component, cells[row, col].Left, cells[row, col].Top, CellWidth, CellHeight)
+			{
+				continue;
+			}
 			if (baseCell is ICell cell)
 			{
 				cell.Remove(component);
