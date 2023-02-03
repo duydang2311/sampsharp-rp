@@ -2,7 +2,7 @@ namespace Server.SpatialGrid.Services;
 
 public sealed class GridBuiderFactory : IGridBuilderFactory
 {
-	public IGridBuilder CreateBuilder()
+	public IGridBuilder CreateGridBuilder()
 	{
 		return new GridBuilder();
 	}

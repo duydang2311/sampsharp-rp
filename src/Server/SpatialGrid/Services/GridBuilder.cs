@@ -14,7 +14,7 @@ public sealed class GridBuilder : IGridBuilder
 
 	public IGrid BuildGrid()
 	{
-		return Grid.From(this);
+		return new Grid(this);
 	}
 
 	public IGridBuilder SetAsInnerGrid(int row, int column, Func<IGridBuilder, IGridBuilder> gridBuilderOptions)
