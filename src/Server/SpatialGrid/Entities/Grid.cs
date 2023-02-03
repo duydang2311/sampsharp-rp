@@ -129,39 +129,36 @@ public sealed class Grid : BaseCell, IGrid
 
 	public override bool Add(BaseSpatialComponent component)
 	{
-		if (!TryComputeIndex(component.Position, out var row, out var col))
+		var baseCells = GetSurroundingCells(component);
+		foreach(var baseCell in baseCells)
 		{
-			return false;
+			if (baseCell is ICell cell)
+			{
+				cell.Add(component);
+			}
+			if (baseCell is IGrid grid)
+			{
+				grid.Add(component);
+			}
 		}
-		var baseCell = cells[row, col];
-		if (baseCell is ICell cell)
-		{
-			cell.Add(component);
-			return true;
-		}
-		if (baseCell is IGrid grid)
-		{
-			return grid.Add(component);
-		}
-		return false;
+		return baseCells.Any();
 	}
 
 	public override bool Remove(BaseSpatialComponent component)
 	{
-		if (!TryComputeIndex(component.Position, out var row, out var col))
+		var baseCells = GetSurroundingCells(component);
+		foreach(var baseCell in baseCells)
 		{
-			return false;
+			if (baseCell is ICell cell)
+			{
+				cell.Remove(component);
+			}
+			if (baseCell is IGrid grid)
+			{
+				grid.Remove(component);
+			}
 		}
-		var baseCell = cells[row, col];
-		if (baseCell is ICell cell)
-		{
-			return cell.Remove(component);
-		}
-		if (baseCell is IGrid grid)
-		{
-			return grid.Remove(component);
-		}
-		return false;
+		return baseCells.Any();
 	}
 
 	public override void Clear()
