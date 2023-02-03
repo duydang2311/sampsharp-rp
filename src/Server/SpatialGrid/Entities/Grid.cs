@@ -57,10 +57,11 @@ public sealed class Grid : BaseCell, IGrid
 		cells = new BaseCell[rows, columns];
 	}
 
-	public IEnumerable<IBaseCell> GetSurroundingCells(int row, int column)
+	private IEnumerable<IBaseCell> GetSurroundingCells(int row, int col, int depth)
 	{
 		var cells = new LinkedList<IBaseCell>();
-		for (var offRow = -1; offRow != 2; ++offRow)
+		var limit = 1 + depth;
+		for (var offRow = -1 * depth; offRow != limit; ++offRow)
 		{
 			var computedRow = row + offRow;
 			if (computedRow < 0 || computedRow >= Rows)
@@ -68,9 +69,9 @@ public sealed class Grid : BaseCell, IGrid
 				continue;
 			}
 
-			for (var offCol = -1; offCol != 2; ++offCol)
+			for (var offCol = -1 * depth; offCol != limit; ++offCol)
 			{
-				var computedCol = column + offCol;
+				var computedCol = col + offCol;
 				if (computedCol < 0 || computedCol >= Columns)
 				{
 					continue;
@@ -80,6 +81,17 @@ public sealed class Grid : BaseCell, IGrid
 			}
 		}
 		return cells;
+	}
+
+	public IEnumerable<IBaseCell> GetSurroundingCells(BaseSpatialComponent component)
+	{
+		if (!TryComputeIndex(component.Position, out var row, out var col))
+		{
+			return Array.Empty<IBaseCell>();
+		}
+
+		var depth = (int)Math.Ceiling(component.Range / Math.Min(CellWidth, CellHeight));
+		return GetSurroundingCells(row, col, depth);
 	}
 
 	public bool TryComputeIndex(Vector2 position, out int row, out int column)

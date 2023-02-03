@@ -13,7 +13,7 @@ public interface IGrid : IBaseCell
 	float CellHeight { get; }
 	int Columns { get; }
 	int Rows { get; }
-	IEnumerable<IBaseCell> GetSurroundingCells(int row, int column);
+	IEnumerable<IBaseCell> GetSurroundingCells(BaseSpatialComponent component);
 	IBaseCell? FindCell(Vector2 position);
 	IBaseCell? FindCell(Predicate<IBaseCell> cellPredicate);
 	bool TryComputeIndex(Vector2 position, out int row, out int column);
