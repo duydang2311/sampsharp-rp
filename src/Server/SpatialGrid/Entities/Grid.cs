@@ -88,7 +88,6 @@ public sealed class Grid : BaseCell, IGrid
 
 	public bool TryComputeIndex(Vector2 position, out int row, out int column)
 	{
-		Console.WriteLine($"{position} vs {Start}, {End}");
 		if (position.X < Start.X || position.X >= End.X || position.Y < Start.Y || position.Y >= End.Y)
 		{
 			row = default;
