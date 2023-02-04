@@ -35,7 +35,7 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 	public IChatMessageBuilder Add(Expression<Func<ITextNameFakeModel, object>> textNameIdentifier,
 		params object[] args)
 	{
-		return Add(SemanticColor.Neutral, textNameIdentifier);
+		return Add(SemanticColor.Neutral, textNameIdentifier, args);
 	}
 
 	public IChatMessageBuilder Add(Color color, Expression<Func<ITextNameFakeModel, object>> textNameIdentifier,
