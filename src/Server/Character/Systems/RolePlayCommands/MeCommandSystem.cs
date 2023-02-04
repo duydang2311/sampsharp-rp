@@ -36,6 +36,10 @@ public sealed class MeCommandSystem : ISystem
 			a => a.Add(SemanticColor.Roleplay, model => model.MeCommandText, player.Name, text)
 		);
 
+		chatService.SendMessage(p => (Vector3.DistanceSquared(p.Position, player.Position) < 15f * 15f),
+			action => action.Add(Color.FromInteger(0xC2A2DA, ColorFormat.RGB), model => model.MeCommandText,
+				player.Name, text)
+		);
 	}
 
 
