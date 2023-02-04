@@ -1,16 +1,21 @@
 {
-  "site": "",
-  "user": "duydang2311",
-  "repo": "samprp",
-  "entry": "gamemodes/empty.pwn",
-  "output": "gamemodes/empty.amx",
-  "dependencies": ["pawn-lang/samp-stdlib", "ikkentim/SampSharp:0.10.1"],
-  "local": true,
-  "runtime": {
-    "version": "0.3.DL-R1",
-    "mode": "server",
-    "rcon_password": "password",
-    "port": 7777,
-    "extra": {}
-  }
+	"user": "duydang2311",
+	"repo": "samprp",
+	"entry": "gamemodes/empty.pwn",
+	"output": "gamemodes/empty.amx",
+	"dependencies": [
+		"pawn-lang/samp-stdlib",
+		"ikkentim/SampSharp:0.10.1",
+		"samp-incognito/samp-streamer-plugin:v2.9.6"
+	],
+	"local": true,
+	"runtime": {
+		"version": "0.3.DL-R1",
+		"mode": "server",
+		"rcon_password": "password",
+		"port": 7777,
+		"hostname": "SA-MP Server",
+		"maxplayers": 50,
+		"language": ""
+	}
 }
