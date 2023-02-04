@@ -49,7 +49,7 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 	public IChatMessageBuilder Inline(Expression<Func<ITextNameFakeModel, object>> textNameIdentifier,
 		params object[] args)
 	{
-		return Inline(SemanticColor.Neutral, textNameIdentifier);
+		return Inline(SemanticColor.Neutral, textNameIdentifier, args);
 	}
 
 	public IChatMessageBuilder Inline(Color color, Expression<Func<ITextNameFakeModel, object>> textNameIdentifier,
