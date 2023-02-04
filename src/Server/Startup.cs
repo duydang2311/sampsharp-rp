@@ -9,7 +9,7 @@ namespace Server
 	{
 		public void Configure(IServiceCollection services)
 		{
-			_ = services
+			services
 				.WithDatabase()
 				.WithLogging()
 				.WithChat()
@@ -30,7 +30,7 @@ namespace Server
 
 		public void Configure(IEcsBuilder builder)
 		{
-			_ = builder
+			builder
 				.UseChatMiddlewares()
 				.EnableSampEvents();
 		}
