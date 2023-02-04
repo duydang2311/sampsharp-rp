@@ -19,7 +19,15 @@ public sealed class GridBuilder : IGridBuilder
 
 	public IGridBuilder SetAsInnerGrid(int row, int column, Func<IGridBuilder, IGridBuilder> gridBuilderOptions)
 	{
-		var gridBuilder = new GridBuilder();
+		var cellWidth = (Right - Left) / Columns;
+		var cellHeight = (Bottom - Top) / Rows;
+		var top = Top + (row * cellHeight);
+		var left = Left + (column * cellWidth);
+		var gridBuilder = new GridBuilder()
+			.SetTop(top)
+			.SetLeft(left)
+			.SetRight(left + cellWidth)
+			.SetBottom(top + cellHeight);
 		InnerGrids.Add((row, column), gridBuilderOptions(gridBuilder));
 		return this;
 	}

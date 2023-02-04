@@ -24,19 +24,14 @@ public class Grid : BaseCell, IGrid
 		{
 			for (var col = 0; col != Columns; ++col)
 			{
-				var cellTop = Start.Y + (row * CellHeight);
-				var cellLeft = Start.X + (col * CellWidth);
 				if (builder.InnerGrids.TryGetValue((row, col), out var innerBuilder))
 				{
-					cells[row, col] = innerBuilder
-						.SetTop(cellTop)
-						.SetLeft(cellLeft)
-						.SetRight(cellLeft + CellWidth)
-						.SetBottom(cellTop + CellHeight)
-						.BuildGrid();
+					cells[row, col] = innerBuilder.BuildGrid();
 				}
 				else
 				{
+					var cellTop = Start.Y + (row * CellHeight);
+					var cellLeft = Start.X + (col * CellWidth);
 					cells[row, col] = new Cell(cellLeft, cellTop);
 				}
 			}
