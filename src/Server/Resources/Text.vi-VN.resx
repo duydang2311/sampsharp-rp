@@ -21,16 +21,16 @@
 
 	<!-- /door -->
 	<data name="DoorCommand_Help">
-		<value>Huớng dẫn: /door [lệnh].</value>
+		<value>/door [hành động].</value>
 	</data>
 	<data name="DoorCommand_Options">
-		<value>Lựa chọn lệnh: 'create', 'destroy', 'nearby', 'entrance', 'exit'.</value>
+		<value>Các hành động: 'create', 'destroy', 'nearby', 'entrance', 'exit'.</value>
 	</data>
 	<data name="DoorCommand_Create_Help">
-		<value>Huớng dẫn: /door create [phân loại].</value>
+		<value>/door create [phân loại].</value>
 	</data>
 	<data name="DoorCommand_Create_Options">
-		<value>Phân loại door: 'logical', 'physical'.</value>
+		<value>Các loại door: 'logical', 'physical'.</value>
 	</data>
 	<data name="DoorCommand_Create_NoEffect">
 		<value>Không thể thêm door vào cơ sở dữ liệu.</value>
@@ -39,7 +39,7 @@
 		<value>Door#{0} đã đuợc tạo thành công.</value>
 	</data>
 	<data name="DoorCommand_Destroy_Help">
-		<value>Huớng dẫn: /door destroy [id].</value>
+		<value>/door destroy [id].</value>
 	</data>
 	<data name="DoorCommand_Destroy_InvalidId">
 		<value>Door#{0} không tồn tại.</value>
