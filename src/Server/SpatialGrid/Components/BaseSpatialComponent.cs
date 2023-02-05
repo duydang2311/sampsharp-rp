@@ -1,9 +1,8 @@
-using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 
 namespace Server.SpatialGrid.Components;
 
-public abstract class BaseSpatialComponent : Component, ISpatialComponent
+public abstract class BaseSpatialComponent : ISpatialComponent
 {
 	public Vector2 Position { get; set; }
 	public float Range { get; set; }
