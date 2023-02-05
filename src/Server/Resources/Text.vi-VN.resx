@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
 	<!-- Badge -->
-	<data name="BadgeSystem">
-		<value>[Hệ thống]</value>
+	<data name="Badge_System">
+		<value>Hệ thống:</value>
+	</data>
+	<data name="Badge_CommandUsage">
+		<value>Hướng dẫn:</value>
 	</data>
 
     <!-- Chat -->

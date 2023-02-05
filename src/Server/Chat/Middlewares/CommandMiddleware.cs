@@ -82,7 +82,7 @@ public sealed partial class CommandMiddleware
 		if (!commandService.HasCommand(command))
 		{
 			chatService.SendMessage(player, b => b
-				.Add(SemanticColor.LowAttention, m => m.BadgeSystem)
+				.Add(SemanticColor.LowAttention, m => m.Badge_System)
 				.Inline(SemanticColor.Error, m => m.CommandNotFound));
 			return true;
 		}
@@ -96,10 +96,10 @@ public sealed partial class CommandMiddleware
 
 		var permissionComponent = player.GetComponent<PermissionComponent>();
 		if (permissionComponent is null
-		    || (permissionComponent.Level & model.PermissionLevel) == 0)
+			|| (permissionComponent.Level & model.PermissionLevel) == 0)
 		{
 			chatService.SendMessage(player, b => b
-				.Add(SemanticColor.LowAttention, m => m.BadgeSystem)
+				.Add(SemanticColor.LowAttention, m => m.Badge_System)
 				.Inline(SemanticColor.Error, m => m.CommandDenied));
 			return true;
 		}
@@ -117,20 +117,20 @@ public sealed partial class CommandMiddleware
 		switch (result)
 		{
 			case Task task:
-			{
-				task.ContinueWith(t => { LogCommandHandlerException(logger, null, t.Exception!); },
-					TaskContinuationOptions.OnlyOnFaulted);
-				break;
-			}
-			case bool ok:
-			{
-				if (!ok)
 				{
-					InvokeHelper(command, player, commandService, logger);
+					task.ContinueWith(t => { LogCommandHandlerException(logger, null, t.Exception!); },
+						TaskContinuationOptions.OnlyOnFaulted);
+					break;
 				}
+			case bool ok:
+				{
+					if (!ok)
+					{
+						InvokeHelper(command, player, commandService, logger);
+					}
 
-				break;
-			}
+					break;
+				}
 		}
 
 		return true;

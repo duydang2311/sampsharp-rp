@@ -2,7 +2,9 @@ namespace Server.I18N.Localization.Models;
 
 public interface ITextNameFakeModel
 {
-	object BadgeSystem { get; }
+	object Badge_System { get; }
+	object Badge_CommandUsage { get; }
+	object Badge_System { get; }
 	object CommandNotFound { get; }
 	object CommandDenied { get; }
 	object ChatMessage { get; }
