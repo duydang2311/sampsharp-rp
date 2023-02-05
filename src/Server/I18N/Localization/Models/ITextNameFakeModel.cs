@@ -4,7 +4,6 @@ public interface ITextNameFakeModel
 {
 	object Badge_System { get; }
 	object Badge_CommandUsage { get; }
-	object Badge_System { get; }
 	object CommandNotFound { get; }
 	object CommandDenied { get; }
 	object ChatMessage { get; }
@@ -21,4 +20,12 @@ public interface ITextNameFakeModel
 	object DoorCommand_Nearby_Empty { get; }
 	object DoorCommand_Nearby_Found { get; }
 	object DoorCommand_Nearby_ForEachInfo { get; }
+	object DoorCommand_Entrance_Help { get; }
+	object DoorCommand_Entrance_InvalidId { get; }
+	object DoorCommand_Entrance_InvalidDoorType { get; }
+	object DoorCommand_Entrance_Success { get; }
+	object DoorCommand_Exit_Help { get; }
+	object DoorCommand_Exit_InvalidId { get; }
+	object DoorCommand_Exit_Success { get; }
+	object DoorCommand_Exit_InvalidDoorType { get; }
 }

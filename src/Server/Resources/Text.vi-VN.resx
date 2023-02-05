@@ -8,14 +8,14 @@
 		<value>Hướng dẫn:</value>
 	</data>
 
-    <!-- Chat -->
+	<!-- Chat -->
 	<data name="CommandNotFound">
 		<value>Lệnh không tồn tại.</value>
 	</data>
 	<data name="CommandDenied">
 		<value>Bạn cần quyền hạn thích hợp để sử dụng lệnh này.</value>
 	</data>
-    <data name="ChatMessage">
+	<data name="ChatMessage">
 		<value>{0} nói: {1}</value>
 	</data>
 
@@ -24,7 +24,7 @@
 		<value>Huớng dẫn: /door [lệnh].</value>
 	</data>
 	<data name="DoorCommand_Options">
-		<value>Lựa chọn lệnh: 'create', 'destroy', 'nearby'.</value>
+		<value>Lựa chọn lệnh: 'create', 'destroy', 'nearby', 'entrance', 'exit'.</value>
 	</data>
 	<data name="DoorCommand_Create_Help">
 		<value>Huớng dẫn: /door create [phân loại].</value>
@@ -58,5 +58,29 @@
 	</data>
 	<data name="DoorCommand_Nearby_ForEachInfo">
 		<value>+ Door#{0}: {1:##0.00}, {2:##0.00}, {3:##0.00} | cách {4:##0.00} mét.</value>
+	</data>
+	<data name="DoorCommand_Entrance_Help">
+		<value>/door entrance [id].</value>
+	</data>
+	<data name="DoorCommand_Entrance_InvalidId">
+		<value>Door#{0} không tồn tại.</value>
+	</data>
+	<data name="DoorCommand_Entrance_InvalidDoorType">
+		<value>Door#{0} không phải loại door ảo.</value>
+	</data>
+	<data name="DoorCommand_Entrance_Success">
+		<value>Lối vào của Door#{0} đã được cập nhật.</value>
+	</data>
+	<data name="DoorCommand_Exit_Help">
+		<value>/door exit [id].</value>
+	</data>
+	<data name="DoorCommand_Exit_InvalidId">
+		<value>Door#{0} không tồn tại.</value>
+	</data>
+	<data name="DoorCommand_Exit_InvalidDoorType">
+		<value>Door#{0} không phải loại door ảo.</value>
+	</data>
+	<data name="DoorCommand_Exit_Success">
+		<value>Lối ra của Door#{0} đã được cập nhật.</value>
 	</data>
 </root>
