@@ -19,22 +19,6 @@ public sealed partial class EnterSystem : ISystem
 	private readonly IDbContextFactory<ServerDbContext> dbContextFactory;
 	private readonly ILogger<EnterSystem> logger;
 
-	[Event]
-	private void OnGameModeInit()
-	{
-		using var ctx = dbContextFactory.CreateDbContext();
-		ctx.Database.EnsureDeleted();
-		ctx.Database.EnsureCreated();
-	}
-
-	[Event]
-	private void OnPlayerRequestSpawn(Player player)
-	{
-		player.Spawn();
-		player.Position = new Vector3(0, 0, 3);
-		player.AddComponent<PermissionComponent>(PermissionLevel.Player | PermissionLevel.Admin);
-	}
-
 	public EnterSystem(IEnterCommandEvent enterCommandEvent, IDoorFactory doorFactory, IDbContextFactory<ServerDbContext> dbContextFactory, ILogger<EnterSystem> logger)
 	{
 		this.doorFactory = doorFactory;
