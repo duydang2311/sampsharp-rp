@@ -4,12 +4,12 @@ namespace Server.SpatialGrid.Components;
 
 public abstract class BaseSpatialComponent : ISpatialComponent
 {
-	public Vector2 Position { get; set; }
-	public float Range { get; set; }
+	public Vector3 Position { get; set; }
+	public float Radius { get; set; }
 
-	public BaseSpatialComponent(float x, float y, float range)
+	public BaseSpatialComponent(float x, float y, float z, float radius)
 	{
-		Position = new Vector2(x, y);
-		Range = range;
+		Position = new Vector3(x, y, z);
+		Radius = radius;
 	}
 }

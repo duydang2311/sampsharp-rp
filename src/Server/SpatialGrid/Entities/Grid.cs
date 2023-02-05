@@ -66,12 +66,12 @@ public class Grid : BaseCell, IGrid
 
 	public IEnumerable<IBaseCell> GetSurroundingCells(ISpatialComponent component)
 	{
-		if (!TryComputeIndex(component.Position, out var row, out var col))
+		if (!TryComputeIndex(component.Position.XY, out var row, out var col))
 		{
 			return Array.Empty<IBaseCell>();
 		}
 
-		var depth = (int)Math.Ceiling(component.Range / Math.Min(CellWidth, CellHeight));
+		var depth = (int)Math.Ceiling(component.Radius / Math.Min(CellWidth, CellHeight));
 		return GetSurroundingCells(row, col, depth);
 	}
 
@@ -169,8 +169,8 @@ public class Grid : BaseCell, IGrid
 		var height = CellHeight;
 		var dx = Math.Abs(component.Position.X - cell.Start.X);
 		var dy = Math.Abs(component.Position.Y - cell.Start.Y);
-		if (dx > ((width / 2) + component.Range)
-		|| dy > ((height / 2) + component.Range))
+		if (dx > ((width / 2) + component.Radius)
+		|| dy > ((height / 2) + component.Radius))
 		{
 			return false;
 		}
