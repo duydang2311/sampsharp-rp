@@ -14,29 +14,42 @@ public sealed partial class DoorCommandSystem : ISystem
 			.Add(SemanticColor.Info, m => m.DoorCommand_Create_Options));
 	}
 
-	private async Task CreateDoor(Player player, string argument)
+	private async Task CreateDoor(Player player, string? argument)
 	{
+		if (string.IsNullOrEmpty(argument))
+		{
+			HelpCreateDoor(player);
+			return;
+		}
 		switch (argument.ToLowerInvariant())
 		{
 			case "logical":
 				{
+					var position = player.Position;
+					var angle = player.Angle;
+					var world = player.VirtualWorld;
+					var interior = player.Interior;
+
 					await using var ctx = await dbContextFactory.CreateDbContextAsync();
 					var model = new DoorModel()
 					{
-						EntranceX = player.Position.X,
-						EntranceY = player.Position.Y,
-						EntranceZ = player.Position.Z,
-						EntranceA = player.Angle,
-						EntranceWorld = player.VirtualWorld,
-						EntranceInterior = player.Interior,
+						EntranceX = position.X,
+						EntranceY = position.Y,
+						EntranceZ = position.Z,
+						EntranceA = angle,
+						EntranceWorld = world,
+						EntranceInterior = interior,
 					};
-					_ = await ctx.Doors.AddAsync(model);
+					ctx.Doors.Add(model);
+					await ctx.SaveChangesAsync();
 					if (model.Id == 0)
 					{
 						chatService.SendMessage(player, b => b
 							.Add(SemanticColor.Info, m => m.DoorCommand_Create_NoEffect));
 						return;
 					}
+					var door = doorFactory.CreateLogicalDoor(model.Id);
+					door.EntranceInteraction = doorFactory.CreateDoorInteraction(door, position, world, interior);
 					chatService.SendMessage(player, b => b
 						.Add(SemanticColor.Success, m => m.DoorCommand_Create_Success, model.Id));
 					break;
