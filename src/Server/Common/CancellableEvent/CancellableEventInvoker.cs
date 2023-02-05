@@ -4,7 +4,7 @@ namespace Server.Common.CancellableEvent;
 
 public class CancellableEventInvoker : ICancellableEventInvoker
 {
-	private object?[] CreateExtendedArgs(object?[]? args, object extendedValue)
+	private static object?[] CreateExtendedArgs(object?[]? args, object extendedValue)
 	{
 		if (args is null)
 		{
@@ -12,7 +12,7 @@ public class CancellableEventInvoker : ICancellableEventInvoker
 		}
 		var extendedArgs = new object?[args.Length + 1];
 		args.CopyTo(extendedArgs, 0);
-		extendedArgs[extendedArgs.Length - 1] = extendedValue;
+		extendedArgs[^1] = extendedValue;
 		return extendedArgs;
 	}
 
@@ -41,7 +41,7 @@ public class CancellableEventInvoker : ICancellableEventInvoker
 		object?[] extendedArgs = CreateExtendedArgs(args, cancelEventArgs);
 		foreach (var invocation in @delegate.GetInvocationList())
 		{
-			await (Task)invocation.Method.Invoke(invocation.Target, args)!;
+			await (Task)invocation.Method.Invoke(invocation.Target, extendedArgs)!;
 			if (cancelEventArgs.Cancel)
 			{
 				break;

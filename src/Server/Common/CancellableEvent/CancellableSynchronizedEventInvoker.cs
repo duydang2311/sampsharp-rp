@@ -12,7 +12,7 @@ public class CancellableSynchronizedEventInvoker : ICancellableEventInvoker
 		this.syncProvider = syncProvider;
 	}
 
-	private object?[] CreateExtendedArgs(object?[]? args, object extendedValue)
+	private static object?[] CreateExtendedArgs(object?[]? args, object extendedValue)
 	{
 		if (args is null)
 		{
@@ -20,7 +20,7 @@ public class CancellableSynchronizedEventInvoker : ICancellableEventInvoker
 		}
 		var extendedArgs = new object?[args.Length + 1];
 		args.CopyTo(extendedArgs, 0);
-		extendedArgs[extendedArgs.Length - 1] = extendedValue;
+		extendedArgs[^1] = extendedValue;
 		return extendedArgs;
 	}
 
@@ -81,7 +81,7 @@ public class CancellableSynchronizedEventInvoker : ICancellableEventInvoker
 				continue;
 			}
 
-			await (Task)invocation.Method.Invoke(invocation.Target, args)!;
+			await (Task)invocation.Method.Invoke(invocation.Target, extendedArgs)!;
 			if (cancelEventArgs.Cancel)
 			{
 				break;
