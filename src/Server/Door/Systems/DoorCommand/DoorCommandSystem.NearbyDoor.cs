@@ -33,16 +33,16 @@ public sealed partial class DoorCommandSystem : ISystem
 			.ToArrayAsync();
 		if (models.Length == 0)
 		{
-			chatService.SendMessage(player, b => b.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_Empty));
+			chatService.SendMessage(player, b => b.Add(m => m.DoorCommand_Nearby_Empty));
 			return;
 		}
 
 		chatService.SendMessage(player, b =>
 		{
-			b.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_Found);
+			b.Add(SemanticColor.Success, m => m.DoorCommand_Nearby_Found);
 			foreach (var model in models)
 			{
-				b.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_ForEachInfo, model.Id, model.EntranceX,
+				b.Add(m => m.DoorCommand_Nearby_ForEachInfo, model.Id, model.EntranceX,
 					model.EntranceY, model.EntranceZ,
 					Math.Sqrt(Math.Pow(x - model.EntranceX, 2) + Math.Pow(x - model.EntranceY, 2) +
 							  Math.Pow(z - model.EntranceZ, 2)));

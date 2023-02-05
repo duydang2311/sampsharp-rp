@@ -10,8 +10,9 @@ public sealed partial class DoorCommandSystem : ISystem
 	private void HelpCreateDoor(Player player)
 	{
 		chatService.SendMessage(player, b => b
-			.Add(SemanticColor.Info, m => m.DoorCommand_Create_Help)
-			.Add(SemanticColor.Info, m => m.DoorCommand_Create_Options));
+			.AddBadge(t => t.Badge_CommandUsage)
+			.Inline(t => t.DoorCommand_Create_Help)
+			.Add(Color.Gray, t => t.DoorCommand_Create_Options));
 	}
 
 	private async Task CreateDoor(Player player, string? argument)
@@ -45,7 +46,7 @@ public sealed partial class DoorCommandSystem : ISystem
 					if (model.Id == 0)
 					{
 						chatService.SendMessage(player, b => b
-							.Add(SemanticColor.Info, m => m.DoorCommand_Create_NoEffect));
+							.Add(Color.Gray, m => m.DoorCommand_Create_NoEffect));
 						return;
 					}
 					var door = doorFactory.CreateLogicalDoor(model.Id);

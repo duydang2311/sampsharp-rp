@@ -10,7 +10,8 @@ public sealed partial class DoorCommandSystem : ISystem
 	private void HelpDestroyDoor(Player player)
 	{
 		chatService.SendMessage(player, b => b
-			.Add(SemanticColor.Info, m => m.DoorCommand_Destroy_Help));
+			.AddBadge(t => t.Badge_CommandUsage)
+			.Inline(t => t.DoorCommand_Destroy_Help));
 	}
 
 	private async Task DestroyDoor(Player player, string? argument)
@@ -25,7 +26,7 @@ public sealed partial class DoorCommandSystem : ISystem
 		if (!ok)
 		{
 			chatService.SendMessage(player, b => b
-				.Add(SemanticColor.LowAttention, m => m.DoorCommand_Destroy_InvalidId, id));
+				.Add(Color.Gray, m => m.DoorCommand_Destroy_InvalidId, id));
 			return;
 		}
 
@@ -34,12 +35,12 @@ public sealed partial class DoorCommandSystem : ISystem
 		if (affected == 0)
 		{
 			chatService.SendMessage(player, b => b
-				.Add(SemanticColor.Success, m => m.DoorCommand_Destroy_SuccessNoEffect, id));
+				.Inline(SemanticColor.Success, m => m.DoorCommand_Destroy_SuccessNoEffect, id));
 		}
 		else
 		{
 			chatService.SendMessage(player, b => b
-				.Add(SemanticColor.Success, m => m.DoorCommand_Destroy_Success, id));
+				.Inline(SemanticColor.Success, m => m.DoorCommand_Destroy_Success, id));
 		}
 	}
 }

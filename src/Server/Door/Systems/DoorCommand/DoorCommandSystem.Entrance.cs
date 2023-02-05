@@ -2,7 +2,6 @@ using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Common.Colors;
 using Server.Door.Entities;
-using Server.Door.Models;
 
 namespace Server.Door.Systems.DoorCommand;
 
@@ -11,8 +10,8 @@ public sealed partial class DoorCommandSystem : ISystem
 	private void HelpUpdateDoorEntrance(Player player)
 	{
 		chatService.SendMessage(player, b => b
-			.Add(SemanticColor.LowAttention, m => m.Badge_CommandUsage)
-			.Inline(SemanticColor.Info, m => m.DoorCommand_Entrance_Help));
+			.AddBadge(m => m.Badge_CommandUsage)
+			.Inline(m => m.DoorCommand_Entrance_Help));
 	}
 
 	private void UpdateDoorEntrance(Player player, string? argument)

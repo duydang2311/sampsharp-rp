@@ -10,8 +10,8 @@ public sealed partial class DoorCommandSystem : ISystem
 	private void HelpUpdateDoorExit(Player player)
 	{
 		chatService.SendMessage(player, b => b
-			.Add(SemanticColor.LowAttention, m => m.Badge_CommandUsage)
-			.Inline(SemanticColor.Info, m => m.DoorCommand_Exit_Help));
+			.AddBadge(t => t.Badge_CommandUsage)
+			.Inline(t => t.DoorCommand_Exit_Help));
 	}
 
 	private void UpdateDoorExit(Player player, string? argument)
