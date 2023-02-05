@@ -17,12 +17,12 @@ public sealed class ChatMessageModelFactory : IChatMessageModelFactory
 		this.localizerService = localizerService;
 	}
 
-	public ChatMessageModel Create(Expression<Func<ITextNameFakeModel, object>> identifier)
+	public ChatMessageModel Create(Expression<Func<ILocalizedText, object>> identifier)
 	{
 		return Create(Color.White, identifier);
 	}
 
-	public ChatMessageModel Create(Color color, Expression<Func<ITextNameFakeModel, object>> identifier)
+	public ChatMessageModel Create(Color color, Expression<Func<ILocalizedText, object>> identifier)
 	{
 		return new ChatMessageModel()
 		{
@@ -31,12 +31,12 @@ public sealed class ChatMessageModelFactory : IChatMessageModelFactory
 		};
 	}
 
-	public ChatMessageModel Create(Expression<Func<ITextNameFakeModel, object>> identifier, params object[] args)
+	public ChatMessageModel Create(Expression<Func<ILocalizedText, object>> identifier, params object[] args)
 	{
 		return Create(Color.White, identifier, args);
 	}
 
-	public ChatMessageModel Create(Color color, Expression<Func<ITextNameFakeModel, object>> identifier, params object[] args)
+	public ChatMessageModel Create(Color color, Expression<Func<ILocalizedText, object>> identifier, params object[] args)
 	{
 		return new ChatMessageModel()
 		{

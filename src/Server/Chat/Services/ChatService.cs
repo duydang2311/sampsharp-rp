@@ -34,7 +34,7 @@ public sealed class ChatService : IChatService
 
 	public void SendMessage(Player player, IChatMessageBuilder builder)
 	{
-		foreach(var text in BuildChatMessageBuilder(player, builder))
+		foreach (var text in BuildChatMessageBuilder(player, builder))
 		{
 			SendMessage(player, Color.White, text);
 		}
