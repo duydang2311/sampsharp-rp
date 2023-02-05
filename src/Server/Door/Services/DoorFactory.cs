@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using SampSharp.Entities.SAMP;
 using SampSharp.Streamer.Entities;
+using Server.Door.Components;
 using Server.Door.Entities;
 using Server.SpatialGrid.Entities;
 
@@ -11,9 +12,9 @@ public sealed partial class DoorFactory : IDoorFactory
 	private readonly IStreamerService streamerService;
 	private readonly ILogger<DoorFactory> logger;
 	private readonly IDictionary<long, IDoor> doorDictionary = new Dictionary<long, IDoor>();
-	private readonly ISanAndreasGrid sanAndreasGrid;
 
 	public IEnumerable<IDoor> Doors => doorDictionary.Values;
+	public IGrid Grid { get; }
 
 	[LoggerMessage(
 		EventId = 0,
@@ -25,13 +26,12 @@ public sealed partial class DoorFactory : IDoorFactory
 	{
 		this.streamerService = streamerService;
 		this.logger = logger;
-		this.sanAndreasGrid = sanAndreasGrid;
+		Grid = sanAndreasGrid;
 	}
 
-	public ILogicalDoor CreateLogicalDoor(float x, float y, Action<ILogicalDoor, IStreamerService> doorAction)
+	public ILogicalDoor CreateLogicalDoor(long id)
 	{
-		var door = new LogicalDoor(x, y);
-		doorAction(door, streamerService);
+		var door = new LogicalDoor(id);
 		if (door.Id == 0)
 		{
 			LogInvalidDoorCreation(typeof(ILogicalDoor), door.Id);
@@ -43,10 +43,9 @@ public sealed partial class DoorFactory : IDoorFactory
 		return door;
 	}
 
-	public IPhysicalDoor CreatePhysicalDoor(float x, float y, Action<IPhysicalDoor, IStreamerService> doorAction)
+	public IPhysicalDoor CreatePhysicalDoor(long id)
 	{
-		var door = new PhysicalDoor(x, y);
-		doorAction(door, streamerService);
+		var door = new PhysicalDoor(id);
 		if (door.Id == 0)
 		{
 			LogInvalidDoorCreation(typeof(IPhysicalDoor), door.Id);
@@ -62,12 +61,6 @@ public sealed partial class DoorFactory : IDoorFactory
 	{
 		switch (door)
 		{
-			case ILogicalDoor logicalDoor:
-				{
-					logicalDoor.EntranceCheckpoint?.DestroyEntity();
-					logicalDoor.ExitCheckpoint?.DestroyEntity();
-					break;
-				}
 			case IPhysicalDoor physicalDoor:
 				{
 					physicalDoor.Object?.DestroyEntity();
@@ -105,5 +98,11 @@ public sealed partial class DoorFactory : IDoorFactory
 			}
 		}
 		return doors;
+	}
+	public IDoorInteraction CreateDoorInteraction(IDoor door, Vector3 position, int world, int interior)
+	{
+		var interaction = new DoorInteraction(door, position.X, position.Y, position.Z, world, interior);
+		Grid.Add(interaction);
+		return interaction;
 	}
 }
