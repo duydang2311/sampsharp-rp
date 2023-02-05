@@ -21,7 +21,9 @@ public static class VietnameseUnidecodedGenerator
 		using var writer = new ResourceWriter("../Server/Resources/Text.vi.resources");
 		foreach (DictionaryEntry i in reader)
 		{
-			writer.AddResource(i.Key.ToString()!, i.Value!.ToString()!.Unidecode());
+			var unidecoded = i.Value!.ToString()!.Unidecode();
+			Console.WriteLine($"> {i.Key}: {unidecoded}");
+			writer.AddResource(i.Key.ToString()!, unidecoded);
 		}
 		writer.Close();
 	}
