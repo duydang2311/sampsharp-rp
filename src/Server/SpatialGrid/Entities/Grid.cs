@@ -64,7 +64,7 @@ public class Grid : BaseCell, IGrid
 		return cells;
 	}
 
-	public IEnumerable<IBaseCell> GetSurroundingCells(BaseSpatialComponent component)
+	public IEnumerable<IBaseCell> GetSurroundingCells(ISpatialComponent component)
 	{
 		if (!TryComputeIndex(component.Position, out var row, out var col))
 		{
@@ -108,7 +108,7 @@ public class Grid : BaseCell, IGrid
 		return default;
 	}
 
-	public override bool Add(BaseSpatialComponent component)
+	public override bool Add(ISpatialComponent component)
 	{
 		var baseCells = GetSurroundingCells(component);
 		foreach (var baseCell in baseCells)
@@ -130,7 +130,7 @@ public class Grid : BaseCell, IGrid
 		return baseCells.Any();
 	}
 
-	public override bool Remove(BaseSpatialComponent component)
+	public override bool Remove(ISpatialComponent component)
 	{
 		var baseCells = GetSurroundingCells(component);
 		foreach (var baseCell in baseCells)
@@ -163,7 +163,7 @@ public class Grid : BaseCell, IGrid
 		}
 	}
 
-	private bool IsIntersect(BaseSpatialComponent component, IBaseCell cell)
+	private bool IsIntersect(ISpatialComponent component, IBaseCell cell)
 	{
 		var width = CellWidth;
 		var height = CellHeight;

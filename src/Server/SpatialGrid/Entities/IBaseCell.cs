@@ -6,7 +6,7 @@ namespace Server.SpatialGrid.Entities;
 public interface IBaseCell
 {
 	Vector2 Start { get; }
-	bool Add(BaseSpatialComponent component);
-	bool Remove(BaseSpatialComponent component);
+	bool Add(ISpatialComponent component);
+	bool Remove(ISpatialComponent component);
 	void Clear();
 }

@@ -4,12 +4,12 @@ namespace Server.SpatialGrid.Entities;
 
 public sealed class Cell : BaseCell, ICell
 {
-	private readonly LinkedList<BaseSpatialComponent> components = new();
-	public IEnumerable<BaseSpatialComponent> Components => components;
+	private readonly LinkedList<ISpatialComponent> components = new();
+	public IEnumerable<ISpatialComponent> Components => components;
 
 	public Cell(float x, float y) : base(x, y) { }
 
-	public override bool Add(BaseSpatialComponent component)
+	public override bool Add(ISpatialComponent component)
 	{
 		components.AddLast(component);
 		return true;
@@ -20,7 +20,7 @@ public sealed class Cell : BaseCell, ICell
 		components.Clear();
 	}
 
-	public override bool Remove(BaseSpatialComponent component)
+	public override bool Remove(ISpatialComponent component)
 	{
 		return components.Remove(component);
 	}

@@ -12,7 +12,7 @@ public abstract class BaseCell : IBaseCell
 		Start = new Vector2(x, y);
 	}
 
-	public abstract bool Add(BaseSpatialComponent component);
-	public abstract bool Remove(BaseSpatialComponent component);
+	public abstract bool Add(ISpatialComponent component);
+	public abstract bool Remove(ISpatialComponent component);
 	public abstract void Clear();
 }
