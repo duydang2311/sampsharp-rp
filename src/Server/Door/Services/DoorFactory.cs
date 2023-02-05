@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Logging;
+using SampSharp.Entities.SAMP;
 using SampSharp.Streamer.Entities;
 using Server.Door.Entities;
+using Server.SpatialGrid.Entities;
 
 namespace Server.Door.Services;
 
@@ -9,6 +11,7 @@ public sealed partial class DoorFactory : IDoorFactory
 	private readonly IStreamerService streamerService;
 	private readonly ILogger<DoorFactory> logger;
 	private readonly IDictionary<long, IDoor> doorDictionary = new Dictionary<long, IDoor>();
+	private readonly ISanAndreasGrid sanAndreasGrid;
 
 	public IEnumerable<IDoor> Doors => doorDictionary.Values;
 
@@ -18,15 +21,16 @@ public sealed partial class DoorFactory : IDoorFactory
 		Message = "A door of type {Type} was created with invalid Id {Id}")]
 	public partial void LogInvalidDoorCreation(Type type, long id);
 
-	public DoorFactory(IStreamerService streamerService, ILogger<DoorFactory> logger)
+	public DoorFactory(IStreamerService streamerService, ILogger<DoorFactory> logger, ISanAndreasGrid sanAndreasGrid)
 	{
 		this.streamerService = streamerService;
 		this.logger = logger;
+		this.sanAndreasGrid = sanAndreasGrid;
 	}
 
-	public ILogicalDoor CreateLogicalDoor(Action<ILogicalDoor, IStreamerService> doorAction)
+	public ILogicalDoor CreateLogicalDoor(float x, float y, Action<ILogicalDoor, IStreamerService> doorAction)
 	{
-		var door = new LogicalDoor();
+		var door = new LogicalDoor(x, y);
 		doorAction(door, streamerService);
 		if (door.Id == 0)
 		{
@@ -39,9 +43,9 @@ public sealed partial class DoorFactory : IDoorFactory
 		return door;
 	}
 
-	public IPhysicalDoor CreatePhysicalDoor(Action<IPhysicalDoor, IStreamerService> doorAction)
+	public IPhysicalDoor CreatePhysicalDoor(float x, float y, Action<IPhysicalDoor, IStreamerService> doorAction)
 	{
-		var door = new PhysicalDoor();
+		var door = new PhysicalDoor(x, y);
 		doorAction(door, streamerService);
 		if (door.Id == 0)
 		{
@@ -80,7 +84,7 @@ public sealed partial class DoorFactory : IDoorFactory
 
 	public IDoor? FindOne(Predicate<IDoor> filter)
 	{
-		foreach(var (_, door) in doorDictionary)
+		foreach (var (_, door) in doorDictionary)
 		{
 			if (filter(door))
 			{
@@ -93,7 +97,7 @@ public sealed partial class DoorFactory : IDoorFactory
 	public IEnumerable<IDoor> FindMany(Predicate<IDoor> filter)
 	{
 		var doors = new LinkedList<IDoor>();
-		foreach(var (_, door) in doorDictionary)
+		foreach (var (_, door) in doorDictionary)
 		{
 			if (filter(door))
 			{
