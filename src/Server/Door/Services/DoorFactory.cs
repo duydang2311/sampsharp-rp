@@ -99,10 +99,16 @@ public sealed partial class DoorFactory : IDoorFactory
 		}
 		return doors;
 	}
+
 	public IDoorInteraction CreateDoorInteraction(IDoor door, Vector3 position, int world, int interior)
 	{
 		var interaction = new DoorInteraction(door, position.X, position.Y, position.Z, world, interior);
 		Grid.Add(interaction);
 		return interaction;
+	}
+
+	public bool TryGetDoor(long id, out IDoor door)
+	{
+		return doorDictionary.TryGetValue(id, out door!);
 	}
 }
