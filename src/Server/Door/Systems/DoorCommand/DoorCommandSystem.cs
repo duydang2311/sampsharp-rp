@@ -54,6 +54,16 @@ public sealed partial class DoorCommandSystem : ISystem
 				{
 					return NearbyDoor(player, rest);
 				}
+			case "entrance":
+				{
+					UpdateDoorEntrance(player, rest);
+					break;
+				}
+			case "exit":
+				{
+					UpdateDoorExit(player, rest);
+					break;
+				}
 			default:
 				{
 					HelpDoorCommand(player);
