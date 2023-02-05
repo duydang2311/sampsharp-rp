@@ -5,6 +5,7 @@ using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Character.Systems.ExitCommand;
 using Server.Database;
+using Server.Door.Components;
 using Server.Door.Entities;
 using Server.Door.Services;
 
@@ -31,46 +32,36 @@ public sealed partial class ExitSystem : ISystem
 		Message = "Trying to exit Door#{Id} that is not existed in database")]
 	public partial void LogDoorModelMissing(long id);
 
-	private async Task OnExitCommandEvent(Player player, CancelEventArgs e)
+	private void OnExitCommandEvent(Player player, CancelEventArgs e)
 	{
 		float distanceSquared;
-		var minDistanceSquared = (3f * 3f) + 1e-7;
-		ILogicalDoor? closestDoor = null;
-		foreach (var door in doorFactory.Doors)
+		var minDistanceSquared = (2f * 2f) + 1e-7;
+		IDoorInteraction? closestEntranceInteraction = null;
+		foreach (var interaction in doorFactory.Grid.FindComponents(player.Position.XY, 2).Cast<IDoorInteraction>())
 		{
-			if (door is not ILogicalDoor logicalDoor
-			|| logicalDoor.EntranceCheckpoint is null
-			|| logicalDoor.ExitCheckpoint is null)
+			if (interaction.Door is not ILogicalDoor logicalDoor
+			|| logicalDoor.ExitInteraction is null
+			|| logicalDoor.EntranceInteraction is null
+			|| logicalDoor.ExitInteraction != interaction)
 			{
 				continue;
 			}
-			distanceSquared = Vector3.DistanceSquared(player.Position, logicalDoor.ExitCheckpoint.Position);
+
+			distanceSquared = Vector3.DistanceSquared(interaction.Position, player.Position);
 			if (distanceSquared < minDistanceSquared)
 			{
-				closestDoor = logicalDoor;
+				closestEntranceInteraction = logicalDoor.EntranceInteraction;
 				minDistanceSquared = distanceSquared;
 			}
 		}
-		if (closestDoor is null)
+		if (closestEntranceInteraction is null)
 		{
 			return;
 		}
+
 		e.Cancel = true;
-
-		await using var ctx = await dbContextFactory.CreateDbContextAsync();
-		var model = await ctx.Doors
-			.Where(m => m.Id == closestDoor.Id)
-			.Select(m => new { m.EntranceX, m.EntranceY, m.EntranceZ, m.EntranceWorld, m.EntranceInterior })
-			.AsNoTracking()
-			.FirstOrDefaultAsync();
-		if (model is null)
-		{
-			LogDoorModelMissing(closestDoor.Id);
-			return;
-		}
-
-		player.Position = new Vector3(model.EntranceX, model.EntranceY, model.EntranceZ);
-		player.VirtualWorld = model.EntranceWorld;
-		player.Interior = model.EntranceInterior;
+		player.Position = closestEntranceInteraction.Position;
+		player.VirtualWorld = closestEntranceInteraction.World;
+		player.Interior = closestEntranceInteraction.Interior;
 	}
 }
