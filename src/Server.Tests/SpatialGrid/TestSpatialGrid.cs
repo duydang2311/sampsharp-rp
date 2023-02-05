@@ -70,9 +70,9 @@ public class TestSpatialGrid
 			.BuildGrid();
 		Assert.Multiple(() =>
 		{
-			Assert.That(grid.FindCell(new Vector2(-3000, -3000)), Is.InstanceOf(typeof(IGrid)));
-			Assert.That((grid.FindCell(new Vector2(-3000, -3000)) as IGrid)!.CellWidth, Is.EqualTo(6000 / 10 / 4));
-			Assert.That((grid.FindCell(new Vector2(-3000, -3000)) as IGrid)!.CellHeight, Is.EqualTo(6000 / 12 / 4));
+			Assert.That(grid.FindCells(new Vector2(-3000, -3000), 0).First(), Is.InstanceOf(typeof(IGrid)));
+			Assert.That((grid.FindCells(new Vector2(-3000, -3000), 0).First() as IGrid)!.CellWidth, Is.EqualTo(6000 / 10 / 4));
+			Assert.That((grid.FindCells(new Vector2(-3000, -3000), 0).First() as IGrid)!.CellHeight, Is.EqualTo(6000 / 12 / 4));
 		});
 	}
 
@@ -95,8 +95,8 @@ public class TestSpatialGrid
 			.BuildGrid();
 		Assert.Multiple(() =>
 		{
-			var innerGrid1 = (IGrid)grid.FindCell(new Vector2(-3000, -3000))!;
-			var innerGrid2 = (IGrid)grid.FindCell(new Vector2(2400, 2500))!;
+			var innerGrid1 = (IGrid)grid.FindCells(new Vector2(-3000, -3000), 0).First();
+			var innerGrid2 = (IGrid)grid.FindCells(new Vector2(2400, 2500), 0).First();
 
 			var ok = innerGrid1.TryComputeIndex(new Vector2(-3000, -3000), out var row, out var col);
 			Assert.That(ok, Is.EqualTo(true));
