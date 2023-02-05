@@ -1,11 +1,11 @@
-using SampSharp.Streamer.Entities;
+using Server.Door.Components;
 
 namespace Server.Door.Entities;
 
 public class LogicalDoor : BaseDoor, ILogicalDoor
 {
-	public DynamicCheckpoint? EntranceCheckpoint { get; set; }
-	public DynamicCheckpoint? ExitCheckpoint { get; set; }
+	public IDoorInteraction? EntranceInteraction { get; set; }
+	public IDoorInteraction? ExitInteraction { get; set; }
 
-	public LogicalDoor(float x, float y) : base(x, y) { }
+	public LogicalDoor(long id) : base(id) { }
 }

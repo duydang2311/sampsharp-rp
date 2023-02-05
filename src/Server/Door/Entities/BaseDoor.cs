@@ -1,10 +1,10 @@
-using Server.SpatialGrid.Components;
-
 namespace Server.Door.Entities;
 
-public abstract class BaseDoor : BaseSpatialComponent, IDoor
+public abstract class BaseDoor : IDoor
 {
 	public long Id { get; set; }
-
-	public BaseDoor(float x, float y) : base(x, y, 2f) { }
+	public BaseDoor(long id)
+	{
+		Id = id;
+	}
 }

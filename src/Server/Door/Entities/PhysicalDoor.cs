@@ -1,10 +1,12 @@
 using SampSharp.Streamer.Entities;
+using Server.Door.Components;
 
 namespace Server.Door.Entities;
 
 public class PhysicalDoor : BaseDoor, IPhysicalDoor
 {
 	public DynamicObject? Object { get; set; }
+	public IDoorInteraction? ObjectInteraction { get; set; }
 
-	public PhysicalDoor(float x, float y) : base(x, y) { }
+	public PhysicalDoor(long id) : base(id) { }
 }

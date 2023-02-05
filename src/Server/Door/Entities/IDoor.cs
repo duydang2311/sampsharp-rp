@@ -1,8 +1,6 @@
-using Server.SpatialGrid.Components;
-
 namespace Server.Door.Entities;
 
-public interface IDoor : ISpatialComponent
+public interface IDoor
 {
 	long Id { get; set; }
 }

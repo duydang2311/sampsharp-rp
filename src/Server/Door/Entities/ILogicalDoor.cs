@@ -1,9 +1,9 @@
-using SampSharp.Streamer.Entities;
+using Server.Door.Components;
 
 namespace Server.Door.Entities;
 
 public interface ILogicalDoor : IDoor
 {
-	DynamicCheckpoint? EntranceCheckpoint { get; set; }
-	DynamicCheckpoint? ExitCheckpoint { get; set; }
+	IDoorInteraction? EntranceInteraction { get; set; }
+	IDoorInteraction? ExitInteraction { get; set; }
 }
