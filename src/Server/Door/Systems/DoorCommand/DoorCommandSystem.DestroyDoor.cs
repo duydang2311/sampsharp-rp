@@ -13,7 +13,7 @@ public sealed partial class DoorCommandSystem : ISystem
 			.Add(SemanticColor.Info, m => m.DoorCommand_Destroy_Help));
 	}
 
-	private async Task DestroyDoor(Player player, string argument)
+	private async Task DestroyDoor(Player player, string? argument)
 	{
 		if (!long.TryParse(argument, out var id))
 		{

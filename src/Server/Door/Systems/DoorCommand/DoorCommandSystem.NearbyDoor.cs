@@ -7,7 +7,7 @@ namespace Server.Door.Systems.DoorCommand;
 
 public sealed partial class DoorCommandSystem : ISystem
 {
-	private async Task NearbyDoor(Player player, string argument)
+	private async Task NearbyDoor(Player player, string? argument)
 	{
 		var distanceSquared = 15f * 15f;
 		if (!float.TryParse(argument, out var dist))
@@ -45,7 +45,7 @@ public sealed partial class DoorCommandSystem : ISystem
 				b.Add(SemanticColor.Neutral, m => m.DoorCommand_Nearby_ForEachInfo, model.Id, model.EntranceX,
 					model.EntranceY, model.EntranceZ,
 					Math.Sqrt(Math.Pow(x - model.EntranceX, 2) + Math.Pow(x - model.EntranceY, 2) +
-					          Math.Pow(z - model.EntranceZ, 2)));
+							  Math.Pow(z - model.EntranceZ, 2)));
 			}
 		});
 	}
