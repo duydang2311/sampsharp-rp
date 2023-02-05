@@ -57,13 +57,11 @@ public sealed partial class DoorCommandSystem : ISystem
 				}
 			case "entrance":
 				{
-					UpdateDoorEntrance(player, rest);
-					break;
+					return UpdateDoorEntrance(player, rest);
 				}
 			case "exit":
 				{
-					UpdateDoorExit(player, rest);
-					break;
+					return UpdateDoorExit(player, rest);
 				}
 			default:
 				{

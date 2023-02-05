@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Common.Colors;
@@ -14,7 +15,7 @@ public sealed partial class DoorCommandSystem : ISystem
 			.Inline(t => t.DoorCommand_Exit_Help));
 	}
 
-	private void UpdateDoorExit(Player player, string? argument)
+	private async Task UpdateDoorExit(Player player, string? argument)
 	{
 		if (!long.TryParse(argument, out var id))
 		{
@@ -34,11 +35,24 @@ public sealed partial class DoorCommandSystem : ISystem
 			return;
 		}
 
+		var position = player.Position;
+		var world = player.VirtualWorld;
+		var interior = player.Interior;
 		if (logicalDoor.ExitInteraction is not null)
 		{
 			doorFactory.Grid.Remove(logicalDoor.ExitInteraction);
 		}
 		logicalDoor.ExitInteraction = doorFactory.CreateDoorInteraction(logicalDoor, player.Position, player.VirtualWorld, player.Interior);
+		await using var ctx = await dbContextFactory.CreateDbContextAsync();
+		await ctx
+			.Doors
+			.Where(m => m.Id == id)
+			.ExecuteUpdateAsync(m => m
+				.SetProperty(m => m.ExitX, position.X)
+				.SetProperty(m => m.ExitY, position.Y)
+				.SetProperty(m => m.ExitZ, position.Z)
+				.SetProperty(m => m.ExitWorld, world)
+				.SetProperty(m => m.ExitInterior, interior));
 		chatService.SendMessage(player, b => b.Add(SemanticColor.Success, m => m.DoorCommand_Exit_Success, id));
 	}
 }
