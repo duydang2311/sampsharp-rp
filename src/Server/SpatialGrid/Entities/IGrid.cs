@@ -10,8 +10,7 @@ public interface IGrid : IBaseCell
 	float CellHeight { get; }
 	int Columns { get; }
 	int Rows { get; }
-	IEnumerable<IBaseCell> GetSurroundingCells(ISpatialComponent component);
-	IBaseCell? FindCell(Vector2 position);
-	IBaseCell? FindCell(Predicate<IBaseCell> cellPredicate);
+	IEnumerable<ISpatialComponent> FindComponents(Vector2 position, float radius);
+	IEnumerable<IBaseCell> FindCells(Vector2 position, float radius);
 	bool TryComputeIndex(Vector2 position, out int row, out int column);
 }

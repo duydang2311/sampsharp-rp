@@ -38,9 +38,10 @@ public class Grid : BaseCell, IGrid
 		}
 	}
 
-	private IEnumerable<IBaseCell> GetSurroundingCells(int row, int col, int depth)
+	private LinkedList<IBaseCell> GetSurroundingCells(int row, int col, float radius)
 	{
 		var cells = new LinkedList<IBaseCell>();
+		var depth = (int)Math.Ceiling(radius / Math.Min(CellWidth, CellHeight));
 		var limit = 1 + depth;
 		for (var offRow = -1 * depth; offRow != limit; ++offRow)
 		{
@@ -64,17 +65,6 @@ public class Grid : BaseCell, IGrid
 		return cells;
 	}
 
-	public IEnumerable<IBaseCell> GetSurroundingCells(ISpatialComponent component)
-	{
-		if (!TryComputeIndex(component.Position.XY, out var row, out var col))
-		{
-			return Array.Empty<IBaseCell>();
-		}
-
-		var depth = (int)Math.Ceiling(component.Radius / Math.Min(CellWidth, CellHeight));
-		return GetSurroundingCells(row, col, depth);
-	}
-
 	public bool TryComputeIndex(Vector2 position, out int row, out int column)
 	{
 		if (position.X < Start.X || position.X >= End.X || position.Y < Start.Y || position.Y >= End.Y)
@@ -88,32 +78,17 @@ public class Grid : BaseCell, IGrid
 		return true;
 	}
 
-	public IBaseCell? FindCell(Vector2 position)
-	{
-		return !TryComputeIndex(position, out var row, out var column) ? default : cells[row, column];
-	}
-
-	public IBaseCell? FindCell(Predicate<IBaseCell> cellPredicate)
-	{
-		for (var row = 0; row != Rows; ++row)
-		{
-			for (var col = 0; col != Columns; ++col)
-			{
-				if (cellPredicate(cells[row, col]))
-				{
-					return cells[row, col];
-				}
-			}
-		}
-		return default;
-	}
-
 	public override bool Add(ISpatialComponent component)
 	{
-		var baseCells = GetSurroundingCells(component);
+		if (!TryComputeIndex(component.Position.XY, out var row, out var col))
+		{
+			return false;
+		}
+
+		var baseCells = GetSurroundingCells(row, col, component.Radius);
 		foreach (var baseCell in baseCells)
 		{
-			if (!TryComputeIndex(new Vector2(baseCell.Start.X, baseCell.Start.Y), out var row, out var col)
+			if (!TryComputeIndex(baseCell.Start, out row, out col)
 			|| !IsIntersect(component, cells[row, col]))
 			{
 				continue;
@@ -132,10 +107,15 @@ public class Grid : BaseCell, IGrid
 
 	public override bool Remove(ISpatialComponent component)
 	{
-		var baseCells = GetSurroundingCells(component);
+		if (!TryComputeIndex(component.Position.XY, out var row, out var col))
+		{
+			return false;
+		}
+
+		var baseCells = GetSurroundingCells(row, col, component.Radius);
 		foreach (var baseCell in baseCells)
 		{
-			if (!TryComputeIndex(new Vector2(baseCell.Start.X, baseCell.Start.Y), out var row, out var col)
+			if (!TryComputeIndex(baseCell.Start, out row, out col)
 			|| !IsIntersect(component, cells[row, col]))
 			{
 				continue;
@@ -175,5 +155,44 @@ public class Grid : BaseCell, IGrid
 			return false;
 		}
 		return dx <= width / 2 || dy <= height / 2;
+	}
+
+	public IEnumerable<IBaseCell> FindCells(Vector2 position, float radius)
+	{
+		if (!TryComputeIndex(position, out var row, out var col))
+		{
+			return Array.Empty<IBaseCell>();
+		}
+
+		return GetSurroundingCells(row, col, radius);
+	}
+
+	public IEnumerable<ISpatialComponent> FindComponents(Vector2 position, float radius)
+	{
+		if (!TryComputeIndex(position, out var row, out var col))
+		{
+			return Array.Empty<ISpatialComponent>();
+		}
+
+		var components = new LinkedList<ISpatialComponent>();
+		var baseCells = GetSurroundingCells(row, col, radius);
+		foreach (var baseCell in baseCells)
+		{
+			if (baseCell is ICell cell)
+			{
+				foreach (var component in cell.Components)
+				{
+					components.AddLast(component);
+				}
+			}
+			else if (baseCell is IGrid grid)
+			{
+				foreach (var component in grid.FindComponents(position, radius))
+				{
+					components.AddLast(component);
+				}
+			}
+		}
+		return components;
 	}
 }
