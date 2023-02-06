@@ -35,28 +35,33 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 	public IChatMessageBuilder Add(Expression<Func<ILocalizedText, object>> textIdentifier,
 		params object[] args)
 	{
-		return Add(SemanticColor.Neutral, textIdentifier, args);
+		var name = identifierService.Identify(textIdentifier);
+		return AddI18N(ResolveBadgeColorInternal(name), name, false, args);
 	}
 
 	public IChatMessageBuilder Add(Color color, Expression<Func<ILocalizedText, object>> textIdentifier,
 		params object[] args)
 	{
-		models.AddLast(new I18NBuilderChatMessageModel()
-		{ Color = color, Text = identifierService.Identify(textIdentifier), Args = args, IsInline = false });
-		return this;
+		return AddI18N(color, identifierService.Identify(textIdentifier), false, args);
 	}
 
 	public IChatMessageBuilder Inline(Expression<Func<ILocalizedText, object>> textIdentifier,
 		params object[] args)
 	{
-		return Inline(SemanticColor.Neutral, textIdentifier, args);
+		var name = identifierService.Identify(textIdentifier);
+		return AddI18N(ResolveBadgeColorInternal(name), name, true, args);
 	}
 
 	public IChatMessageBuilder Inline(Color color, Expression<Func<ILocalizedText, object>> textIdentifier,
 		params object[] args)
 	{
+		return AddI18N(color, identifierService.Identify(textIdentifier), true, args);
+	}
+
+	private IChatMessageBuilder AddI18N(Color color, string textName, bool isInline, params object[] args)
+	{
 		models.AddLast(new I18NBuilderChatMessageModel()
-		{ Color = color, Text = identifierService.Identify(textIdentifier), Args = args, IsInline = true });
+		{ Color = color, Text = textName, Args = args, IsInline = isInline });
 		return this;
 	}
 
@@ -150,32 +155,35 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 
 	private static Color ResolveBadgeColorInternal(string name)
 	{
-		Color color = SemanticColor.LowAttention;
+		Color color = SemanticColor.Neutral;
 		switch (name)
 		{
 			case nameof(ILocalizedBadge.Badge_System):
 				{
+					color = SemanticColor.System;
 					break;
 				}
-			case nameof(ILocalizedBadge.Badge_CommandUsage):
+			case nameof(ILocalizedBadge.Badge_Help):
 				{
+					color = SemanticColor.Help;
+					break;
+				}
+			case nameof(ILocalizedBadge.Badge_Success):
+				{
+					color = SemanticColor.Success;
+					break;
+				}
+			case nameof(ILocalizedBadge.Badge_Warning):
+				{
+					color = SemanticColor.Warning;
+					break;
+				}
+			case nameof(ILocalizedBadge.Badge_Error):
+				{
+					color = SemanticColor.Error;
 					break;
 				}
 		}
 		return color;
-	}
-
-	public IChatMessageBuilder AddBadge(Expression<Func<ILocalizedBadge, object>> badgeIdentifier)
-	{
-		var name = identifierService.Identify(badgeIdentifier);
-		models.AddLast(new I18NBuilderChatMessageModel() { Color = ResolveBadgeColorInternal(name), Text = name, IsInline = false });
-		return this;
-	}
-
-	public IChatMessageBuilder InlineBadge(Expression<Func<ILocalizedBadge, object>> badgeIdentifier)
-	{
-		var name = identifierService.Identify(badgeIdentifier);
-		models.AddLast(new I18NBuilderChatMessageModel() { Color = ResolveBadgeColorInternal(name), Text = name, IsInline = true });
-		return this;
 	}
 }

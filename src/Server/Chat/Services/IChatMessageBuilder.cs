@@ -16,6 +16,4 @@ public interface IChatMessageBuilder
 	IChatMessageBuilder Inline(string text, params object[] args);
 	IChatMessageBuilder Inline(Color color, string text, params object[] args);
 	IEnumerable<string> Build(CultureInfo cultureInfo);
-	IChatMessageBuilder AddBadge(Expression<Func<ILocalizedBadge, object>> badgeIdentifier);
-	IChatMessageBuilder InlineBadge(Expression<Func<ILocalizedBadge, object>> badgeIdentifier);
 }
