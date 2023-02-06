@@ -2,10 +2,19 @@
 <root>
 	<!-- Badge -->
 	<data name="Badge_System">
-		<value>Hệ thống:</value>
+		<value>[#]</value>
 	</data>
-	<data name="Badge_CommandUsage">
-		<value>Hướng dẫn:</value>
+	<data name="Badge_Help">
+		<value>[?]</value>
+	</data>
+	<data name="Badge_Success">
+		<value>[+]</value>
+	</data>
+	<data name="Badge_Error">
+		<value>[-]</value>
+	</data>
+	<data name="Badge_Warning">
+		<value>[!]</value>
 	</data>
 
 	<!-- Chat -->
