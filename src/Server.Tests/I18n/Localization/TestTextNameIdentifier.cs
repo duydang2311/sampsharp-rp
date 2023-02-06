@@ -22,12 +22,12 @@ public class TestTextNameIdentifier
 	[Test]
 	public void Identify_Property_Returns_PropertyName_AsString()
 	{
-		Assert.That(identifier.Identify(m => m.CommandNotFound), Is.EqualTo("CommandNotFound"));
+		Assert.That(identifier.Identify(m => m.Chat_CommandNotFound), Is.EqualTo("Chat_CommandNotFound"));
 	}
 	[Test]
-    public void Identify_WithNewExpression_Returns_PropertyName_AsString()
+	public void Identify_WithNewExpression_Returns_PropertyName_AsString()
 	{
-		Assert.That(identifier.Identify(m => new { m.CommandNotFound }), Is.EqualTo("CommandNotFound"));
+		Assert.That(identifier.Identify(m => new { m.Chat_CommandNotFound }), Is.EqualTo("Chat_CommandNotFound"));
 	}
 	[Test]
 	public void Identify_WithEmptyNewExpression_Returns_EmptyString()

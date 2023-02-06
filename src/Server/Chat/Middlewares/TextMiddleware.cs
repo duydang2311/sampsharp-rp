@@ -39,7 +39,7 @@ public sealed partial class TextMiddleware
 		var distanceSquared = 15f * 15f;
 		chatService.SendMessage(
 			player => Vector3.DistanceSquared(player.Position, sourcePlayer.Position) <= distanceSquared,
-			b => b.Add(i => i.ChatMessage, sourcePlayer.Name, input)
+			b => b.Add(i => i.Chat_Message, sourcePlayer.Name, input)
 		);
 		return 0;
 	}

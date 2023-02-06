@@ -83,7 +83,7 @@ public sealed partial class CommandMiddleware
 		{
 			chatService.SendMessage(player, b => b
 				.Add(SemanticColor.LowAttention, m => m.Badge_System)
-				.Inline(SemanticColor.Error, m => m.CommandNotFound));
+				.Inline(SemanticColor.Error, m => m.Chat_CommandNotFound));
 			return true;
 		}
 
@@ -100,7 +100,7 @@ public sealed partial class CommandMiddleware
 		{
 			chatService.SendMessage(player, b => b
 				.Add(SemanticColor.LowAttention, m => m.Badge_System)
-				.Inline(SemanticColor.Error, m => m.CommandDenied));
+				.Inline(SemanticColor.Error, m => m.Chat_CommandDenied));
 			return true;
 		}
 
