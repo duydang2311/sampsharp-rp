@@ -26,7 +26,8 @@ public sealed partial class DoorCommandSystem : ISystem
 		if (!ok)
 		{
 			chatService.SendMessage(player, b => b
-				.Add(Color.Gray, m => m.DoorCommand_Destroy_InvalidId, id));
+				.Add(t => t.Badge_Warning)
+				.Inline(t => t.DoorCommand_Destroy_InvalidId, id));
 			return;
 		}
 
@@ -35,12 +36,14 @@ public sealed partial class DoorCommandSystem : ISystem
 		if (affected == 0)
 		{
 			chatService.SendMessage(player, b => b
-				.Inline(SemanticColor.Success, m => m.DoorCommand_Destroy_SuccessNoEffect, id));
+				.Add(t => t.Badge_Success)
+				.Inline(t => t.DoorCommand_Destroy_SuccessNoEffect, id));
 		}
 		else
 		{
 			chatService.SendMessage(player, b => b
-				.Inline(SemanticColor.Success, m => m.DoorCommand_Destroy_Success, id));
+				.Add(t => t.Badge_Success)
+				.Inline(t => t.DoorCommand_Destroy_Success, id));
 		}
 	}
 }

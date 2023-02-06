@@ -12,7 +12,7 @@ public sealed partial class DoorCommandSystem : ISystem
 		chatService.SendMessage(player, b => b
 			.Add(t => t.Badge_Help)
 			.Inline(t => t.DoorCommand_Create_Help)
-			.Add(Color.Gray, t => t.DoorCommand_Create_Options));
+			.Add(SemanticColor.LowAttention, t => t.DoorCommand_Create_Options));
 	}
 
 	private async Task CreateDoor(Player player, string? argument)
@@ -46,13 +46,15 @@ public sealed partial class DoorCommandSystem : ISystem
 					if (model.Id == 0)
 					{
 						chatService.SendMessage(player, b => b
-							.Add(Color.Gray, m => m.DoorCommand_Create_NoEffect));
+							.Add(t => t.Badge_Warning)
+							.Inline(SemanticColor.LowAttention, t => t.DoorCommand_Create_NoEffect));
 						return;
 					}
 					var door = doorFactory.CreateLogicalDoor(model.Id);
 					door.EntranceInteraction = doorFactory.CreateDoorInteraction(door, position, world, interior);
 					chatService.SendMessage(player, b => b
-						.Add(SemanticColor.Success, m => m.DoorCommand_Create_Success, model.Id));
+						.Add(t => t.Badge_Success)
+						.Inline(t => t.DoorCommand_Create_Success, model.Id));
 					break;
 				}
 			case "physical":

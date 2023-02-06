@@ -53,6 +53,8 @@ public sealed partial class DoorCommandSystem : ISystem
 				.SetProperty(m => m.ExitZ, position.Z)
 				.SetProperty(m => m.ExitWorld, world)
 				.SetProperty(m => m.ExitInterior, interior));
-		chatService.SendMessage(player, b => b.Add(SemanticColor.Success, m => m.DoorCommand_Exit_Success, id));
+		chatService.SendMessage(player, b => b
+			.Add(t => t.Badge_Success)
+			.Inline(t => t.DoorCommand_Exit_Success, id));
 	}
 }

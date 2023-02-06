@@ -9,10 +9,9 @@ public sealed partial class DoorCommandSystem : ISystem
 {
 	private async Task NearbyDoor(Player player, string? argument)
 	{
-		var distanceSquared = 15f * 15f;
-		if (!float.TryParse(argument, out var dist))
+		if (string.IsNullOrEmpty(argument) || !float.TryParse(argument, out var dist))
 		{
-			distanceSquared = dist * dist;
+			dist = 15f;
 		}
 
 		var x = player.Position.X;
@@ -27,20 +26,24 @@ public sealed partial class DoorCommandSystem : ISystem
 				interior == m.EntranceInterior &&
 				Math.Pow(x - m.EntranceX, 2) +
 				Math.Pow(y - m.EntranceY, 2) +
-				Math.Pow(z - m.EntranceZ, 2) <= distanceSquared)
+				Math.Pow(z - m.EntranceZ, 2) <= dist * dist)
 			.Select(m => new { m.Id, m.EntranceX, m.EntranceY, m.EntranceZ })
 			.AsNoTracking()
 			.ToArrayAsync();
 		if (models.Length == 0)
 		{
-			chatService.SendMessage(player, b => b.Add(m => m.DoorCommand_Nearby_Empty, dist));
+			chatService.SendMessage(player, b => b
+				.Add(t => t.Badge_Success)
+				.Inline(t => t.DoorCommand_Nearby_Empty, dist));
 			return;
 		}
 
 		chatService.SendMessage(player, b =>
 		{
 			var count = 1;
-			b.Add(SemanticColor.Success, m => m.DoorCommand_Nearby_Found, dist);
+			b
+				.Add(t => t.Badge_Success)
+				.Inline(t => t.DoorCommand_Nearby_Found, dist);
 			foreach (var model in models)
 			{
 				b

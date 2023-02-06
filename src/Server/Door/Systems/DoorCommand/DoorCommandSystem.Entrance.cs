@@ -31,7 +31,9 @@ public sealed partial class DoorCommandSystem : ISystem
 
 		if (door is not ILogicalDoor logicalDoor)
 		{
-			chatService.SendMessage(player, b => b.Add(SemanticColor.Error, m => m.DoorCommand_Entrance_InvalidDoorType, id));
+			chatService.SendMessage(player, b => b
+				.Add(t => t.Badge_Error)
+				.Inline(t => t.DoorCommand_Entrance_InvalidDoorType, id));
 			return;
 		}
 
@@ -53,6 +55,8 @@ public sealed partial class DoorCommandSystem : ISystem
 				.SetProperty(m => m.EntranceZ, position.Z)
 				.SetProperty(m => m.EntranceWorld, world)
 				.SetProperty(m => m.EntranceInterior, interior));
-		chatService.SendMessage(player, b => b.Add(SemanticColor.Success, m => m.DoorCommand_Entrance_Success, id));
+		chatService.SendMessage(player, b => b
+			.Add(t => t.Badge_Success)
+			.Inline(t => t.DoorCommand_Entrance_Success, id));
 	}
 }

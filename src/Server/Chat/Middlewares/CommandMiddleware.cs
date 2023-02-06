@@ -82,8 +82,8 @@ public sealed partial class CommandMiddleware
 		if (!commandService.HasCommand(command))
 		{
 			chatService.SendMessage(player, b => b
-				.Add(SemanticColor.LowAttention, m => m.Badge_System)
-				.Inline(SemanticColor.Error, m => m.Chat_CommandNotFound));
+				.Add(t => t.Badge_Error)
+				.Inline(t => t.Chat_CommandNotFound));
 			return true;
 		}
 
@@ -99,8 +99,8 @@ public sealed partial class CommandMiddleware
 			|| (permissionComponent.Level & model.PermissionLevel) == 0)
 		{
 			chatService.SendMessage(player, b => b
-				.Add(SemanticColor.LowAttention, m => m.Badge_System)
-				.Inline(SemanticColor.Error, m => m.Chat_CommandDenied));
+				.Add(t => t.Badge_Error)
+				.Inline(t => t.Chat_CommandDenied));
 			return true;
 		}
 
