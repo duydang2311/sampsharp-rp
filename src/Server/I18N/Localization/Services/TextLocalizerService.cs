@@ -5,7 +5,7 @@ using Server.I18N.Globalization.Services;
 
 namespace Server.I18N.Localization.Services;
 
-public sealed class TextLocalizerService : ITextLocalizerService
+public class TextLocalizerService : ITextLocalizerService
 {
 	private readonly Dictionary<CultureInfo, ResourceManager> resourceManagerDict = new();
 	private readonly ITextLocalizerServiceOptions config;
@@ -26,7 +26,7 @@ public sealed class TextLocalizerService : ITextLocalizerService
 
 	public string Get(CultureInfo culture, string key, params object[] args)
 	{
-        return string.Format(Get(culture, key), args);
+		return string.Format(Get(culture, key), args);
 	}
 
 	public string Get(string key)

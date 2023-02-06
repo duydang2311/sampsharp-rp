@@ -18,6 +18,7 @@ public static partial class ServiceCollectionExtensions
 			.AddSingleton<IGlobalCultureService, GlobalCultureService>()
 			.AddSingleton<ITextLocalizerService, TextLocalizerService>()
 			.AddSingleton<ITextNameIdentifierService, TextNameIdentifierService>()
+			.AddSingleton<IPlayerTextLocalizerService, PlayerTextLocalizerService>()
 			.AddSystem<ConnectSystem>();
 	}
 }
