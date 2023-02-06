@@ -11,7 +11,7 @@ public sealed partial class DoorCommandSystem : ISystem
 	private void HelpUpdateDoorEntrance(Player player)
 	{
 		chatService.SendMessage(player, b => b
-			.AddBadge(t => t.Badge_CommandUsage)
+			.Add(t => t.Badge_Help)
 			.Inline(t => t.DoorCommand_Entrance_Help));
 	}
 

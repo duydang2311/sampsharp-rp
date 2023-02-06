@@ -33,7 +33,7 @@ public sealed partial class DoorCommandSystem : ISystem
 	private void HelpDoorCommand(Player player)
 	{
 		chatService.SendMessage(player, b => b
-			.AddBadge(t => t.Badge_CommandUsage)
+			.Add(t => t.Badge_Help)
 			.Inline(t => t.DoorCommand_Help)
 			.Add(Color.Gray, t => t.DoorCommand_Options));
 	}
