@@ -54,10 +54,10 @@
 		<value>Không tìm thấy bất kỳ Door nào trong bán kính {0} mét.</value>
 	</data>
 	<data name="DoorCommand_Nearby_Found">
-		<value>Danh sách các Door trong bán kính {0} mét:</value>
+		<value>Danh sách các Door trong bán kính {0}m:</value>
 	</data>
 	<data name="DoorCommand_Nearby_ForEachInfo">
-		<value>+ Door#{0}: {1:##0.00}, {2:##0.00}, {3:##0.00} | cách {4:##0.00} mét.</value>
+		<value>Door#{0}: {1:##0.00}, {2:##0.00}, {3:##0.00}, cách {4:##0.00}m.</value>
 	</data>
 	<data name="DoorCommand_Entrance_Help">
 		<value>/door entrance [id].</value>
