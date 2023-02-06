@@ -39,10 +39,13 @@ public sealed partial class DoorCommandSystem : ISystem
 
 		chatService.SendMessage(player, b =>
 		{
+			var count = 1;
 			b.Add(SemanticColor.Success, m => m.DoorCommand_Nearby_Found, dist);
 			foreach (var model in models)
 			{
-				b.Add(m => m.DoorCommand_Nearby_ForEachInfo, model.Id, model.EntranceX,
+				b
+					.Add(SemanticColor.LowAttention, $"{count++}.")
+					.Inline(m => m.DoorCommand_Nearby_ForEachInfo, model.Id, model.EntranceX,
 					model.EntranceY, model.EntranceZ,
 					Math.Sqrt(Math.Pow(x - model.EntranceX, 2) + Math.Pow(y - model.EntranceY, 2) +
 							  Math.Pow(z - model.EntranceZ, 2)));
