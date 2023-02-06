@@ -2,6 +2,7 @@ using Microsoft.Extensions.Logging;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Chat.Services;
+using Server.Common.Colors;
 
 namespace Server.Chat.Middlewares;
 
@@ -39,7 +40,7 @@ public sealed partial class TextMiddleware
 		var distanceSquared = 15f * 15f;
 		chatService.SendMessage(
 			player => Vector3.DistanceSquared(player.Position, sourcePlayer.Position) <= distanceSquared,
-			b => b.Add(i => i.Chat_Message, sourcePlayer.Name, input)
+			b => b.Add(SemanticColor.ChatMessage, i => i.Chat_Message, sourcePlayer.Name, input)
 		);
 		return 0;
 	}
