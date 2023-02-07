@@ -1,3 +1,5 @@
 bin/
 obj/
 Server.csproj.user
+Database/CompiledModels/*
+!Database/CompiledModels/ServerDbContextModel.cs
