@@ -26,12 +26,14 @@ public static partial class ServiceCollectionExtensions
 
 		return self.AddPooledDbContextFactory<ServerDbContext>(optionsAction =>
 		{
-			optionsAction.UseNpgsql($"Host={host};Username={username};Password={password};Database={database};Port={port}");
-			optionsAction.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-			optionsAction.EnableDetailedErrors();
+			optionsAction
+				.UseNpgsql($"Host={host};Username={username};Password={password};Database={database};Port={port}")
+				.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+				.EnableDetailedErrors()
 #if DEBUG
-			optionsAction.EnableSensitiveDataLogging();
+				.EnableSensitiveDataLogging()
 #endif
+				.UseModel(Database.CompiledModels.ServerDbContextModel.Instance);
 		}, 256);
 	}
 }
