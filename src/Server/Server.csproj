@@ -13,7 +13,11 @@
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="dotenv.net" Version="3.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
     <PackageReference Include="Npgsql" Version="7.0.1" />
@@ -31,6 +35,7 @@
     <EmbeddedResource Include="Resources/Text.vi.resources" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SampSharp-streamer\src\SampSharp.Streamer.Entities\SampSharp.Streamer.Entities.csproj" />
+    <ProjectReference
+      Include="..\SampSharp-streamer\src\SampSharp.Streamer.Entities\SampSharp.Streamer.Entities.csproj" />
   </ItemGroup>
 </Project>
