@@ -46,3 +46,4 @@ gamemode/
 runtime/
 .env
 .fleet/
+.vs/
