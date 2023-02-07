@@ -1,4 +1,6 @@
+using System;
 using Microsoft.Extensions.DependencyInjection;
+using Server.I18N.Localization.Models;
 using Server.I18N.Localization.Services;
 
 namespace Server.Tests.I18n.Localization;
@@ -22,21 +24,21 @@ public class TestTextNameIdentifier
 	[Test]
 	public void Identify_Property_Returns_PropertyName_AsString()
 	{
-		Assert.That(identifier.Identify(m => m.Chat_CommandNotFound), Is.EqualTo("Chat_CommandNotFound"));
+		Assert.That(identifier.Identify<ILocalizedText>(m => m.Chat_CommandNotFound), Is.EqualTo("Chat_CommandNotFound"));
 	}
 	[Test]
 	public void Identify_WithNewExpression_Returns_PropertyName_AsString()
 	{
-		Assert.That(identifier.Identify(m => new { m.Chat_CommandNotFound }), Is.EqualTo("Chat_CommandNotFound"));
+		Assert.That(identifier.Identify<ILocalizedText>(m => new { m.Chat_CommandNotFound }), Is.EqualTo("Chat_CommandNotFound"));
 	}
 	[Test]
 	public void Identify_WithEmptyNewExpression_Returns_EmptyString()
 	{
-		Assert.That(identifier.Identify(m => new { }), Is.Empty);
+		Assert.That(identifier.Identify<ILocalizedText>(m => new { }), Is.Empty);
 	}
 	[Test]
 	public void Identify_WithUnsupportedExpression_Returns_EmptyString()
 	{
-		Assert.That(identifier.Identify(m => 1), Is.Empty);
+		Assert.That(identifier.Identify<ILocalizedText>(m => 1), Is.Empty);
 	}
 }
