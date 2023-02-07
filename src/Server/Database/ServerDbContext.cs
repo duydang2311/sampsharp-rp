@@ -11,9 +11,13 @@ public sealed class ServerDbContext : DbContext
 	public DbSet<AccountModel> Accounts => Set<AccountModel>();
 	public DbSet<DoorModel> Doors => Set<DoorModel>();
 
+	public ServerDbContext() : base() { }
 	public ServerDbContext(DbContextOptions options) : base(options) { }
 
-	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+		optionsBuilder.UseNpgsql();
+	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
