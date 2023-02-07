@@ -25,13 +25,17 @@ public sealed partial class DoorCommandSystem : ISystem
 
 		if (!doorFactory.TryGetDoor(id, out var door))
 		{
-			chatService.SendMessage(player, b => b.Add(SemanticColor.Error, m => m.DoorCommand_Exit_InvalidId, id));
+			chatService.SendMessage(player, b => b
+				.Add(t => t.Badge_Error)
+				.Inline(t => t.DoorCommand_Exit_InvalidId, id));
 			return;
 		}
 
 		if (door is not ILogicalDoor logicalDoor)
 		{
-			chatService.SendMessage(player, b => b.Add(SemanticColor.Error, m => m.DoorCommand_Exit_InvalidDoorType, id));
+			chatService.SendMessage(player, b => b
+				.Add(t => t.Badge_Error)
+				.Inline(t => t.DoorCommand_Exit_InvalidDoorType, id));
 			return;
 		}
 
