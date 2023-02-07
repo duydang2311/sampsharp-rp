@@ -30,9 +30,9 @@ public class TestChatMessageBuilder
 	{
 		var builder = factory.CreateBuilder();
 		var texts = builder
-			.Add("Line 1:")
-			.Inline("same color text")
-			.Add("Line 2:")
+			.Add(Color.White, "Line 1:")
+			.Inline(Color.White, "same color text")
+			.Add(Color.White, "Line 2:")
 			.Inline(Color.Red, "different color text")
 			.Build(CultureInfo.InvariantCulture)
 			.ToArray();
