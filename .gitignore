@@ -8,6 +8,7 @@ logs/
 crashinfo.txt
 
 # open.mp
+components/
 plugins/
 log.txt
 omp-server
