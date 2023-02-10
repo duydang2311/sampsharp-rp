@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
@@ -65,5 +64,6 @@ public sealed partial class EnterSystem : ISystem
 		player.Position = closestExitInteraction.Position;
 		player.VirtualWorld = closestExitInteraction.World;
 		player.Interior = closestExitInteraction.Interior;
+		player.Angle = closestExitInteraction.Angle;
 	}
 }

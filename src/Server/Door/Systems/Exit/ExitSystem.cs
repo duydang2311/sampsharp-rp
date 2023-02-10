@@ -63,5 +63,6 @@ public sealed partial class ExitSystem : ISystem
 		player.Position = closestEntranceInteraction.Position;
 		player.VirtualWorld = closestEntranceInteraction.World;
 		player.Interior = closestEntranceInteraction.Interior;
+		player.Angle = closestEntranceInteraction.Angle;
 	}
 }
