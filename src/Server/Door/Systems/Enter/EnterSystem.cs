@@ -37,13 +37,12 @@ public sealed partial class EnterSystem : ISystem
 	{
 		float distanceSquared;
 		var minDistanceSquared = (2f * 2f) + 1e-7;
-		IDoorInteraction? closestExitInteraction = null;
+		IDoorInteraction? closestInteraction = null;
 		foreach (var interaction in doorFactory.Grid.FindComponents(player.Position.XY, 2).Cast<IDoorInteraction>())
 		{
 			if (interaction.Door is not ILogicalDoor logicalDoor
 			|| logicalDoor.EntranceInteraction is null
-			|| logicalDoor.ExitInteraction is null
-			|| logicalDoor.EntranceInteraction != interaction)
+			|| logicalDoor.ExitInteraction is null)
 			{
 				continue;
 			}
@@ -51,19 +50,21 @@ public sealed partial class EnterSystem : ISystem
 			distanceSquared = Vector3.DistanceSquared(interaction.Position, player.Position);
 			if (distanceSquared < minDistanceSquared)
 			{
-				closestExitInteraction = logicalDoor.ExitInteraction;
+				closestInteraction = (logicalDoor.EntranceInteraction == interaction)
+					? logicalDoor.ExitInteraction
+					: logicalDoor.EntranceInteraction;
 				minDistanceSquared = distanceSquared;
 			}
 		}
-		if (closestExitInteraction is null)
+		if (closestInteraction is null)
 		{
 			return;
 		}
 
 		e.Cancel = true;
-		player.Position = closestExitInteraction.Position;
-		player.VirtualWorld = closestExitInteraction.World;
-		player.Interior = closestExitInteraction.Interior;
-		player.Angle = closestExitInteraction.Angle;
+		player.Position = closestInteraction.Position;
+		player.VirtualWorld = closestInteraction.World;
+		player.Interior = closestInteraction.Interior;
+		player.Angle = closestInteraction.Angle;
 	}
 }

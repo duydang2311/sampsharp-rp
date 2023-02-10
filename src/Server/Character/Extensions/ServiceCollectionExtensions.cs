@@ -1,6 +1,5 @@
 using SampSharp.Entities;
 using Server.Character.Systems.EnterCommand;
-using Server.Character.Systems.ExitCommand;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -10,8 +9,6 @@ public static partial class ServiceCollectionExtensions
 	{
 		return self
 			.AddSystem<EnterCommandSystem>()
-			.AddSystem<ExitCommandSystem>()
-			.AddSingleton<IEnterCommandEvent, EnterCommandEvent>()
-			.AddSingleton<IExitCommandEvent, ExitCommandEvent>();
+			.AddSingleton<IEnterCommandEvent, EnterCommandEvent>();
 	}
 }
