@@ -40,13 +40,14 @@ public sealed partial class DoorCommandSystem : ISystem
 		}
 
 		var position = player.Position;
+		var angle = player.Angle;
 		var world = player.VirtualWorld;
 		var interior = player.Interior;
 		if (logicalDoor.ExitInteraction is not null)
 		{
 			doorFactory.Grid.Remove(logicalDoor.ExitInteraction);
 		}
-		logicalDoor.ExitInteraction = doorFactory.CreateDoorInteraction(logicalDoor, player.Position, player.VirtualWorld, player.Interior);
+		logicalDoor.ExitInteraction = doorFactory.CreateDoorInteraction(logicalDoor, position, angle, world, interior);
 		await using var ctx = await dbContextFactory.CreateDbContextAsync();
 		await ctx
 			.Doors
@@ -55,6 +56,7 @@ public sealed partial class DoorCommandSystem : ISystem
 				.SetProperty(m => m.ExitX, position.X)
 				.SetProperty(m => m.ExitY, position.Y)
 				.SetProperty(m => m.ExitZ, position.Z)
+				.SetProperty(m => m.ExitA, angle)
 				.SetProperty(m => m.ExitWorld, world)
 				.SetProperty(m => m.ExitInterior, interior));
 		chatService.SendMessage(player, b => b

@@ -6,6 +6,7 @@ namespace Server.Door.Components;
 public interface IDoorInteraction : ISpatialComponent
 {
 	IDoor Door { get; }
+	float Angle { get; set; }
 	int World { get; set; }
 	int Interior { get; set; }
 }

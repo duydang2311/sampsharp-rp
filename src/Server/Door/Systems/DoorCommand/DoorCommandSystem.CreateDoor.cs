@@ -51,7 +51,7 @@ public sealed partial class DoorCommandSystem : ISystem
 						return;
 					}
 					var door = doorFactory.CreateLogicalDoor(model.Id);
-					door.EntranceInteraction = doorFactory.CreateDoorInteraction(door, position, world, interior);
+					door.EntranceInteraction = doorFactory.CreateDoorInteraction(door, position, angle, world, interior);
 					chatService.SendMessage(player, b => b
 						.Add(t => t.Badge_Success)
 						.Inline(t => t.DoorCommand_Create_Success, model.Id));

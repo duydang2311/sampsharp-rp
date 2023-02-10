@@ -11,7 +11,7 @@ public interface IDoorFactory
 	IEnumerable<IDoor> Doors { get; }
 	ILogicalDoor CreateLogicalDoor(long id);
 	IPhysicalDoor CreatePhysicalDoor(long id);
-	IDoorInteraction CreateDoorInteraction(IDoor door, Vector3 position, int world, int interior);
+	IDoorInteraction CreateDoorInteraction(IDoor door, Vector3 position, float angle, int world, int interior);
 	IDoor? FindOne(Predicate<IDoor> filter);
 	IEnumerable<IDoor> FindMany(Predicate<IDoor> filter);
 	bool DestroyDoor(long id);
