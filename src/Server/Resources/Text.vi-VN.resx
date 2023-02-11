@@ -92,4 +92,13 @@
 	<data name="DoorCommand_Exit_Success">
 		<value>Lối ra của Door#{0} đã được cập nhật.</value>
 	</data>
+	<data name="LanguageCommand_Help">
+		<value>/language [ngôn ngữ]</value>
+	</data>
+	<data name="LanguageCommand_Options">
+		<value>Các ngôn ngữ sẵn có: vi (không dấu), vi-VN (có dấu), en (tiếng Anh).</value>
+	</data>
+	<data name="LanguageCommand_Success">
+		<value>Ngôn ngữ trò chơi đã được điều chỉnh thành '{0}'.</value>
+	</data>
 </root>

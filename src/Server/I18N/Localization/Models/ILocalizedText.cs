@@ -26,4 +26,7 @@ public interface ILocalizedText : ILocalizedBadge
 	object DoorCommand_Exit_InvalidId { get; }
 	object DoorCommand_Exit_Success { get; }
 	object DoorCommand_Exit_InvalidDoorType { get; }
+	object LanguageCommand_Help { get; }
+	object LanguageCommand_Options { get; }
+	object LanguageCommand_Success { get; }
 }

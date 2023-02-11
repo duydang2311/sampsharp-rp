@@ -19,7 +19,7 @@
 
 	<!-- Chat -->
 	<data name="Chat_CommandNotFound">
-		<value>Command not found.</value>
+		<value>The entered command was not found.</value>
 	</data>
 	<data name="Chat_CommandDenied">
 		<value>You don't have enough access privileges for this command.</value>
@@ -91,5 +91,14 @@
 	</data>
 	<data name="DoorCommand_Exit_Success">
 		<value>The exit of Door#{0} has been updated.</value>
+	</data>
+	<data name="LanguageCommand_Help">
+		<value>/language [options]</value>
+	</data>
+	<data name="LanguageCommand_Options">
+		<value>Available options: vi (non-accented), vi-VN (accented), en.</value>
+	</data>
+	<data name="LanguageCommand_Success">
+		<value>Your game language has been changed to '{0}'.</value>
 	</data>
 </root>
