@@ -45,7 +45,7 @@
 		<value>No door has been created.</value>
 	</data>
 	<data name="DoorCommand_Create_Success">
-		<value>A new Door#{0} has been created successfully.</value>
+		<value>A new door #{0} has been created.</value>
 	</data>
 	<data name="DoorCommand_Destroy_Help">
 		<value>/door destroy [id].</value>
@@ -57,7 +57,7 @@
 		<value>Door#{0} has been destroyed, however, no changes were made to the database.</value>
 	</data>
 	<data name="DoorCommand_Destroy_Success">
-		<value>Door#{0} has been destroyed successfully.</value>
+		<value>Door#{0} has been destroyed.</value>
 	</data>
 	<data name="DoorCommand_Nearby_Empty">
 		<value>There are no doors found within {0} meter radius.</value>
@@ -66,7 +66,7 @@
 		<value>List of doors found within {0} meter radius:</value>
 	</data>
 	<data name="DoorCommand_Nearby_ForEachInfo">
-		<value>Door#{0}: {1:##0.00}, {2:##0.00}, {3:##0.00}, cách {4:##0.00}m.</value>
+		<value>Door#{0}: {1:##0.00}, {2:##0.00}, {3:##0.00}, {4:##0.00} meters away.</value>
 	</data>
 	<data name="DoorCommand_Entrance_Help">
 		<value>/door entrance [id].</value>
