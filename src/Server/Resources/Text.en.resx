@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<!-- Badge -->
+	<data name="Badge_System">
+		<value>[#]</value>
+	</data>
+	<data name="Badge_Help">
+		<value>[?]</value>
+	</data>
+	<data name="Badge_Success">
+		<value>[+]</value>
+	</data>
+	<data name="Badge_Error">
+		<value>[-]</value>
+	</data>
+	<data name="Badge_Warning">
+		<value>[!]</value>
+	</data>
+
+	<!-- Chat -->
+	<data name="Chat_CommandNotFound">
+		<value>Command not found.</value>
+	</data>
+	<data name="Chat_CommandDenied">
+		<value>You don't have enough access privileges for this command.</value>
+	</data>
+	<data name="Chat_Message">
+		<value>{0} says: {1}</value>
+	</data>
+
+	<!-- /door -->
+	<data name="DoorCommand_Help">
+		<value>/door [options].</value>
+	</data>
+	<data name="DoorCommand_Options">
+		<value>Available options: 'create', 'destroy', 'nearby', 'entrance', 'exit'.</value>
+	</data>
+	<data name="DoorCommand_Create_Help">
+		<value>/door create [options].</value>
+	</data>
+	<data name="DoorCommand_Create_Options">
+		<value>Available options: 'logical', 'physical'.</value>
+	</data>
+	<data name="DoorCommand_Create_NoEffect">
+		<value>No door has been created.</value>
+	</data>
+	<data name="DoorCommand_Create_Success">
+		<value>A new Door#{0} has been created successfully.</value>
+	</data>
+	<data name="DoorCommand_Destroy_Help">
+		<value>/door destroy [id].</value>
+	</data>
+	<data name="DoorCommand_Destroy_InvalidId">
+		<value>Door#{0} does not exist.</value>
+	</data>
+	<data name="DoorCommand_Destroy_SuccessNoEffect">
+		<value>Door#{0} has been destroyed, however, no changes were made to the database.</value>
+	</data>
+	<data name="DoorCommand_Destroy_Success">
+		<value>Door#{0} has been destroyed successfully.</value>
+	</data>
+	<data name="DoorCommand_Nearby_Empty">
+		<value>There are no doors found within {0} meter radius.</value>
+	</data>
+	<data name="DoorCommand_Nearby_Found">
+		<value>List of doors found within {0} meter radius:</value>
+	</data>
+	<data name="DoorCommand_Nearby_ForEachInfo">
+		<value>Door#{0}: {1:##0.00}, {2:##0.00}, {3:##0.00}, cách {4:##0.00}m.</value>
+	</data>
+	<data name="DoorCommand_Entrance_Help">
+		<value>/door entrance [id].</value>
+	</data>
+	<data name="DoorCommand_Entrance_InvalidId">
+		<value>Door#{0} does not exist.</value>
+	</data>
+	<data name="DoorCommand_Entrance_InvalidDoorType">
+		<value>Door#{0} must be a logical door.</value>
+	</data>
+	<data name="DoorCommand_Entrance_Success">
+		<value>The entrance of Door#{0} has been updated.</value>
+	</data>
+	<data name="DoorCommand_Exit_Help">
+		<value>/door exit [id].</value>
+	</data>
+	<data name="DoorCommand_Exit_InvalidId">
+		<value>Door#{0} does not exist.</value>
+	</data>
+	<data name="DoorCommand_Exit_InvalidDoorType">
+		<value>Door#{0} must be a logical door.</value>
+	</data>
+	<data name="DoorCommand_Exit_Success">
+		<value>The exit of Door#{0} has been updated.</value>
+	</data>
+</root>
