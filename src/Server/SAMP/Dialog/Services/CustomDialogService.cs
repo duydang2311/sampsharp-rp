@@ -29,7 +29,7 @@ public sealed class CustomDialogService : ICustomDialogService
 	public Task<TResponse> ShowAsync<TResponse>(EntityId player, IDialog<TResponse> dialog)
 	where TResponse : struct
 	{
-		return sampSharpDialogService.Show(player, dialog);
+		return sampSharpDialogService.ShowAsync(player, dialog);
 	}
 
 	public void Show<TResponse>(EntityId player, IDialog<TResponse> dialog, Action<TResponse> responseHandler)
