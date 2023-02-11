@@ -95,8 +95,8 @@ public sealed partial class CommandMiddleware
 		}
 
 		var permissionComponent = player.GetComponent<PermissionComponent>();
-		if (permissionComponent is null
-			|| (permissionComponent.Level & model.PermissionLevel) == 0)
+		if (model.PermissionLevel != PermissionLevel.None
+		&& (permissionComponent is null || (permissionComponent.Level & model.PermissionLevel) == 0))
 		{
 			chatService.SendMessage(player, b => b
 				.Add(t => t.Badge_Error)
