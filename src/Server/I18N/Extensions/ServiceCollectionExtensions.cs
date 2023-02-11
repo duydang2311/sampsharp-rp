@@ -2,6 +2,7 @@ using SampSharp.Entities;
 using Server.I18N.Globalization.Services;
 using Server.I18N.Localization.Services;
 using Server.I18N.Localization.Systems.Connect;
+using Server.I18N.Localization.Systems.LanguageCommand;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +20,7 @@ public static partial class ServiceCollectionExtensions
 			.AddSingleton<ITextLocalizerService, TextLocalizerService>()
 			.AddSingleton<ITextNameIdentifierService, TextNameIdentifierService>()
 			.AddSingleton<IPlayerTextLocalizerService, PlayerTextLocalizerService>()
-			.AddSystem<ConnectSystem>();
+			.AddSystem<ConnectSystem>()
+			.AddSystem<LanguageCommandSystem>();
 	}
 }
