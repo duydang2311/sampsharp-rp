@@ -33,9 +33,7 @@ public sealed class LanguageCommandSystem : ISystem
 
 	private void ChangeLanguage(Player player, string locale)
 	{
-		if (locale != "vi"
-		|| locale != "vi-VN"
-		|| locale != "en")
+		if (locale != "vi" && locale != "vi-VN" && locale != "en")
 		{
 			HelpChangeLanguage(player);
 			return;
