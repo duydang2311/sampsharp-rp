@@ -24,10 +24,16 @@ public sealed partial class DoorCommandSystem : ISystem
 			.Where(m =>
 				world == m.EntranceWorld &&
 				interior == m.EntranceInterior &&
-				Math.Pow(x - m.EntranceX, 2) +
-				Math.Pow(y - m.EntranceY, 2) +
-				Math.Pow(z - m.EntranceZ, 2) <= dist * dist)
-			.Select(m => new { m.Id, m.EntranceX, m.EntranceY, m.EntranceZ })
+				(Math.Pow(x - m.EntranceX, 2) + Math.Pow(y - m.EntranceY, 2) + Math.Pow(z - m.EntranceZ, 2)) <= dist * dist)
+			.Select(m => new
+			{
+				m.Id,
+				m.EntranceX,
+				m.EntranceY,
+				m.EntranceZ,
+				m.EntranceWorld,
+				m.EntranceInterior,
+			})
 			.AsNoTracking()
 			.ToArrayAsync();
 		if (models.Length == 0)
@@ -37,6 +43,12 @@ public sealed partial class DoorCommandSystem : ISystem
 				.Inline(t => t.DoorCommand_Nearby_Empty, dist));
 			return;
 		}
+		Array.Sort(models, (a, b) =>
+		{
+			var distanceSquaredA = Math.Pow(x - a.EntranceX, 2) + Math.Pow(y - a.EntranceY, 2) + Math.Pow(z - a.EntranceZ, 2);
+			var distanceSquaredB = Math.Pow(x - b.EntranceX, 2) + Math.Pow(y - b.EntranceY, 2) + Math.Pow(z - b.EntranceZ, 2);
+			return (int)Math.Ceiling(distanceSquaredA - distanceSquaredB);
+		});
 
 		chatService.SendMessage(player, b =>
 		{
