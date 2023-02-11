@@ -7,7 +7,7 @@
     <OutputPath>..\..\gamemode</OutputPath>
     <StartAction>Program</StartAction>
     <StartWorkingDirectory>..\..\</StartWorkingDirectory>
-    <StartProgram>..\..\samp03svr</StartProgram>
+    <StartProgram>..\..\omp-server</StartProgram>
     <GenerateSatelliteAssembliesForCore>true</GenerateSatelliteAssembliesForCore>
   </PropertyGroup>
   <ItemGroup>
