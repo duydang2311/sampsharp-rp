@@ -20,7 +20,7 @@ namespace Server
 					globalOptions.AddCulture("vi");
 					globalOptions.AddCulture("vi-VN");
 					textLocalizerOptions.BaseName = "Server.Resources.Text";
-					textLocalizerOptions.DefaultCulture = CultureInfo.GetCultureInfo("vi");
+					textLocalizerOptions.DefaultCulture = CultureInfo.GetCultureInfo("vi-VN");
 				})
 				.WithSAMP()
 				.WithCommon()
