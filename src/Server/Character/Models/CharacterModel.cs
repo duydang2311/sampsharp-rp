@@ -1,5 +1,7 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 using SampSharp.Entities.SAMP;
 
 namespace Server.Character.Models;
@@ -25,4 +27,7 @@ public sealed class CharacterModel
 	public int World { get; set; }
 	[Required]
 	public int Interior { get; set; }
+	[DefaultValue("vi")]
+	[MaxLength(11)]
+	public string Locale { get; set; } = string.Empty;
 }
