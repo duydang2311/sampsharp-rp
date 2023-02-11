@@ -10,6 +10,6 @@ public sealed class ConnectSystem : ISystem
 	[Event]
 	private void OnPlayerConnect(Player player, ITextLocalizerServiceOptions localizerOptions)
 	{
-		player.AddComponent<CultureComponent>(localizerOptions.DefaultCulture);
+		player.AddComponent(new CultureComponent(localizerOptions.DefaultCulture));
 	}
 }
