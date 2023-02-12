@@ -1,16 +1,33 @@
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using SampSharp.Entities.SAMP.Commands;
+using Server.Chat.Components;
+using Server.Chat.Services;
+using Server.Common.Colors;
 
 namespace Server.Property.Systems.PropertyCommand;
 
 public sealed class PropertyCommandSystem : ISystem
 {
-	public PropertyCommandSystem() { }
+	private readonly IChatService chatService;
 
-	private void Help(Player player)
+	public PropertyCommandSystem(ICommandService commandService, IChatService chatService)
 	{
-		player.SendClientMessage(Color.White, "Hướng dẫn: /property [option].");
+		this.chatService = chatService;
+		commandService.RegisterCommand(m =>
+		{
+			m.Name = "property";
+			m.Delegate = PropertyCommand;
+			m.PermissionLevel = PermissionLevel.Admin;
+		});
+	}
+
+	private void HelpPropertyCommand(Player player)
+	{
+		chatService.SendMessage(player, b => b
+			.Add(t => t.Badge_Help)
+			.Inline(t => t.PropertyCommand_Help)
+			.Add(SemanticColor.LowAttention, t => t.PropertyCommand_Options));
 	}
 
 	[PlayerCommand("property")]
@@ -24,7 +41,7 @@ public sealed class PropertyCommandSystem : ISystem
 				}
 			default:
 				{
-					Help(player);
+					HelpPropertyCommand(player);
 					break;
 				}
 		}
