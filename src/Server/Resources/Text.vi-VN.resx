@@ -101,4 +101,10 @@
 	<data name="LanguageCommand_Success">
 		<value>Ngôn ngữ trò chơi đã được điều chỉnh thành '{0}'.</value>
 	</data>
+	<data name="PropertyCommand_Help">
+		<value>/property [lựa chọn]</value>
+	</data>
+	<data name="PropertyCommand_Options">
+		<value>Các lựa chọn sẵn có: create, destroy.</value>
+	</data>
 </root>
