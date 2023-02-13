@@ -31,7 +31,7 @@
     <PackageReference Include="TaskTupleAwaiter" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources/Text.vi.resources" />
+    <EmbeddedResource Include="Resources/*.resources" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference
