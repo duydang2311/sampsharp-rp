@@ -21,13 +21,13 @@ public sealed class AuthenticationSytem : ISystem
 		this.authenticatedEvent = authenticatedEvent;
 	}
 
-	[Event]
-	private async void OnPlayerConnect(Player player)
-	{
-		chatService.SendMessage(player, b => b.Add("Đang tải, vui lòng đợi trong giây lát..."));
-		player.ToggleSpectating(true);
-		await using var context = await contextFactory.CreateDbContextAsync();
-		var exist = await context.Characters.AnyAsync(model => player.Name == model.Name);
-		await authenticatedEvent.InvokeAsync(player, exist);
-	}
+    [Event]
+    private async void OnPlayerConnect(Player player)
+    {
+        chatService.SendMessage(player, f => f.Add(m => m.Account_Authentication_Loading));
+        player.ToggleSpectating(true);
+        await using var context = await contextFactory.CreateDbContextAsync();
+        var exist = await context.Accounts.AnyAsync(model => player.Name == model.Name);
+        await authenticatedEvent.InvokeAsync(player, exist);
+    }
 }

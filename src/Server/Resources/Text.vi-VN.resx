@@ -101,4 +101,14 @@
 	<data name="LanguageCommand_Success">
 		<value>Ngôn ngữ trò chơi đã được điều chỉnh thành '{0}'.</value>
 	</data>
+
+	<!-- authenticate system -->
+	<data name="Account_Authentication_Loading">
+		<value>Đang tải, vui lòng đợi trong giây lát...</value>
+	</data>
+
+	<!-- creation system -->
+	<data name="Character_Creation_AgeError">
+		<value>Đang tải, vui lòng đợi trong giây lát...</value>
+	</data>
 </root>
