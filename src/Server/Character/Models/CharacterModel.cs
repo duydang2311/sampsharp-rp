@@ -11,22 +11,24 @@ public sealed class CharacterModel
 	[Key]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public long Id { get; set; }
+	[Required]
+	public long AccountId { get; set; }
 	[MaxLength(SampLimits.MaxPlayerNameLength)]
 	[Required]
 	public string Name { get; set; } = string.Empty;
-	[Required]
-	[MaxLength(61)]
-	public string Password { get; set; } = string.Empty;
-	[Required]
+	public int Age { get; set; }
+	public bool Gender { get; set; }
+	[DefaultValue(1659.8188f)]
 	public float X { get; set; }
-	[Required]
+	[DefaultValue(-1680.4004f)]
 	public float Y { get; set; }
-	[Required]
+	[DefaultValue(21.4228f)]
 	public float Z { get; set; }
-	[Required]
+	[DefaultValue(180.0f)]
+	public float A { get; set; }
 	public int World { get; set; }
-	[Required]
 	public int Interior { get; set; }
+	public int Skin { get; set; }
 	[DefaultValue("vi")]
 	[MaxLength(11)]
 	public string Locale { get; set; } = string.Empty;

@@ -29,6 +29,7 @@ namespace Server
 				.WithSpatialGrid();
 		}
 
+
 		public void Configure(IEcsBuilder builder)
 		{
 			builder

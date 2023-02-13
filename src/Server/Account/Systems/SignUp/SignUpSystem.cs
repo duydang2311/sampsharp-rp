@@ -1,6 +1,8 @@
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
+using Server.Account.Components;
 using Server.Account.Systems.Authentication;
+using Server.SAMP.Dialog.Services;
 
 namespace Server.Account.Systems.SignUp;
 
@@ -12,10 +14,11 @@ using Database;
 public sealed class SignUpSystem : ISystem
 {
     private readonly IDbContextFactory<ServerDbContext> contextFactory;
-    private readonly IDialogService dialogService;
+    private readonly ICustomDialogService dialogService;
     private readonly ISignedUpEvent signedUpEvent;
 
-    public SignUpSystem(IDbContextFactory<ServerDbContext> contextFactory, IDialogService dialogService, IAuthenticatedEvent authenticatedEvent, ISignedUpEvent signedUpEvent)
+    public SignUpSystem(IDbContextFactory<ServerDbContext> contextFactory, ICustomDialogService dialogService,
+        IAuthenticatedEvent authenticatedEvent, ISignedUpEvent signedUpEvent)
     {
         this.contextFactory = contextFactory;
         this.dialogService = dialogService;
@@ -24,30 +27,31 @@ public sealed class SignUpSystem : ISystem
         authenticatedEvent.AddHandler(OnPlayerAuthenticated);
     }
 
-    public async Task OnPlayerAuthenticated(Player player, bool signedUp)
+    public Task OnPlayerAuthenticated(Player player, bool signedUp)
     {
         if (signedUp)
         {
-            return;
+            return Task.CompletedTask;
         }
-        await OnPasswordDialogResponse(player, await ShowPasswordDialog(player));
+
+        return ShowSignUpDialogAsync(player);
     }
 
-    private Task<InputDialogResponse> ShowPasswordDialog(Player player)
+    private async Task ShowSignUpDialogAsync(Player player)
     {
-        var signUpDialog = new InputDialog()
+        var response = await dialogService.ShowAsync(player, f => f.CreateInput(dialog =>
         {
-            Caption = "<INSERT_SERVER_NAME> - Dang ky tai khoan",
-            Content = "{FFFFFF}Xin chao{7f9eba} " + player.Name +
-                      "{FFFFFF}, tai khoan nay chua duoc dang ky hay nhap mat khau moi vao khung ben duoi.\n\n{D1D1D1}Vi ly do bao mat, hay dat mat khau {C75656}duy nhat {D1D1D1}ma ban chua tung su dung truoc day.",
-            Button1 = "Dang ky",
-            Button2 = "Thoat",
-            IsPassword = true
-        };
-        return dialogService.Show(player, signUpDialog);
+            dialog.Caption = "<INSERT_SERVER_NAME> - Dang ky tai khoan";
+            dialog.Content = "{FFFFFF}Xin chao{7f9eba} " + player.Name +
+                             "{FFFFFF}, tai khoan nay chua duoc dang ky hay nhap mat khau moi vao khung ben duoi.\n\n{D1D1D1}Vi ly do bao mat, hay dat mat khau {C75656}duy nhat {D1D1D1}ma ban chua tung su dung truoc day.";
+            dialog.Button1 = "Dang ky";
+            dialog.Button2 = "Thoat";
+            dialog.IsPassword = true;
+        }));
+        await OnSignUpDialogResponse(player, response);
     }
 
-    private async Task OnPasswordDialogResponse(Player player, InputDialogResponse response)
+    private async Task OnSignUpDialogResponse(Player player, InputDialogResponse response)
     {
         if (response.Response == DialogResponse.RightButtonOrCancel)
         {
@@ -67,6 +71,7 @@ public sealed class SignUpSystem : ISystem
         await context.Accounts.AddAsync(model).ConfigureAwait(false);
         await context.SaveChangesAsync().ConfigureAwait(false);
 
+        player.AddComponent<AccountComponent>(model.Id);
         await signedUpEvent.InvokeAsync(player);
     }
 }
