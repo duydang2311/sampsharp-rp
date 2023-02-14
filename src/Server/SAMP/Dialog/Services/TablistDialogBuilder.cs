@@ -13,11 +13,6 @@ public class TablistDialogBuilder : BaseDialogBuilder, ITablistDialogBuilder
 		return this;
 	}
 
-	public new ITablistDialogBuilder SetContent(string text)
-	{
-		return this;
-	}
-
 	public new ITablistDialogBuilder SetButton1(string text)
 	{
 		base.SetButton1(text);

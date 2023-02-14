@@ -2,7 +2,7 @@ using SampSharp.Entities.SAMP;
 
 namespace Server.SAMP.Dialog.Services;
 
-public interface IMessageDialogBuilder : IDialogBuilder
+public interface IMessageDialogBuilder : IContentDialogBuilder
 {
 	new IMessageDialogBuilder SetCaption(string text);
 	new IMessageDialogBuilder SetContent(string text);

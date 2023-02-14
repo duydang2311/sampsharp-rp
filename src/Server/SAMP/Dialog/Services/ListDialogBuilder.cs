@@ -12,11 +12,6 @@ public class ListDialogBuilder : BaseDialogBuilder, IListDialogBuilder
 		return this;
 	}
 
-	public new IListDialogBuilder SetContent(string text)
-	{
-		return this;
-	}
-
 	public new IListDialogBuilder SetButton1(string text)
 	{
 		base.SetButton1(text);

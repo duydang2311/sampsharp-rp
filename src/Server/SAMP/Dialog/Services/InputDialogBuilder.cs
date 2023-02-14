@@ -2,7 +2,7 @@ using SampSharp.Entities.SAMP;
 
 namespace Server.SAMP.Dialog.Services;
 
-public class InputDialogBuilder : BaseDialogBuilder, IInputDialogBuilder
+public class InputDialogBuilder : BaseContentDialogBuilder, IInputDialogBuilder
 {
 	protected bool isPassword = false;
 

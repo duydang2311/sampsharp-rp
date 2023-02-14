@@ -3,19 +3,12 @@ namespace Server.SAMP.Dialog.Services;
 public abstract class BaseDialogBuilder : IDialogBuilder
 {
 	protected string caption = string.Empty;
-	protected string content = string.Empty;
 	protected string button1 = string.Empty;
 	protected string? button2 = null;
 
 	public IDialogBuilder SetCaption(string text)
 	{
 		caption = text;
-		return this;
-	}
-
-	public IDialogBuilder SetContent(string text)
-	{
-		content = text;
 		return this;
 	}
 
