@@ -22,7 +22,7 @@ public abstract class BaseContentDialogBuilder : BaseDialogBuilder, IContentDial
 		return this;
 	}
 
-	public IContentDialogBuilder SetButton2(string text)
+	public new IContentDialogBuilder SetButton2(string text)
 	{
 		base.SetButton2(text);
 		return this;
