@@ -11,7 +11,6 @@ public static partial class ServiceCollectionExtensions
 	{
 		return self
 			.AddSystem<ToggleItemUpdateSystem>()
-			.AddSingleton<ICustomDialogFactory, CustomDialogFactory>()
 			.AddSingleton<ICustomDialogService, CustomDialogService>()
 			.AddSingleton<IStreamerService, StreamerService>()
 			.AddSingleton<IDialogBuilderFactory, DialogBuilderFactory>();

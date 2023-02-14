@@ -5,9 +5,9 @@ namespace Server.SAMP.Dialog.Services;
 
 public interface ICustomDialogService
 {
-	Task<TResponse> ShowAsync<TResponse>(EntityId player, Func<ICustomDialogFactory, IDialog<TResponse>> dialogCreator)
+	Task<TResponse> ShowAsync<TResponse>(EntityId player, Func<IDialogBuilderFactory, IDialog<TResponse>> buildDialog)
 	where TResponse : struct;
-	void Show<TResponse>(EntityId player, Func<ICustomDialogFactory, IDialog<TResponse>> dialogCreator, Action<TResponse> responseHandler)
+	void Show<TResponse>(EntityId player, Func<IDialogBuilderFactory, IDialog<TResponse>> buildDialog, Action<TResponse> responseHandler)
 	where TResponse : struct;
 	Task<TResponse> ShowAsync<TResponse>(EntityId player, IDialog<TResponse> dialog)
 	where TResponse : struct;
