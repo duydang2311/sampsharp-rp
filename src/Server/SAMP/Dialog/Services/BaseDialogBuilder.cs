@@ -32,9 +32,9 @@ public abstract class BaseDialogBuilder<TDialog, TBuilder> : IDialogBuilder<TDia
 		return _this;
 	}
 
-	public TBuilder SetCaption(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
+	public TBuilder SetCaption(Expression<Func<ILocalizedDialogText, object>> textIdentifier, params object[] args)
 	{
-		Caption = new DialogTextModel()
+		Caption = new LocalizedTextModel
 		{
 			Text = identifierService.Identify(textIdentifier),
 			Args = args
@@ -48,9 +48,9 @@ public abstract class BaseDialogBuilder<TDialog, TBuilder> : IDialogBuilder<TDia
 		return _this;
 	}
 
-	public TBuilder SetButton1(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
+	public TBuilder SetButton1(Expression<Func<ILocalizedDialogText, object>> textIdentifier, params object[] args)
 	{
-		Button1 = new DialogTextModel()
+		Button1 = new LocalizedTextModel
 		{
 			Text = identifierService.Identify(textIdentifier),
 			Args = args
@@ -64,9 +64,9 @@ public abstract class BaseDialogBuilder<TDialog, TBuilder> : IDialogBuilder<TDia
 		return _this;
 	}
 
-	public TBuilder SetButton2(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
+	public TBuilder SetButton2(Expression<Func<ILocalizedDialogText, object>> textIdentifier, params object[] args)
 	{
-		Button2 = new DialogTextModel()
+		Button2 = new LocalizedTextModel
 		{
 			Text = identifierService.Identify(textIdentifier),
 			Args = args
@@ -76,7 +76,7 @@ public abstract class BaseDialogBuilder<TDialog, TBuilder> : IDialogBuilder<TDia
 
 	protected string BuildText(CultureInfo cultureInfo, object? text)
 	{
-		if (text is DialogTextModel model)
+		if (text is LocalizedTextModel model)
 		{
 			return localizerService.Get(cultureInfo, model.Text, model.Args);
 		}

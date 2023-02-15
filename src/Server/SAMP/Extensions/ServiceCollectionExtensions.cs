@@ -13,6 +13,7 @@ public static partial class ServiceCollectionExtensions
 			.AddSystem<ToggleItemUpdateSystem>()
 			.AddSingleton<ICustomDialogService, CustomDialogService>()
 			.AddSingleton<IStreamerService, StreamerService>()
+			.AddSingleton<IDialogTextBuilderFactory, DialogTextBuilderFactory>()
 			.AddSingleton<IDialogBuilderFactory, DialogBuilderFactory>();
 	}
 }

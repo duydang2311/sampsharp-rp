@@ -6,9 +6,9 @@ public sealed class DialogBuilderFactory : IDialogBuilderFactory
 {
 	private readonly ITextLocalizerService localizerService;
 	private readonly ITextNameIdentifierService identifierService;
-	private readonly ILocalizedTextBuilderFactory textBuilderFactory;
+	private readonly IDialogTextBuilderFactory textBuilderFactory;
 
-	public DialogBuilderFactory(ITextLocalizerService localizerService, ITextNameIdentifierService identifierService, ILocalizedTextBuilderFactory textBuilderFactory)
+	public DialogBuilderFactory(ITextLocalizerService localizerService, ITextNameIdentifierService identifierService, IDialogTextBuilderFactory textBuilderFactory)
 	{
 		this.localizerService = localizerService;
 		this.identifierService = identifierService;

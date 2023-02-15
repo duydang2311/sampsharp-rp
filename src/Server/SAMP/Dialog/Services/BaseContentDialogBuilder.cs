@@ -2,7 +2,6 @@ using System.Linq.Expressions;
 using SampSharp.Entities.SAMP;
 using Server.I18N.Localization.Models;
 using Server.I18N.Localization.Services;
-using Server.SAMP.Dialog.Models;
 
 namespace Server.SAMP.Dialog.Services;
 
@@ -20,9 +19,9 @@ public abstract class BaseContentDialogBuilder<TDialog, TBuilder> : BaseDialogBu
 		return _this;
 	}
 
-	public TBuilder SetContent(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
+	public TBuilder SetContent(Expression<Func<ILocalizedDialogText, object>> textIdentifier, params object[] args)
 	{
-		Content = new DialogTextModel
+		Content = new LocalizedTextModel
 		{
 			Text = identifierService.Identify(textIdentifier),
 			Args = args

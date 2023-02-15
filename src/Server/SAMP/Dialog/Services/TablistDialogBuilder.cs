@@ -9,17 +9,17 @@ namespace Server.SAMP.Dialog.Services;
 
 public sealed class TablistDialogBuilder : BaseDialogBuilder<TablistDialog, ITablistDialogBuilder>, ITablistDialogBuilder
 {
-	private readonly ILocalizedTextBuilderFactory textBuilderFactory;
+	private readonly IDialogTextBuilderFactory textBuilderFactory;
 	private readonly LinkedList<object> columns = new();
 	private readonly LinkedList<object> rows = new();
 
 	private class TablistRowBuilder
 	{
-		public ILocalizedTextBuilder Instance { get; set; } = null!;
+		public IDialogTextBuilder Instance { get; set; } = null!;
 		public object? Tag { get; set; }
 	}
 
-	public TablistDialogBuilder(ITextLocalizerService localizerService, ITextNameIdentifierService identifierService, ILocalizedTextBuilderFactory textBuilderFactory) : base(localizerService, identifierService)
+	public TablistDialogBuilder(ITextLocalizerService localizerService, ITextNameIdentifierService identifierService, IDialogTextBuilderFactory textBuilderFactory) : base(localizerService, identifierService)
 	{
 		this.textBuilderFactory = textBuilderFactory;
 	}
@@ -29,9 +29,9 @@ public sealed class TablistDialogBuilder : BaseDialogBuilder<TablistDialog, ITab
 		return _this;
 	}
 
-	public ITablistDialogBuilder AddColumn(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
+	public ITablistDialogBuilder AddColumn(Expression<Func<ILocalizedDialogText, object>> textIdentifier, params object[] args)
 	{
-		columns.AddLast(new DialogTextModel
+		columns.AddLast(new LocalizedTextModel
 		{
 			Text = identifierService.Identify(textIdentifier),
 			Args = args
@@ -45,7 +45,7 @@ public sealed class TablistDialogBuilder : BaseDialogBuilder<TablistDialog, ITab
 		return _this;
 	}
 
-	public ITablistDialogBuilder AddRow(Action<ILocalizedTextBuilder> buildRowTexts)
+	public ITablistDialogBuilder AddRow(Action<IDialogTextBuilder> buildRowTexts)
 	{
 		var builder = new TablistRowBuilder { Instance = textBuilderFactory.CreateBuilder() };
 		buildRowTexts(builder.Instance);
@@ -75,7 +75,7 @@ public sealed class TablistDialogBuilder : BaseDialogBuilder<TablistDialog, ITab
 	{
 		var columnTexts = columns.Select(o =>
 		{
-			if (o is DialogTextModel model)
+			if (o is LocalizedTextModel model)
 			{
 				return BuildText(cultureInfo, model);
 			}

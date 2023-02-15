@@ -9,5 +9,5 @@ public interface IContentDialogBuilder<TDialog, TBuilder> : IDialogBuilder<TDial
 	where TBuilder : IContentDialogBuilder<TDialog, TBuilder>
 {
 	TBuilder SetContent(string text);
-	TBuilder SetContent(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args);
+	TBuilder SetContent(Expression<Func<ILocalizedDialogText, object>> textIdentifier, params object[] args);
 }

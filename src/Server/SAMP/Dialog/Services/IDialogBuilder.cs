@@ -10,11 +10,11 @@ public interface IDialogBuilder<TDialog, TBuilder>
 	where TDialog : IDialog
 	where TBuilder : IDialogBuilder<TDialog, TBuilder>
 {
-	TBuilder SetCaption(Expression<Func<ILocalizedText, object>> textIdenfitier, params object[] args);
+	TBuilder SetCaption(Expression<Func<ILocalizedDialogText, object>> textIdenfitier, params object[] args);
 	TBuilder SetCaption(string text);
-	TBuilder SetButton1(Expression<Func<ILocalizedText, object>> textIdenfitier, params object[] args);
+	TBuilder SetButton1(Expression<Func<ILocalizedDialogText, object>> textIdenfitier, params object[] args);
 	TBuilder SetButton1(string text);
-	TBuilder SetButton2(Expression<Func<ILocalizedText, object>> textIdenfitier, params object[] args);
+	TBuilder SetButton2(Expression<Func<ILocalizedDialogText, object>> textIdenfitier, params object[] args);
 	TBuilder SetButton2(string text);
 	TDialog Build(CultureInfo cultureInfo);
 	TDialog Build();

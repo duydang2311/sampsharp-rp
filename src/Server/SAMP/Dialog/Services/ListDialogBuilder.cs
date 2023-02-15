@@ -13,19 +13,13 @@ public sealed class ListDialogBuilder : BaseDialogBuilder<ListDialog, IListDialo
 
 	public ListDialogBuilder(ITextLocalizerService localizerService, ITextNameIdentifierService identifierService) : base(localizerService, identifierService) { }
 
-	public IListDialogBuilder AddRow(string text, object? tag = null)
-	{
-		rows.AddLast(new TaggedDialogTextModel() { Text = text, Tag = tag });
-		return this;
-	}
-
 	public IListDialogBuilder AddRow(string text)
 	{
 		rows.AddLast(new ListDialogRow(text));
 		return this;
 	}
 
-	public IListDialogBuilder AddRow(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
+	public IListDialogBuilder AddRow(Expression<Func<ILocalizedDialogText, object>> textIdentifier, params object[] args)
 	{
 		rows.AddLast(new TaggedDialogTextModel() { Text = identifierService.Identify(textIdentifier), Args = args });
 		return this;
