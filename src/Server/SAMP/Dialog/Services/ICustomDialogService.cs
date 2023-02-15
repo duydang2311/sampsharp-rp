@@ -5,12 +5,10 @@ namespace Server.SAMP.Dialog.Services;
 
 public interface ICustomDialogService
 {
-	Task<TResponse> ShowAsync<TResponse>(EntityId player, Func<IDialogBuilderFactory, IDialog<TResponse>> buildDialog)
-	where TResponse : struct;
-	void Show<TResponse>(EntityId player, Func<IDialogBuilderFactory, IDialog<TResponse>> buildDialog, Action<TResponse> responseHandler)
-	where TResponse : struct;
+	Task<MessageDialogResponse> ShowMessageAsync(Player player, Action<IMessageDialogBuilder> buildDialog);
+	Task<InputDialogResponse> ShowInputAsync(Player player, Action<IInputDialogBuilder> buildDialog);
+	Task<ListDialogResponse> ShowListAsync(Player player, Action<IListDialogBuilder> buildDialog);
+	Task<TablistDialogResponse> ShowTablistAsync(Player player, Action<ITablistDialogBuilder> buildDialog);
 	Task<TResponse> ShowAsync<TResponse>(EntityId player, IDialog<TResponse> dialog)
-	where TResponse : struct;
-	void Show<TResponse>(EntityId player, IDialog<TResponse> dialog, Action<TResponse> responseHandler)
 	where TResponse : struct;
 }

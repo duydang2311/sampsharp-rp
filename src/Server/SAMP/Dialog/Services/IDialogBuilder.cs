@@ -5,7 +5,6 @@ using Server.I18N.Localization.Models;
 
 namespace Server.SAMP.Dialog.Services;
 
-// https://github.com/dotnet/csharplang/issues/49
 public interface IDialogBuilder<TDialog, TBuilder>
 	where TDialog : IDialog
 	where TBuilder : IDialogBuilder<TDialog, TBuilder>

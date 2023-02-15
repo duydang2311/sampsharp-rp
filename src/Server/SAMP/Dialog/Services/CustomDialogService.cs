@@ -1,5 +1,7 @@
+using System.Globalization;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
+using Server.I18N.Localization.Components;
 
 namespace Server.SAMP.Dialog.Services;
 
@@ -14,16 +16,32 @@ public sealed class CustomDialogService : ICustomDialogService
 		this.sampSharpDialogService = sampSharpDialogService;
 	}
 
-	public Task<TResponse> ShowAsync<TResponse>(EntityId player, Func<IDialogBuilderFactory, IDialog<TResponse>> buildDialog)
-	where TResponse : struct
+	public Task<MessageDialogResponse> ShowMessageAsync(Player player, Action<IMessageDialogBuilder> buildDialog)
 	{
-		return ShowAsync(player, buildDialog(dialogBuilderFactory));
+		var builder = dialogBuilderFactory.CreateMessageBuilder();
+		buildDialog(builder);
+		return ShowAsync<MessageDialogResponse, MessageDialog, IMessageDialogBuilder>(player, builder);
 	}
 
-	public void Show<TResponse>(EntityId player, Func<IDialogBuilderFactory, IDialog<TResponse>> buildDialog, Action<TResponse> responseHandler)
-	where TResponse : struct
+	public Task<InputDialogResponse> ShowInputAsync(Player player, Action<IInputDialogBuilder> buildDialog)
 	{
-		Show(player, buildDialog(dialogBuilderFactory), responseHandler);
+		var builder = dialogBuilderFactory.CreateInputBuilder();
+		buildDialog(builder);
+		return ShowAsync<InputDialogResponse, InputDialog, IInputDialogBuilder>(player, builder);
+	}
+
+	public Task<ListDialogResponse> ShowListAsync(Player player, Action<IListDialogBuilder> buildDialog)
+	{
+		var builder = dialogBuilderFactory.CreateListBuilder();
+		buildDialog(builder);
+		return ShowAsync<ListDialogResponse, ListDialog, IListDialogBuilder>(player, builder);
+	}
+
+	public Task<TablistDialogResponse> ShowTablistAsync(Player player, Action<ITablistDialogBuilder> buildDialog)
+	{
+		var builder = dialogBuilderFactory.CreateTablistBuilder();
+		buildDialog(builder);
+		return ShowAsync<TablistDialogResponse, TablistDialog, ITablistDialogBuilder>(player, builder);
 	}
 
 	public Task<TResponse> ShowAsync<TResponse>(EntityId player, IDialog<TResponse> dialog)
@@ -32,9 +50,12 @@ public sealed class CustomDialogService : ICustomDialogService
 		return sampSharpDialogService.ShowAsync(player, dialog);
 	}
 
-	public void Show<TResponse>(EntityId player, IDialog<TResponse> dialog, Action<TResponse> responseHandler)
+	private Task<TResponse> ShowAsync<TResponse, TDialog, TBuilder>(Player player, IDialogBuilder<TDialog, TBuilder> builder)
 	where TResponse : struct
+	where TDialog : IDialog<TResponse>
+	where TBuilder : IDialogBuilder<TDialog, TBuilder>
 	{
-		sampSharpDialogService.Show(player, dialog, responseHandler);
+		var cultureInfo = player.GetComponent<CultureComponent>()?.Culture ?? CultureInfo.InvariantCulture;
+		return ShowAsync(player, builder.Build(cultureInfo));
 	}
 }
