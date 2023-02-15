@@ -37,9 +37,12 @@ public class TablistDialogBuilder : BaseDialogBuilder, ITablistDialogBuilder
 		return this;
 	}
 
-	public ITablistDialogBuilder AddRow(object tag, params string[] columns)
+	public ITablistDialogBuilder WithTag(object tag)
 	{
-		rows.AddLast(new TablistDialogRow(columns) { Tag = tag });
+		if (rows.Last is not null)
+		{
+			rows.Last.Value.Tag = tag;
+		}
 		return this;
 	}
 
