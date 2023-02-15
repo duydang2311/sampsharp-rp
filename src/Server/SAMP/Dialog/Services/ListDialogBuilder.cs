@@ -7,47 +7,11 @@ using Server.SAMP.Dialog.Models;
 
 namespace Server.SAMP.Dialog.Services;
 
-public sealed class ListDialogBuilder : BaseDialogBuilder, IListDialogBuilder
+public sealed class ListDialogBuilder : BaseDialogBuilder<ListDialog, IListDialogBuilder>, IListDialogBuilder
 {
 	private readonly LinkedList<object> rows = new();
 
 	public ListDialogBuilder(ITextLocalizerService localizerService, ITextNameIdentifierService identifierService) : base(localizerService, identifierService) { }
-
-	public override IListDialogBuilder SetCaption(string text)
-	{
-		base.SetCaption(text);
-		return this;
-	}
-
-	public override IListDialogBuilder SetCaption(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
-	{
-		base.SetCaption(textIdentifier, args);
-		return this;
-	}
-
-	public override IListDialogBuilder SetButton1(string text)
-	{
-		base.SetButton1(text);
-		return this;
-	}
-
-	public override IListDialogBuilder SetButton1(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
-	{
-		base.SetButton1(textIdentifier, args);
-		return this;
-	}
-
-	public override IListDialogBuilder SetButton2(string text)
-	{
-		base.SetButton2(text);
-		return this;
-	}
-
-	public override IListDialogBuilder SetButton2(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
-	{
-		base.SetButton2(textIdentifier, args);
-		return this;
-	}
 
 	public IListDialogBuilder AddRow(string text, object? tag = null)
 	{
@@ -85,7 +49,7 @@ public sealed class ListDialogBuilder : BaseDialogBuilder, IListDialogBuilder
 		return this;
 	}
 
-	public ListDialog Build(CultureInfo cultureInfo)
+	public override ListDialog Build(CultureInfo cultureInfo)
 	{
 		var dialog = new ListDialog(
 			BuildText(cultureInfo, Caption),
@@ -106,7 +70,7 @@ public sealed class ListDialogBuilder : BaseDialogBuilder, IListDialogBuilder
 		return dialog;
 	}
 
-	public ListDialog Build()
+	public override ListDialog Build()
 	{
 		return Build(CultureInfo.InvariantCulture);
 	}

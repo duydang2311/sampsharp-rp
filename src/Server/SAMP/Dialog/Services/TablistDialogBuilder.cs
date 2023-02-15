@@ -7,7 +7,7 @@ using Server.SAMP.Dialog.Models;
 
 namespace Server.SAMP.Dialog.Services;
 
-public sealed class TablistDialogBuilder : BaseDialogBuilder, ITablistDialogBuilder
+public sealed class TablistDialogBuilder : BaseDialogBuilder<TablistDialog, ITablistDialogBuilder>, ITablistDialogBuilder
 {
 	private readonly ILocalizedTextBuilderFactory textBuilderFactory;
 	private readonly LinkedList<object> columns = new();
@@ -23,47 +23,10 @@ public sealed class TablistDialogBuilder : BaseDialogBuilder, ITablistDialogBuil
 	{
 		this.textBuilderFactory = textBuilderFactory;
 	}
-
-	public override ITablistDialogBuilder SetCaption(string text)
-	{
-		base.SetCaption(text);
-		return this;
-	}
-
-	public override ITablistDialogBuilder SetCaption(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
-	{
-		base.SetCaption(textIdentifier, args);
-		return this;
-	}
-
-	public override ITablistDialogBuilder SetButton1(string text)
-	{
-		base.SetButton1(text);
-		return this;
-	}
-
-	public override ITablistDialogBuilder SetButton1(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
-	{
-		base.SetButton1(textIdentifier, args);
-		return this;
-	}
-
-	public override ITablistDialogBuilder SetButton2(string text)
-	{
-		base.SetButton2(text);
-		return this;
-	}
-
-	public override ITablistDialogBuilder SetButton2(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
-	{
-		base.SetButton2(textIdentifier, args);
-		return this;
-	}
-
 	public ITablistDialogBuilder AddColumn(string text)
 	{
 		columns.AddLast(text);
-		return this;
+		return _this;
 	}
 
 	public ITablistDialogBuilder AddColumn(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
@@ -73,13 +36,13 @@ public sealed class TablistDialogBuilder : BaseDialogBuilder, ITablistDialogBuil
 			Text = identifierService.Identify(textIdentifier),
 			Args = args
 		});
-		return this;
+		return _this;
 	}
 
 	public ITablistDialogBuilder AddRow(params string[] columns)
 	{
 		rows.AddLast(new TablistDialogRow(columns));
-		return this;
+		return _this;
 	}
 
 	public ITablistDialogBuilder AddRow(Action<ILocalizedTextBuilder> buildRowTexts)
@@ -87,7 +50,7 @@ public sealed class TablistDialogBuilder : BaseDialogBuilder, ITablistDialogBuil
 		var builder = new TablistRowBuilder { Instance = textBuilderFactory.CreateBuilder() };
 		buildRowTexts(builder.Instance);
 		rows.AddLast(builder);
-		return this;
+		return _this;
 	}
 
 	public ITablistDialogBuilder WithTag(object tag)
@@ -105,10 +68,10 @@ public sealed class TablistDialogBuilder : BaseDialogBuilder, ITablistDialogBuil
 		{
 			builder.Tag = tag;
 		}
-		return this;
+		return _this;
 	}
 
-	public TablistDialog Build(CultureInfo cultureInfo)
+	public override TablistDialog Build(CultureInfo cultureInfo)
 	{
 		var columnTexts = columns.Select(o =>
 		{
@@ -138,7 +101,7 @@ public sealed class TablistDialogBuilder : BaseDialogBuilder, ITablistDialogBuil
 		return dialog;
 	}
 
-	public TablistDialog Build()
+	public override TablistDialog Build()
 	{
 		return Build(CultureInfo.InvariantCulture);
 	}

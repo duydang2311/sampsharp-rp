@@ -1,13 +1,17 @@
 using System.Globalization;
 using System.Linq.Expressions;
+using SampSharp.Entities.SAMP;
 using Server.I18N.Localization.Models;
 using Server.I18N.Localization.Services;
 using Server.SAMP.Dialog.Models;
 
 namespace Server.SAMP.Dialog.Services;
 
-public abstract class BaseDialogBuilder : IDialogBuilder
+public abstract class BaseDialogBuilder<TDialog, TBuilder> : IDialogBuilder<TDialog, TBuilder>
+	where TDialog : IDialog
+	where TBuilder : IDialogBuilder<TDialog, TBuilder>
 {
+	protected readonly TBuilder _this;
 	protected readonly ITextLocalizerService localizerService;
 	protected readonly ITextNameIdentifierService identifierService;
 
@@ -19,54 +23,55 @@ public abstract class BaseDialogBuilder : IDialogBuilder
 	{
 		this.localizerService = localizerService;
 		this.identifierService = identifierService;
+		_this = (TBuilder)(IDialogBuilder<TDialog, TBuilder>)this;
 	}
 
-	public virtual IDialogBuilder SetCaption(string text)
+	public TBuilder SetCaption(string text)
 	{
 		Caption = text;
-		return this;
+		return _this;
 	}
 
-	public virtual IDialogBuilder SetCaption(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
+	public TBuilder SetCaption(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
 	{
 		Caption = new DialogTextModel()
 		{
 			Text = identifierService.Identify(textIdentifier),
 			Args = args
 		};
-		return this;
+		return _this;
 	}
 
-	public virtual IDialogBuilder SetButton1(string text)
+	public TBuilder SetButton1(string text)
 	{
 		Button1 = text;
-		return this;
+		return _this;
 	}
 
-	public virtual IDialogBuilder SetButton1(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
+	public TBuilder SetButton1(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
 	{
 		Button1 = new DialogTextModel()
 		{
 			Text = identifierService.Identify(textIdentifier),
 			Args = args
 		};
-		return this;
+		return _this;
 	}
 
-	public virtual IDialogBuilder SetButton2(string text)
+	public TBuilder SetButton2(string text)
 	{
 		Button2 = text;
-		return this;
+		return _this;
 	}
 
-	public virtual IDialogBuilder SetButton2(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
+	public TBuilder SetButton2(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
 	{
 		Button2 = new DialogTextModel()
 		{
 			Text = identifierService.Identify(textIdentifier),
 			Args = args
 		};
-		return this;
+		return _this;
 	}
 
 	protected string BuildText(CultureInfo cultureInfo, object? text)
@@ -77,4 +82,7 @@ public abstract class BaseDialogBuilder : IDialogBuilder
 		}
 		return text is null ? string.Empty : (string)text;
 	}
+
+	public abstract TDialog Build(CultureInfo cultureInfo);
+	public abstract TDialog Build();
 }

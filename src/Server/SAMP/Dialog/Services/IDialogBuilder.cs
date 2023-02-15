@@ -1,15 +1,21 @@
+using System.Globalization;
 using System.Linq.Expressions;
+using SampSharp.Entities.SAMP;
 using Server.I18N.Localization.Models;
 
 namespace Server.SAMP.Dialog.Services;
 
 // https://github.com/dotnet/csharplang/issues/49
-public interface IDialogBuilder
+public interface IDialogBuilder<TDialog, TBuilder>
+	where TDialog : IDialog
+	where TBuilder : IDialogBuilder<TDialog, TBuilder>
 {
-	IDialogBuilder SetCaption(Expression<Func<ILocalizedText, object>> textIdenfitier, params object[] args);
-	IDialogBuilder SetCaption(string text);
-	IDialogBuilder SetButton1(Expression<Func<ILocalizedText, object>> textIdenfitier, params object[] args);
-	IDialogBuilder SetButton1(string text);
-	IDialogBuilder SetButton2(Expression<Func<ILocalizedText, object>> textIdenfitier, params object[] args);
-	IDialogBuilder SetButton2(string text);
+	TBuilder SetCaption(Expression<Func<ILocalizedText, object>> textIdenfitier, params object[] args);
+	TBuilder SetCaption(string text);
+	TBuilder SetButton1(Expression<Func<ILocalizedText, object>> textIdenfitier, params object[] args);
+	TBuilder SetButton1(string text);
+	TBuilder SetButton2(Expression<Func<ILocalizedText, object>> textIdenfitier, params object[] args);
+	TBuilder SetButton2(string text);
+	TDialog Build(CultureInfo cultureInfo);
+	TDialog Build();
 }
