@@ -1,26 +1,80 @@
+using System.Globalization;
+using System.Linq.Expressions;
+using Server.I18N.Localization.Models;
+using Server.I18N.Localization.Services;
+using Server.SAMP.Dialog.Models;
+
 namespace Server.SAMP.Dialog.Services;
 
 public abstract class BaseDialogBuilder : IDialogBuilder
 {
-	protected string caption = string.Empty;
-	protected string button1 = string.Empty;
-	protected string? button2 = null;
+	protected readonly ITextLocalizerService localizerService;
+	protected readonly ITextNameIdentifierService identifierService;
 
-	public IDialogBuilder SetCaption(string text)
+	protected object? Caption { get; set; }
+	protected object? Button1 { get; set; }
+	protected object? Button2 { get; set; }
+
+	public BaseDialogBuilder(ITextLocalizerService localizerService, ITextNameIdentifierService identifierService)
 	{
-		caption = text;
+		this.localizerService = localizerService;
+		this.identifierService = identifierService;
+	}
+
+	public virtual IDialogBuilder SetCaption(string text)
+	{
+		Caption = text;
 		return this;
 	}
 
-	public IDialogBuilder SetButton1(string text)
+	public virtual IDialogBuilder SetCaption(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
 	{
-		button1 = text;
+		Caption = new DialogTextModel()
+		{
+			Text = identifierService.Identify(textIdentifier),
+			Args = args
+		};
 		return this;
 	}
 
-	public IDialogBuilder SetButton2(string text)
+	public virtual IDialogBuilder SetButton1(string text)
 	{
-		button2 = text;
+		Button1 = text;
 		return this;
+	}
+
+	public virtual IDialogBuilder SetButton1(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
+	{
+		Button1 = new DialogTextModel()
+		{
+			Text = identifierService.Identify(textIdentifier),
+			Args = args
+		};
+		return this;
+	}
+
+	public virtual IDialogBuilder SetButton2(string text)
+	{
+		Button2 = text;
+		return this;
+	}
+
+	public virtual IDialogBuilder SetButton2(Expression<Func<ILocalizedText, object>> textIdentifier, params object[] args)
+	{
+		Button2 = new DialogTextModel()
+		{
+			Text = identifierService.Identify(textIdentifier),
+			Args = args
+		};
+		return this;
+	}
+
+	protected string BuildText(CultureInfo cultureInfo, object? text)
+	{
+		if (text is DialogTextModel model)
+		{
+			return localizerService.Get(cultureInfo, model.Text, model.Args);
+		}
+		return text is null ? string.Empty : (string)text;
 	}
 }
