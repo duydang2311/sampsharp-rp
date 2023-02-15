@@ -16,6 +16,8 @@ public interface ILocalizedDialogText
 	object Dialog_CharacterSelection_Header_Column2 { get; }
 	object Dialog_CharacterSelection_Row_Column1 { get; }
 	object Dialog_CharacterSelection_Row_Column2 { get; }
+	object Dialog_CharacterSelection_RowNewChar_Column1 { get; }
+	object Dialog_CharacterSelection_RowNewChar_Column2 { get; }
 	object Dialog_CharacterSelection_Button1 { get; }
 	object Dialog_CharacterSelection_Button2 { get; }
 }

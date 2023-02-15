@@ -130,4 +130,31 @@
 	<data name="Dialog_Account_SignUp_Button2">
 		<value>Thoát</value>
 	</data>
+	<data name="Dialog_CharacterSelection_Header_Column1">
+		<value>Nhân vật bạn sẽ tham gia là?</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Header_Column2">
+		<value></value>
+	</data>
+	<data name="Dialog_CharacterSelection_Row_Column1">
+		<value>{0}</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Row_Column2">
+		<value>{1} tuổi</value>
+	</data>
+	<data name="Dialog_CharacterSelection_RowNewChar_Column1">
+		<value>{D1D1D1}(+) Tạo nhân vật mới</value>
+	</data>
+	<data name="Dialog_CharacterSelection_RowNewChar_Column2">
+		<value></value>
+	</data>
+	<data name="Dialog_CharacterSelection_Caption">
+		<value>Nhân vật</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Button1">
+		<value>Lựa chọn</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Button2">
+		<value>Thoát</value>
+	</data>
 </root>
