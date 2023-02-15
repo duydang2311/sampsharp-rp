@@ -59,22 +59,10 @@ public abstract class LocalizedTextBuilder<TModel, TInterface, TBuilder> : ILoca
 			return Array.Empty<string>();
 		}
 
-		var text = BuildModelInternal(cultureInfo, models.First!.Value);
-		if (models.Count == 1)
-		{
-			return new[] { text };
-		}
-
 		var list = new LinkedList<string>();
-		foreach (var m in models.Skip(1))
+		foreach (var m in models)
 		{
-			list.AddLast(text);
-			text += BuildModelInternal(cultureInfo, m);
-		}
-
-		if (!string.IsNullOrEmpty(text))
-		{
-			list.AddLast(text);
+			list.AddLast(BuildModelInternal(cultureInfo, m));
 		}
 
 		return list;
