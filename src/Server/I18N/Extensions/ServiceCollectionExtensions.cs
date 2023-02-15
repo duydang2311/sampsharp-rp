@@ -20,6 +20,7 @@ public static partial class ServiceCollectionExtensions
 			.AddSingleton<ITextLocalizerService, TextLocalizerService>()
 			.AddSingleton<ITextNameIdentifierService, TextNameIdentifierService>()
 			.AddSingleton<IPlayerTextLocalizerService, PlayerTextLocalizerService>()
+			.AddSingleton<ILocalizedTextBuilderFactory, LocalizedTextBuilderFactory>()
 			.AddSystem<ConnectSystem>()
 			.AddSystem<LanguageCommandSystem>();
 	}
