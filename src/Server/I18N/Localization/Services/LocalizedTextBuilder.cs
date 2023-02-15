@@ -4,54 +4,55 @@ using Server.I18N.Localization.Models;
 
 namespace Server.I18N.Localization.Services;
 
-public class LocalizedTextBuilder : ILocalizedTextBuilder
+public abstract class LocalizedTextBuilder<TModel, TInterface, TBuilder> : ILocalizedTextBuilder<TModel, TInterface, TBuilder>
+	where TModel : LocalizedTextModel, new()
+	where TInterface : class
+	where TBuilder : ILocalizedTextBuilder<TModel, TInterface, TBuilder>
 {
-	private readonly ITextLocalizerService localizerService;
-	private readonly ITextNameIdentifierService identifierService;
-
-	private readonly LinkedList<object> models = new();
+	protected readonly ITextLocalizerService localizerService;
+	protected readonly ITextNameIdentifierService identifierService;
+	protected readonly LinkedList<TModel> models = new();
+	protected readonly TBuilder _this;
 
 	public LocalizedTextBuilder(ITextLocalizerService localizerService, ITextNameIdentifierService identifierService)
 	{
 		this.localizerService = localizerService;
 		this.identifierService = identifierService;
+		_this = (TBuilder)(ILocalizedTextBuilder<TModel, TInterface, TBuilder>)this;
 	}
 
-	public ILocalizedTextBuilder Add(Expression<Func<ILocalizedText, object>> textIdentifier,
+	public virtual TBuilder Add(Expression<Func<TInterface, object>> textIdentifier,
 		params object[] args)
 	{
-		return AddI18N(identifierService.Identify(textIdentifier), args);
+		return AddInternal(new TModel { Text = identifierService.Identify(textIdentifier), IsLocal = true, Args = args });
 	}
 
-	public ILocalizedTextBuilder Add(string text)
+	public virtual TBuilder Add(string text)
 	{
-		models.AddLast(text);
-		return this;
+		return AddInternal(new TModel { Text = text, IsLocal = false });
 	}
 
-	public ILocalizedTextBuilder Add(string text, params object[] args)
+	public virtual TBuilder Add(string text, params object[] args)
 	{
-		return Add(string.Format(text, args));
+		return AddInternal(new TModel { Text = string.Format(text, args) });
 	}
 
-	private ILocalizedTextBuilder AddI18N(string textName, params object[] args)
+	protected virtual TBuilder AddInternal(TModel model)
 	{
-		models.AddLast(new LocalizedTextModel()
-		{ Text = textName, Args = args });
-		return this;
+		models.AddLast(model);
+		return _this;
 	}
 
-	private string BuildModelInternal(CultureInfo cultureInfo, object
-		model, object? lastModel = default)
+	protected virtual string BuildModelInternal(CultureInfo cultureInfo, TModel model)
 	{
-		return model is LocalizedTextModel localizedModel
-			? (localizedModel.Args.Length == 0
-				? localizerService.Get(cultureInfo, localizedModel.Text)
-				: localizerService.Get(cultureInfo, localizedModel.Text, localizedModel.Args))
-			: (string)model;
+		return model.IsLocal
+			? (model.Args.Length == 0
+				? localizerService.Get(cultureInfo, model.Text)
+				: localizerService.Get(cultureInfo, model.Text, model.Args))
+			: model.Text;
 	}
 
-	public IEnumerable<string> Build(CultureInfo cultureInfo)
+	public virtual IEnumerable<string> Build(CultureInfo cultureInfo)
 	{
 		if (models.Count == 0)
 		{
@@ -65,13 +66,10 @@ public class LocalizedTextBuilder : ILocalizedTextBuilder
 		}
 
 		var list = new LinkedList<string>();
-		var lastModel = models.First.Value;
 		foreach (var m in models.Skip(1))
 		{
 			list.AddLast(text);
-			text = string.Empty;
-			lastModel = null;
-			text += BuildModelInternal(cultureInfo, m, lastModel);
+			text += BuildModelInternal(cultureInfo, m);
 		}
 
 		if (!string.IsNullOrEmpty(text))

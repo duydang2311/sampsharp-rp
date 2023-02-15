@@ -4,9 +4,12 @@ using Server.I18N.Localization.Models;
 
 namespace Server.I18N.Localization.Services;
 
-public interface ILocalizedTextBuilder
+public interface ILocalizedTextBuilder<TModel, TInterface, TBuilder>
+	where TModel : LocalizedTextModel
+	where TInterface : class
+	where TBuilder : ILocalizedTextBuilder<TModel, TInterface, TBuilder>
 {
-	ILocalizedTextBuilder Add(Expression<Func<ILocalizedText, object>> textIdentifer, params object[] args);
-	ILocalizedTextBuilder Add(string text, params object[] args);
+	TBuilder Add(Expression<Func<TInterface, object>> textIdentifer, params object[] args);
+	TBuilder Add(string text, params object[] args);
 	IEnumerable<string> Build(CultureInfo cultureInfo);
 }
