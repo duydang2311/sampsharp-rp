@@ -27,7 +27,7 @@ public class TestDialogBuilder
 		provider = serviceCollection.BuildServiceProvider();
 		identifier = provider.GetRequiredService<ITextNameIdentifierService>();
 		localizer = provider.GetRequiredService<ITextLocalizerService>();
-		builderFactory = new DialogBuilderFactory(localizer, identifier, new LocalizedTextBuilderFactory(localizer, identifier));
+		builderFactory = new DialogBuilderFactory(localizer, identifier, new DialogTextBuilderFactory(localizer, identifier));
 	}
 
 	[Test]
