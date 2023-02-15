@@ -9,7 +9,6 @@ public static partial class ServiceCollectionExtensions
 		return self
 			.AddSingleton<ICommandService, CommandService>()
 			.AddSingleton<IChatService, ChatService>()
-			.AddSingleton<IChatMessageModelFactory, ChatMessageModelFactory>()
 			.AddSingleton<IArgumentParser>(_ => new CommandArgumentParser(1))
 			.AddSingleton<ICommandModelFactory, CommandModelFactory>()
 			.AddSingleton<IChatMessageBuilderFactory, ChatMessageBuilderFactory>();

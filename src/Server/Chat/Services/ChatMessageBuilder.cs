@@ -8,65 +8,73 @@ using Server.I18N.Localization.Services;
 
 namespace Server.Chat.Services;
 
-public sealed class ChatMessageBuilder : IChatMessageBuilder
+public sealed class ChatMessageBuilder : LocalizedTextBuilder<LocalizedChatMessageModel, ILocalizedText, IChatMessageBuilder>, IChatMessageBuilder
 {
-	private class BaseBuilderChatMessageModel : ChatMessageModel
-	{
-		public bool IsInline { get; init; }
-	}
+	private new readonly LinkedList<LocalizedChatMessageModel> models = new();
 
-	private class I18NBuilderChatMessageModel : BaseBuilderChatMessageModel
-	{
-		public object[] Args { get; init; } = Array.Empty<object>();
-	}
+	public ChatMessageBuilder(ITextLocalizerService localizerService, ITextNameIdentifierService identifierService) : base(localizerService, identifierService) { }
 
-	private readonly ITextLocalizerService localizerService;
-	private readonly ITextNameIdentifierService identifierService;
-
-	private readonly LinkedList<BaseBuilderChatMessageModel
-	> models = new();
-
-	public ChatMessageBuilder(ITextLocalizerService localizerService, ITextNameIdentifierService identifierService)
-	{
-		this.localizerService = localizerService;
-		this.identifierService = identifierService;
-	}
-
-	public IChatMessageBuilder Add(Expression<Func<ILocalizedText, object>> textIdentifier,
+	public override IChatMessageBuilder Add(Expression<Func<ILocalizedText, object>> textIdentifier,
 		params object[] args)
 	{
 		var name = identifierService.Identify(textIdentifier);
-		return AddI18N(ResolveBadgeColorInternal(name), name, false, args);
+		return AddInternal(new LocalizedChatMessageModel
+		{
+			Color = ResolveBadgeColorInternal(name),
+			Text = name,
+			IsLocal = true,
+			IsInline = false,
+			Args = args
+		});
 	}
 
 	public IChatMessageBuilder Add(Color color, Expression<Func<ILocalizedText, object>> textIdentifier,
 		params object[] args)
 	{
-		return AddI18N(color, identifierService.Identify(textIdentifier), false, args);
+		return AddInternal(new LocalizedChatMessageModel
+		{
+			Color = color,
+			Text = identifierService.Identify(textIdentifier),
+			IsLocal = true,
+			IsInline = false,
+			Args = args
+		});
 	}
 
 	public IChatMessageBuilder Inline(Expression<Func<ILocalizedText, object>> textIdentifier,
 		params object[] args)
 	{
 		var name = identifierService.Identify(textIdentifier);
-		return AddI18N(ResolveBadgeColorInternal(name), name, true, args);
+		return AddInternal(new LocalizedChatMessageModel
+		{
+			Color = ResolveBadgeColorInternal(name),
+			Text = identifierService.Identify(textIdentifier),
+			IsLocal = true,
+			IsInline = true,
+			Args = args
+		});
 	}
 
 	public IChatMessageBuilder Inline(Color color, Expression<Func<ILocalizedText, object>> textIdentifier,
 		params object[] args)
 	{
-		return AddI18N(color, identifierService.Identify(textIdentifier), true, args);
+		return AddInternal(new LocalizedChatMessageModel
+		{
+			Color = color,
+			Text = identifierService.Identify(textIdentifier),
+			IsLocal = true,
+			IsInline = true,
+			Args = args
+		});
 	}
 
-	private IChatMessageBuilder AddI18N(Color color, string textName, bool isInline, params object[] args)
+	private new IChatMessageBuilder AddInternal(LocalizedChatMessageModel model)
 	{
-		models.AddLast(new I18NBuilderChatMessageModel()
-		{ Color = color, Text = textName, Args = args, IsInline = isInline });
+		models.AddLast(model);
 		return this;
 	}
 
-	private string BuildModelInternal(CultureInfo cultureInfo, BaseBuilderChatMessageModel
-		model, BaseBuilderChatMessageModel? lastModel = default)
+	private string BuildModelInternal(CultureInfo cultureInfo, LocalizedChatMessageModel model, LocalizedChatMessageModel? lastModel = default)
 	{
 		var appendedColor = string.Empty;
 		if (lastModel is null || lastModel.Color != model.Color)
@@ -74,15 +82,10 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 			appendedColor = model.Color.ToString(ColorFormat.RGB);
 		}
 
-		return appendedColor +
-			(model is I18NBuilderChatMessageModel i18NModel
-				? (i18NModel.Args.Length == 0
-					? localizerService.Get(cultureInfo, i18NModel.Text)
-					: localizerService.Get(cultureInfo, i18NModel.Text, i18NModel.Args))
-				: model.Text);
+		return appendedColor + base.BuildModelInternal(cultureInfo, model);
 	}
 
-	public IEnumerable<string> Build(CultureInfo cultureInfo)
+	public override IEnumerable<string> Build(CultureInfo cultureInfo)
 	{
 		if (models.Count == 0)
 		{
@@ -121,20 +124,20 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 		return list;
 	}
 
-	public IChatMessageBuilder Add(string text, params object[] args)
+	public override IChatMessageBuilder Add(string text, params object[] args)
 	{
 		return Add(SemanticColor.Neutral, text, args);
 	}
 
 	public IChatMessageBuilder Add(Color color, string text, params object[] args)
 	{
-		models.AddLast(new BaseBuilderChatMessageModel()
+		return AddInternal(new LocalizedChatMessageModel
 		{
 			Color = color,
-			Text = args.Length == 0 ? text : string.Format(CultureInfo.InvariantCulture, text, args),
-			IsInline = false
+			Text = string.Format(text, args),
+			IsLocal = false,
+			IsInline = false,
 		});
-		return this;
 	}
 
 	public IChatMessageBuilder Inline(string text, params object[] args)
@@ -144,13 +147,13 @@ public sealed class ChatMessageBuilder : IChatMessageBuilder
 
 	public IChatMessageBuilder Inline(Color color, string text, params object[] args)
 	{
-		models.AddLast(new BaseBuilderChatMessageModel()
+		return AddInternal(new LocalizedChatMessageModel
 		{
 			Color = color,
-			Text = args.Length == 0 ? text : string.Format(CultureInfo.InvariantCulture, text, args),
-			IsInline = true
+			Text = string.Format(text, args),
+			IsLocal = false,
+			IsInline = true,
 		});
-		return this;
 	}
 
 	private static Color ResolveBadgeColorInternal(string name)

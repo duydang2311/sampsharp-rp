@@ -1,10 +1,11 @@
 using SampSharp.Entities.SAMP;
 using Server.Common.Colors;
+using Server.I18N.Localization.Models;
 
 namespace Server.Chat.Models;
 
-public class ChatMessageModel
+public class LocalizedChatMessageModel : LocalizedTextModel
 {
-	public string Text { get; set; } = string.Empty;
 	public Color Color { get; set; } = SemanticColor.Neutral;
+	public bool IsInline { get; set; } = false;
 }
