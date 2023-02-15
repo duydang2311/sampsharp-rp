@@ -1,4 +1,7 @@
+using System.Globalization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Server.I18N.Localization.Services;
 using Server.SAMP.Dialog.Services;
 using Server.Tests.Helper;
 
@@ -7,11 +10,24 @@ namespace Server.Tests.Database;
 public class TestDialogBuilder
 {
 	private IDialogBuilderFactory builderFactory = null!;
+	private IServiceProvider provider = null!;
+	private ITextNameIdentifierService identifier = null!;
+	private ITextLocalizerService localizer = null!;
 
 	[SetUp]
 	public void SetUp()
 	{
-		builderFactory = new DialogBuilderFactory();
+		var serviceCollection = new ServiceCollection()
+			.WithLogging()
+			.WithI18N((globalOptions, textLocalizerOptions) =>
+			{
+				textLocalizerOptions.BaseName = "Server.Resources.Text";
+				textLocalizerOptions.DefaultCulture = CultureInfo.InvariantCulture;
+			});
+		provider = serviceCollection.BuildServiceProvider();
+		identifier = provider.GetRequiredService<ITextNameIdentifierService>();
+		localizer = provider.GetRequiredService<ITextLocalizerService>();
+		builderFactory = new DialogBuilderFactory(localizer, identifier, new LocalizedTextBuilderFactory(localizer, identifier));
 	}
 
 	[Test]
@@ -34,7 +50,7 @@ public class TestDialogBuilder
 	}
 
 	[Test]
-	public void Build_inputDialog_Returns_CorrectOutputs()
+	public void Build_InputDialog_Returns_CorrectOutputs()
 	{
 		var dialog = builderFactory
 			.CreateInputBuilder()
@@ -63,8 +79,10 @@ public class TestDialogBuilder
 			.SetCaption("Caption")
 			.SetButton1("Button1")
 			.SetButton2("Button2")
-			.AddRow("Row 1", tag1)
-			.AddRow("Row 2", tag2)
+			.AddRow("Row 1")
+			.WithTag(tag1)
+			.AddRow("Row 2")
+			.WithTag(tag2)
 			.Build();
 		var rows = dialog.Rows.ToArray();
 		Assert.Multiple(() =>
@@ -90,8 +108,10 @@ public class TestDialogBuilder
 			.SetButton2("Button2")
 			.AddColumn("Header 1")
 			.AddColumn("Header 2")
-			.AddRow(tag1, "Column 1.1", "Column 2.1")
-			.AddRow(tag2, "Column 1.2", "Column 2.2")
+			.AddRow("Column 1.1", "Column 2.1")
+			.WithTag(tag1)
+			.AddRow("Column 1.2", "Column 2.2")
+			.WithTag(tag2)
 			.AddRow("Column 1.3", "Column 2.3")
 			.Build();
 		var rows = dialog.Rows.ToArray();
