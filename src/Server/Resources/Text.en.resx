@@ -105,8 +105,9 @@
 	<data name="Dialog_Account_Login_Caption">
 		<value>INSERT_SERVER_NAME - Login</value>
 	</data>
-	<data name="Dialog_Account_Login_Content">
-		<value>Welcome back, {0}!\nEnter your account password to log in and join the game.</value>
+	<data name="Dialog_Account_Login_Content" xml:space="preserve">
+		<value>Welcome back, {0}!
+Enter your account password to log in and join the game.</value>
 	</data>
 	<data name="Dialog_Account_Login_Button1">
 		<value>Login</value>
@@ -117,8 +118,12 @@
 	<data name="Dialog_Account_SignUp_Caption">
 		<value>INSERT_SERVER_NAME - Signing Up</value>
 	</data>
-	<data name="Dialog_Account_SignUp_Content">
-		<value>{FFFFFF}Hello {7f9eba}{0}{FFFFFF}, this account has not been signed up. Enter a new password to the box below to sign up.\n\n{D1D1D1}For security purpose, please use a password that was {C75656}never{D1D1D1} used before.</value>
+	<data name="Dialog_Account_SignUp_Content" xml:space="preserve">
+		<value>{FFFFFF}Hello {7f9eba}{0}{FFFFFF}, this account has not been signed up. Enter a new
+password to the box below to sign up.
+
+{D1D1D1}For security purpose, please use a
+password that was {C75656}never{D1D1D1} used before.</value>
 	</data>
 	<data name="Dialog_Account_SignUp_Button1">
 		<value>Sign Up</value>
