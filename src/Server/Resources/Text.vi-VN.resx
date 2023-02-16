@@ -254,9 +254,15 @@ khẩu mới vào khung bên duới.
         <value>/shout [nội dung]</value>
     </data>
 	<data name="LowCommand_Text">
-        <value>*{0} nói [nhỏ]: {1}</value>
+        <value>* {0} nói [nhỏ]: {1}</value>
     </data>
 	<data name="LowCommand_Help">
         <value>/low [nội dung]</value>
+    </data>
+	<data name="AmeCommand_Text">
+        <value>* {0}</value>
+    </data>
+	<data name="AmeCommand_Help">
+        <value>/ame [hành động]</value>
     </data>
 </root>
