@@ -4,6 +4,7 @@ using SampSharp.Entities.SAMP;
 using Server.Account.Components;
 using Server.Account.Systems.Login;
 using Server.Account.Systems.SignUp;
+using Server.Character.Systems.Creation;
 using Server.Database;
 using Server.SAMP.Dialog.Services;
 
@@ -15,13 +16,14 @@ public sealed class SelectionSystem : ISystem
 	private readonly ICustomDialogService dialogService;
 	private readonly ICharacterSelectedEvent characterSelectedEvent;
 
-	public SelectionSystem(ILoginEvent loginEvent, ISignedUpEvent signedupEvent, IDbContextFactory<ServerDbContext> dbContextFactory, ICustomDialogService dialogService, ICharacterSelectedEvent characterSelectedEvent)
+	public SelectionSystem(ILoginEvent loginEvent, ISignedUpEvent signedupEvent, IDbContextFactory<ServerDbContext> dbContextFactory, ICustomDialogService dialogService, ICharacterSelectedEvent characterSelectedEvent, ICharacterCreatedEvent characterCreatedEvent)
 	{
 		this.dbContextFactory = dbContextFactory;
 		this.dialogService = dialogService;
 		this.characterSelectedEvent = characterSelectedEvent;
 		loginEvent.AddHandler(ShowCharacterSelectionDialog);
 		signedupEvent.AddHandler(ShowCharacterSelectionDialog);
+		characterCreatedEvent.AddHandler(ShowCharacterSelectionDialog);
 	}
 
 	private async Task ShowCharacterSelectionDialog(Player player)
