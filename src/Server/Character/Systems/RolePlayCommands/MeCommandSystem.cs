@@ -8,7 +8,6 @@ using Server.Chat.Services;
 using Server.Common.Colors;
 
 
-using Server.Common.Colors;
 
 using Server.I18N.Localization.Services;
 
@@ -43,7 +42,8 @@ public sealed class MeCommandSystem : ISystem
 
 	public void HelpMeCommand(Player player)
 	{
-		chatService.SendMessage(player,
-			builder => builder.Add(SemanticColor.Roleplay, model => model.MeCommandHelp, "Usega: /me [action]"));
+		chatService.SendMessage(player, b => b
+			.Add(model => model.Badge_Help)
+			.Inline(SemanticColor.Roleplay, model => model.MeCommandHelp));
 	}
 }
