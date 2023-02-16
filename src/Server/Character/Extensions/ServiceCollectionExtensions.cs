@@ -11,6 +11,7 @@ public static partial class ServiceCollectionExtensions
 	public static IServiceCollection WithCharacter(this IServiceCollection self)
 	{
 		return self
+			.AddSystem<AmeCommandSystem>()
 			.AddSystem<ShoutCommandSystem>()
 			.AddSystem<MeCommandSystem>()
 			.AddSystem<LowCommandSystem>()
