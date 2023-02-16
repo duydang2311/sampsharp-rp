@@ -6,5 +6,5 @@ namespace Server.Account.Systems.Authentication;
 
 public interface IAuthenticationSystem : ISystem
 {
-	Task<bool> IsAccountSignedUpAsync(Player player);
+	Task AuthenticateAsync(Player player);
 }
