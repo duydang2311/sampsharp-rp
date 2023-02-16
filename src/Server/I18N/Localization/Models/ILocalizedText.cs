@@ -38,5 +38,7 @@ public interface ILocalizedText : ILocalizedBadge
 	object ShoutCommand_Help { get; }
 	object LowCommand_Text { get; }
 	object LowCommand_Help { get; }
+	object AmeCommand_Text { get; }
+	object AmeCommand_Help { get; }
 
 }

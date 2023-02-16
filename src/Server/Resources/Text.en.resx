@@ -182,4 +182,10 @@ password that was {C75656}never{D1D1D1} used before.</value>
 	<data name="LowCommand_Help">
 		<value>/low [nội dung]</value>
 	</data>
+	<data name="AmeCommand_Text">
+		<value>* {0}</value>
+	</data>
+	<data name="AmeCommand_Help">
+		<value>/ame [hành động]</value>
+	</data>
 </root>
