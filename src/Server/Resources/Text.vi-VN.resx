@@ -253,4 +253,10 @@ khẩu mới vào khung bên duới.
 	<data name="ShoutCommand_Help">
         <value>/shout [nội dung]</value>
     </data>
+	<data name="LowCommand_Text">
+        <value>*{0} nói [nhỏ]: {1}</value>
+    </data>
+	<data name="LowCommand_Help">
+        <value>/low [nội dung]</value>
+    </data>
 </root>
