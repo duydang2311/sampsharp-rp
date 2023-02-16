@@ -20,11 +20,11 @@ public sealed class SelectionSystem : ISystem
 		this.dbContextFactory = dbContextFactory;
 		this.dialogService = dialogService;
 		this.characterSelectedEvent = characterSelectedEvent;
-		loginEvent.AddHandler(EnterCharacterSelection);
-		signedupEvent.AddHandler(EnterCharacterSelection);
+		loginEvent.AddHandler(ShowCharacterSelectionDialog);
+		signedupEvent.AddHandler(ShowCharacterSelectionDialog);
 	}
 
-	private async Task EnterCharacterSelection(Player player)
+	private async Task ShowCharacterSelectionDialog(Player player)
 	{
 		var account = player.GetComponent<AccountComponent>();
 		if (account is null)
@@ -39,30 +39,32 @@ public sealed class SelectionSystem : ISystem
 			.OrderBy(m => m.Id)
 			.Take(3)
 			.ToArrayAsync();
-		var response = await dialogService.ShowTablistAsync(player, b =>
-		{
-			b
-				.AddColumn(t => t.Dialog_CharacterSelection_Header_Column1)
-				.AddColumn(t => t.Dialog_CharacterSelection_Header_Column2)
-				.SetCaption(t => t.Dialog_CharacterSelection_Caption)
-				.SetButton1(t => t.Dialog_CharacterSelection_Button1)
-				.SetButton2(t => t.Dialog_CharacterSelection_Button2);
-			foreach (var model in models)
+		dialogService.ShowTablist(
+			player,
+			b =>
 			{
 				b
-					.AddRow(b => b
-						.Add(t => t.Dialog_CharacterSelection_Row_Column1, model.Name)
-						.Add(t => t.Dialog_CharacterSelection_Row_Column2, model.Age))
-					.WithTag(model.Id);
-			}
-			if (models.Length < 3)
-			{
-				b.AddRow(b => b
-					.Add(t => t.Dialog_CharacterSelection_RowNewChar_Column1)
-					.Add(t => t.Dialog_CharacterSelection_RowNewChar_Column2));
-			}
-		});
-		await HandleSelectionResponse(player, response);
+					.AddColumn(t => t.Dialog_CharacterSelection_Header_Column1)
+					.AddColumn(t => t.Dialog_CharacterSelection_Header_Column2)
+					.SetCaption(t => t.Dialog_CharacterSelection_Caption)
+					.SetButton1(t => t.Dialog_CharacterSelection_Button1)
+					.SetButton2(t => t.Dialog_CharacterSelection_Button2);
+				foreach (var model in models)
+				{
+					b
+						.AddRow(b => b
+							.Add(t => t.Dialog_CharacterSelection_Row_Column1, model.Name)
+							.Add(t => t.Dialog_CharacterSelection_Row_Column2, model.Age))
+						.WithTag(model.Id);
+				}
+				if (models.Length < 3)
+				{
+					b.AddRow(b => b
+						.Add(t => t.Dialog_CharacterSelection_RowNewChar_Column1)
+						.Add(t => t.Dialog_CharacterSelection_RowNewChar_Column2));
+				}
+			},
+			async response => await HandleSelectionResponse(player, response));
 	}
 
 	private Task HandleSelectionResponse(Player player, TablistDialogResponse response)

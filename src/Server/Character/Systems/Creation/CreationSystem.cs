@@ -42,30 +42,31 @@ public sealed class CreationSystem : ISystem
 		{
 			if (id != -1)
 			{
-				return Task.CompletedTask;
+				return;
 			}
 			e.Cancel = true;
-			return ShowCharacterGenderDialog(player);
+			ShowCharacterGenderDialog(player);
 		});
 	}
 
-	private async Task ShowCharacterGenderDialog(Player player)
+	private void ShowCharacterGenderDialog(Player player)
 	{
-		var response = await dialogService.ShowTablistAsync(player, b => b
-			.SetCaption(t => t.Dialog_Character_Creation_Gender_Caption)
-			.SetButton1(t => t.Dialog_Character_Creation_Gender_Button1)
-			.SetButton2(t => t.Dialog_Character_Creation_Gender_Button2)
-			.AddColumn(t => t.Dialog_Character_Creation_Gender_Header_Column1)
-			.AddRow(b => b.Add(t => t.Dialog_Character_Creation_Gender_Row_Male))
-			.AddRow(b => b.Add(t => t.Dialog_Character_Creation_Gender_Row_Female)));
-		await HandleCharacterGenderDialogResponse(player, response);
+		dialogService.ShowTablist(
+			player,
+			b => b
+				.SetCaption(t => t.Dialog_Character_Creation_Gender_Caption)
+				.SetButton1(t => t.Dialog_Character_Creation_Gender_Button1)
+				.SetButton2(t => t.Dialog_Character_Creation_Gender_Button2)
+				.AddColumn(t => t.Dialog_Character_Creation_Gender_Header_Column1)
+				.AddRow(b => b.Add(t => t.Dialog_Character_Creation_Gender_Row_Male))
+				.AddRow(b => b.Add(t => t.Dialog_Character_Creation_Gender_Row_Female)),
+			(response) => HandleCharacterGenderDialogResponse(player, response));
 	}
 
-	private async Task HandleCharacterGenderDialogResponse(Player player, TablistDialogResponse response)
+	private async void HandleCharacterGenderDialogResponse(Player player, TablistDialogResponse response)
 	{
 		if (response.Response != DialogResponse.LeftButton)
 		{
-			await Task.Yield();
 			await loginEvent.InvokeAsync(player);
 			return;
 		}
@@ -78,73 +79,75 @@ public sealed class CreationSystem : ISystem
 			};
 			player.AddComponent(component);
 		}
-		await ShowCharacterNameDialog(player);
+		ShowCharacterNameDialog(player);
 	}
 
-	private async Task ShowCharacterNameDialog(Player player)
+	private void ShowCharacterNameDialog(Player player)
 	{
-		var response = await dialogService.ShowInputAsync(player, b => b
+		dialogService.ShowInput(player, b => b
 			.SetCaption(t => t.Dialog_Character_Creation_Name_Caption)
 			.SetContent(t => t.Dialog_Character_Creation_Name_Content)
 			.SetButton1(t => t.Dialog_Character_Creation_Name_Button1)
-			.SetButton2(t => t.Dialog_Character_Creation_Name_Button2));
-		await HandleCharacterNameDialogResponse(player, response);
+			.SetButton2(t => t.Dialog_Character_Creation_Name_Button2),
+			response => HandleCharacterNameDialogResponse(player, response));
 	}
 
-	private async Task HandleCharacterNameDialogResponse(Player player, InputDialogResponse response)
+	private void HandleCharacterNameDialogResponse(Player player, InputDialogResponse response)
 	{
+		if (response.Response != DialogResponse.LeftButton)
+		{
+			ShowCharacterGenderDialog(player);
+			return;
+		}
+
 		var inputText = response.InputText.Trim();
 		if (string.IsNullOrEmpty(inputText))
 		{
-			await Task.Yield();
-			await ShowCharacterNameDialog(player);
+			ShowCharacterNameDialog(player);
 			return;
 		}
 
 		var regex = new Regex(@"[a-zA-Z]+_[a-zA-Z]+");
 		if (!regex.IsMatch(inputText))
 		{
-			await Task.Yield();
-			await ShowCharacterNameDialog(player);
+			ShowCharacterNameDialog(player);
 			return;
 		}
 
 		var component = player.GetComponent<CreationDataComponent>();
 		if (component is null)
 		{
-			await Task.Yield();
-			await ShowCharacterNameDialog(player);
+			ShowCharacterNameDialog(player);
 			return;
 		}
 
 		component.Name = inputText;
-		await ShowCharacterAgeDialog(player);
+		ShowCharacterAgeDialog(player);
 	}
 
-	private async Task ShowCharacterAgeDialog(Player player)
+	private void ShowCharacterAgeDialog(Player player)
 	{
-		var response = await dialogService.ShowInputAsync(player, b => b
-			.SetCaption(t => t.Dialog_Character_Creation_Age_Caption)
-			.SetContent(t => t.Dialog_Character_Creation_Age_Content)
-			.SetButton1(t => t.Dialog_Character_Creation_Age_Button1)
-			.SetButton2(t => t.Dialog_Character_Creation_Age_Button2)
-		);
-		await HandleCharacterAgeDialogResponse(player, response);
+		dialogService.ShowInput(
+			player,
+			b => b
+				.SetCaption(t => t.Dialog_Character_Creation_Age_Caption)
+				.SetContent(t => t.Dialog_Character_Creation_Age_Content)
+				.SetButton1(t => t.Dialog_Character_Creation_Age_Button1)
+				.SetButton2(t => t.Dialog_Character_Creation_Age_Button2),
+			async response => await HandleCharacterAgeDialogResponse(player, response));
 	}
 
 	private async Task HandleCharacterAgeDialogResponse(Player player, InputDialogResponse response)
 	{
 		if (response.Response != DialogResponse.LeftButton)
 		{
-			await Task.Yield();
-			await ShowCharacterNameDialog(player);
+			ShowCharacterNameDialog(player);
 			return;
 		}
 
 		var accountComponent = player.GetComponent<AccountComponent>();
 		if (accountComponent is null)
 		{
-			await Task.Yield();
 			await authenticatedEvent.InvokeAsync(player, await authenticationSystem.IsAccountSignedUpAsync(player));
 			return;
 		}
@@ -152,15 +155,13 @@ public sealed class CreationSystem : ISystem
 		var creationDataComponent = player.GetComponent<CreationDataComponent>();
 		if (creationDataComponent is null)
 		{
-			await Task.Yield();
-			await ShowCharacterGenderDialog(player);
+			ShowCharacterGenderDialog(player);
 			return;
 		}
 
 		if (!int.TryParse(response.InputText, out var age) || age < 17 || age > 80)
 		{
-			await Task.Yield();
-			await ShowCharacterAgeDialog(player);
+			ShowCharacterAgeDialog(player);
 			return;
 		}
 
