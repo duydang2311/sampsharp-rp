@@ -1,5 +1,4 @@
 using System.Globalization;
-using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.I18N.Localization.Components;
 
@@ -44,10 +43,32 @@ public sealed class CustomDialogService : ICustomDialogService
 		return ShowAsync<TablistDialogResponse, TablistDialog, ITablistDialogBuilder>(player, builder);
 	}
 
-	public Task<TResponse> ShowAsync<TResponse>(EntityId player, IDialog<TResponse> dialog)
-	where TResponse : struct
+	public void ShowMessage(Player player, Action<IMessageDialogBuilder> buildDialog, Action<MessageDialogResponse> responseHandler)
 	{
-		return sampSharpDialogService.ShowAsync(player, dialog);
+		var builder = dialogBuilderFactory.CreateMessageBuilder();
+		buildDialog(builder);
+		Show(player, builder, responseHandler);
+	}
+
+	public void ShowInput(Player player, Action<IInputDialogBuilder> buildDialog, Action<InputDialogResponse> responseHandler)
+	{
+		var builder = dialogBuilderFactory.CreateInputBuilder();
+		buildDialog(builder);
+		Show(player, builder, responseHandler);
+	}
+
+	public void ShowList(Player player, Action<IListDialogBuilder> buildDialog, Action<ListDialogResponse> responseHandler)
+	{
+		var builder = dialogBuilderFactory.CreateListBuilder();
+		buildDialog(builder);
+		Show(player, builder, responseHandler);
+	}
+
+	public void ShowTablist(Player player, Action<ITablistDialogBuilder> buildDialog, Action<TablistDialogResponse> responseHandler)
+	{
+		var builder = dialogBuilderFactory.CreateTablistBuilder();
+		buildDialog(builder);
+		Show(player, builder, responseHandler);
 	}
 
 	private Task<TResponse> ShowAsync<TResponse, TDialog, TBuilder>(Player player, IDialogBuilder<TDialog, TBuilder> builder)
@@ -56,6 +77,15 @@ public sealed class CustomDialogService : ICustomDialogService
 	where TBuilder : IDialogBuilder<TDialog, TBuilder>
 	{
 		var cultureInfo = player.GetComponent<CultureComponent>()?.Culture ?? CultureInfo.InvariantCulture;
-		return ShowAsync(player, builder.Build(cultureInfo));
+		return sampSharpDialogService.ShowAsync(player, builder.Build(cultureInfo));
+	}
+
+	private void Show<TResponse, TDialog, TBuilder>(Player player, IDialogBuilder<TDialog, TBuilder> builder, Action<TResponse> responseHandler)
+	where TResponse : struct
+	where TDialog : IDialog<TResponse>
+	where TBuilder : IDialogBuilder<TDialog, TBuilder>
+	{
+		var cultureInfo = player.GetComponent<CultureComponent>()?.Culture ?? CultureInfo.InvariantCulture;
+		sampSharpDialogService.Show(player, builder.Build(cultureInfo), responseHandler);
 	}
 }
