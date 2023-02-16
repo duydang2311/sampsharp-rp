@@ -7,14 +7,13 @@ using Server.Database;
 
 namespace Server.Account.Systems.Authentication;
 
-public sealed class AuthenticationSytem : ISystem
+public sealed class AuthenticationSystem : IAuthenticationSystem
 {
 	private readonly IDbContextFactory<ServerDbContext> contextFactory;
 	private readonly IChatService chatService;
 	private readonly IAuthenticatedEvent authenticatedEvent;
 
-	public AuthenticationSytem(IDbContextFactory<ServerDbContext> contextFactory, IChatService chatService,
-		IAuthenticatedEvent authenticatedEvent)
+	public AuthenticationSystem(IDbContextFactory<ServerDbContext> contextFactory, IChatService chatService, IAuthenticatedEvent authenticatedEvent)
 	{
 		this.contextFactory = contextFactory;
 		this.chatService = chatService;
@@ -28,8 +27,12 @@ public sealed class AuthenticationSytem : ISystem
 			.Add(t => t.Badge_System)
 			.Inline(t => t.Account_Authentication_Loading));
 		player.ToggleSpectating(true);
+		await authenticatedEvent.InvokeAsync(player, await IsAccountSignedUpAsync(player));
+	}
+
+	public async Task<bool> IsAccountSignedUpAsync(Player player)
+	{
 		await using var context = await contextFactory.CreateDbContextAsync();
-		var exist = await context.Accounts.AnyAsync(model => player.Name == model.Name);
-		await authenticatedEvent.InvokeAsync(player, exist);
+		return await context.Accounts.AnyAsync(model => player.Name == model.Name);
 	}
 }

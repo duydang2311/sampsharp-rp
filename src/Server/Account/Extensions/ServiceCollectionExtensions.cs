@@ -10,9 +10,10 @@ public static partial class ServiceCollectionExtensions
 	public static IServiceCollection WithAccount(this IServiceCollection self)
 	{
 		return self
-			.AddSystem<AuthenticationSytem>()
+			.AddSystem<AuthenticationSystem>()
 			.AddSystem<LoginSystem>()
 			.AddSystem<SignUpSystem>()
+			.AddSingleton<IAuthenticationSystem>(provider => provider.GetRequiredService<AuthenticationSystem>())
 			.AddSingleton<IAuthenticatedEvent, AuthenticatedEvent>()
 			.AddSingleton<ISignedUpEvent, SignedUpEvent>()
 			.AddSingleton<ILoginEvent, LoginEvent>();
