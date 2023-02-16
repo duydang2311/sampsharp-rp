@@ -28,6 +28,10 @@
 		<value>{0} nói: {1}</value>
 	</data>
 
+	<data name="Account_Authentication_Loading">
+		<value>Đang tải, vui lòng đợi trong giây lát...</value>
+	</data>
+
 	<!-- /door -->
 	<data name="DoorCommand_Help">
 		<value>/door [hành động].</value>
@@ -100,5 +104,30 @@
 	</data>
 	<data name="LanguageCommand_Success">
 		<value>Ngôn ngữ trò chơi đã được điều chỉnh thành '{0}'.</value>
+	</data>
+
+	<data name="Dialog_Account_Login_Caption">
+		<value>INSERT_SERVER_NAME - Xác minh tài khoản</value>
+	</data>
+	<data name="Dialog_Account_Login_Content">
+		<value>Chào mừng trở lại, {0}!\nHãy nhập mật khẩu của bạn để đăng nhập tài khoản và tham gia trò chơi.</value>
+	</data>
+	<data name="Dialog_Account_Login_Button1">
+		<value>Đăng nhập</value>
+	</data>
+	<data name="Dialog_Account_Login_Button2">
+		<value>Thoát</value>
+	</data>
+	<data name="Dialog_Account_SignUp_Caption">
+		<value>INSERT_SERVER_NAME - Đăng ký tài khoản</value>
+	</data>
+	<data name="Dialog_Account_SignUp_Content">
+		<value>{FFFFFF}Xin chào {7f9eba}{0}{FFFFFF}, tài khoản này chưa đuợc đăng ký. Hãy nhập mật khẩu mới vào khung bên duới.\n\n{D1D1D1}Vì lý do bảo mật, hãy đặt mật khẩu {C75656}duy nhất{D1D1D1} mà bạn chưa từng sử dụng truớc đây.</value>
+	</data>
+	<data name="Dialog_Account_SignUp_Button1">
+		<value>Đăng ký</value>
+	</data>
+	<data name="Dialog_Account_SignUp_Button2">
+		<value>Thoát</value>
 	</data>
 </root>

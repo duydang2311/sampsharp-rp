@@ -5,6 +5,7 @@ public interface ILocalizedText : ILocalizedBadge
 	object Chat_CommandNotFound { get; }
 	object Chat_CommandDenied { get; }
 	object Chat_Message { get; }
+	object Account_Authentication_Loading { get; }
 	object DoorCommand_Help { get; }
 	object DoorCommand_Options { get; }
 	object DoorCommand_Create_Help { get; }
