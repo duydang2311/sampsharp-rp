@@ -25,7 +25,7 @@ public sealed class DoCommandSystem : ISystem
 	{
 		chatService.SendMessage(
 			p => (Vector3.DistanceSquared(p.Position, player.Position) <= 15f * 15f),
-			b => b.Add((SemanticColor.Roleplay), ex => ex.DoCommandText, player.Name, text)
+			b => b.Add((SemanticColor.Roleplay), ex => ex.DoCommandText, text, player.Name)
 		);
 	}
 
@@ -33,8 +33,8 @@ public sealed class DoCommandSystem : ISystem
 	{
 		chatService.SendMessage(
 			player,
-		 	b => b.Add((SemanticColor.Roleplay), model => model.DoCommandHelp,
-				"Usega: [status] ((Character_Name))")
-		);
+		 	b => b
+				.Add(model => model.Badge_Help)
+				.Inline((SemanticColor.Roleplay), model => model.DoCommandHelp));
 	}
 }
