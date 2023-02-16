@@ -141,7 +141,7 @@ password that was {C75656}never{D1D1D1} used before.</value>
 		<value>{0}</value>
 	</data>
 	<data name="Dialog_CharacterSelection_Row_Column2">
-		<value>{1} y/o</value>
+		<value>{0} y/o</value>
 	</data>
 	<data name="Dialog_CharacterSelection_RowNewChar_Column1">
 		<value>{D1D1D1}(+) New character</value>
