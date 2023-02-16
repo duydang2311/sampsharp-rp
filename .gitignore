@@ -20,3 +20,5 @@ runtime/
 .env
 .fleet/
 .vs/
+omp-server.pdb
+qawno/
