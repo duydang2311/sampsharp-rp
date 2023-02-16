@@ -4,72 +4,70 @@ using SampSharp.Entities.SAMP;
 using Server.Account.Components;
 using Server.Account.Systems.Authentication;
 using Server.Database;
+using Server.SAMP.Dialog.Services;
+using BC = BCrypt.Net.BCrypt;
 
 namespace Server.Account.Systems.Login;
 
-using BCrypt.Net;
-
 public sealed class LoginSystem : ISystem
 {
-    private readonly IDbContextFactory<ServerDbContext> contextFactory;
-    private readonly IDialogService dialogService;
-    private readonly ILoginEvent loginEvent;
+	private readonly IDbContextFactory<ServerDbContext> contextFactory;
+	private readonly ICustomDialogService dialogService;
+	private readonly ILoginEvent loginEvent;
 
-    public LoginSystem(IDbContextFactory<ServerDbContext> contextFactory, IDialogService dialogService,
-        ILoginEvent loginEvent, IAuthenticatedEvent authenticatedEvent)
-    {
-        this.dialogService = dialogService;
-        this.contextFactory = contextFactory;
-        this.loginEvent = loginEvent;
+	public LoginSystem(IDbContextFactory<ServerDbContext> contextFactory, ICustomDialogService dialogService,
+		ILoginEvent loginEvent, IAuthenticatedEvent authenticatedEvent)
+	{
+		this.dialogService = dialogService;
+		this.contextFactory = contextFactory;
+		this.loginEvent = loginEvent;
 
-        authenticatedEvent.AddHandler(OnPlayerAuthenticated);
-    }
+		authenticatedEvent.AddHandler((player, signedUp, e) =>
+		{
+			if (!signedUp)
+			{
+				return Task.CompletedTask;
+			}
+			e.Cancel = true;
+			return ShowLoginDialog(player);
+		});
+	}
 
-    public void OnPlayerAuthenticated(Player player, bool signedUp)
-    {
-        if (!signedUp)
-        {
-            return;
-        }
-        var loginDialog = new InputDialog()
-        {
-            Content =
-                $"Chao mung tro lai, {player.Name}!\nHay nhap mat khau cua ban de dang nhap tai khoan va tham gia tro choi.",
-            Caption = "<INSERT_NAME_SERVER> - Xac minh tai khoan",
-            Button1 = "Dang nhap",
-            Button2 = "Thoat",
-            IsPassword = true
-        };
-        dialogService.Show(player, loginDialog, response =>
-        {
-            _ = Task.Run(async () =>
-            {
-                if (response.Response == DialogResponse.LeftButton)
-                {
-                    await using var context = await contextFactory.CreateDbContextAsync();
-                    var account = (await context
-                        .Accounts
-                        .Where(model => player.Name == model.Name)
-                        .Select(model => new { model.Password, model.Id })
-                        .FirstOrDefaultAsync())!;
-                    var success = await Task.Run(() => BCrypt.EnhancedVerify(response.InputText, account.Password));
+	private async Task ShowLoginDialog(Player player)
+	{
+		var response = await dialogService.ShowInputAsync(player, b => b
+			.SetCaption(t => t.Dialog_Account_Login_Caption)
+			.SetContent(t => t.Dialog_Account_Login_Content, player.Name)
+			.SetButton1(t => t.Dialog_Account_Login_Button1)
+			.SetButton2(t => t.Dialog_Account_Login_Button2)
+			.SetIsPassword(true));
+		await HandleLoginDialogResponse(player, response);
+	}
 
-                    if (success)
-                    {
-                        player.AddComponent<AccountComponent>(new AccountComponent() { Id = account.Id });
-                        await loginEvent.InvokeAsync(player);
-                    }
-                    else
-                    {
-                        player.Kick();
-                        // TODO: login again
-                    }
+	private async Task HandleLoginDialogResponse(Player player, InputDialogResponse response)
+	{
+		if (response.Response != DialogResponse.LeftButton)
+		{
+			player.Kick();
+			return;
+		}
+		await using var context = await contextFactory.CreateDbContextAsync();
+		var account = (await context
+			.Accounts
+			.Where(model => player.Name == model.Name)
+			.Select(model => new { model.Password, model.Id })
+			.FirstOrDefaultAsync())!;
+		var success = await Task.Run(() => BC.EnhancedVerify(response.InputText, account.Password));
 
-                    return;
-                }
-
-                player.Kick();
-            }).ContinueWith((t) => throw t.Exception!, TaskContinuationOptions.OnlyOnFaulted);
-        });
-    }
+		if (success)
+		{
+			player.AddComponent(new AccountComponent() { Id = account.Id });
+			await loginEvent.InvokeAsync(player);
+		}
+		else
+		{
+			await ShowLoginDialog(player);
+		}
+		return;
+	}
 }

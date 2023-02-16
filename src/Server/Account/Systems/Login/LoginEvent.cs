@@ -5,7 +5,5 @@ namespace Server.Account.Systems.Login;
 
 public sealed class LoginEvent : BaseEvent<Player>, ILoginEvent
 {
-    public LoginEvent(IEventInvoker invoker) : base(invoker)
-    {
-    }
+	public LoginEvent(IEventInvoker invoker) : base(invoker) { }
 }

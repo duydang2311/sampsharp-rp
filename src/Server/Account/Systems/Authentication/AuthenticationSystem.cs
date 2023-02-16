@@ -24,10 +24,12 @@ public sealed class AuthenticationSytem : ISystem
 	[Event]
 	private async void OnPlayerConnect(Player player)
 	{
-		chatService.SendMessage(player, b => b.Add("Đang tải, vui lòng đợi trong giây lát..."));
+		chatService.SendMessage(player, b => b
+			.Add(t => t.Badge_System)
+			.Inline(t => t.Account_Authentication_Loading));
 		player.ToggleSpectating(true);
 		await using var context = await contextFactory.CreateDbContextAsync();
-		var exist = await context.Characters.AnyAsync(model => player.Name == model.Name);
+		var exist = await context.Accounts.AnyAsync(model => player.Name == model.Name);
 		await authenticatedEvent.InvokeAsync(player, exist);
 	}
 }

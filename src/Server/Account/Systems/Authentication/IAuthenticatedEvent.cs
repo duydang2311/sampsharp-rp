@@ -1,8 +1,6 @@
 using SampSharp.Entities.SAMP;
-using Server.Common.Event;
+using Server.Common.CancellableEvent;
 
 namespace Server.Account.Systems.Authentication;
 
-public interface IAuthenticatedEvent : IEvent<Player, bool>
-{
-}
+public interface IAuthenticatedEvent : ICancellableEvent<Player, bool> { }

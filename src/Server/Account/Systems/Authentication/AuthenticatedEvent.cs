@@ -1,11 +1,9 @@
 using SampSharp.Entities.SAMP;
-using Server.Common.Event;
+using Server.Common.CancellableEvent;
 
 namespace Server.Account.Systems.Authentication;
 
-public sealed class AuthenticatedEvent : BaseEvent<Player, bool>, IAuthenticatedEvent
+public sealed class AuthenticatedEvent : BaseCancellableEvent<Player, bool>, IAuthenticatedEvent
 {
-    public AuthenticatedEvent(IEventInvoker invoker) : base(invoker)
-    {
-    }
+	public AuthenticatedEvent(ICancellableEventInvoker invoker) : base(invoker) { }
 }

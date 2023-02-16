@@ -3,6 +3,4 @@ using Server.Common.Event;
 
 namespace Server.Account.Systems.Login;
 
-public interface ILoginEvent : IEvent<Player>
-{
-}
+public interface ILoginEvent : IEvent<Player> { }

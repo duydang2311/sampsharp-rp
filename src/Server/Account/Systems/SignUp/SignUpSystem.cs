@@ -1,72 +1,69 @@
+using Microsoft.EntityFrameworkCore;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
+using Server.Account.Components;
+using Server.Account.Models;
 using Server.Account.Systems.Authentication;
+using Server.Database;
+using Server.SAMP.Dialog.Services;
+using BC = BCrypt.Net.BCrypt;
 
 namespace Server.Account.Systems.SignUp;
 
-using BCrypt.Net;
-using Microsoft.EntityFrameworkCore;
-using Models;
-using Database;
-
 public sealed class SignUpSystem : ISystem
 {
-    private readonly IDbContextFactory<ServerDbContext> contextFactory;
-    private readonly IDialogService dialogService;
-    private readonly ISignedUpEvent signedUpEvent;
+	private readonly IDbContextFactory<ServerDbContext> contextFactory;
+	private readonly ICustomDialogService dialogService;
+	private readonly ISignedUpEvent signedUpEvent;
 
-    public SignUpSystem(IDbContextFactory<ServerDbContext> contextFactory, IDialogService dialogService, IAuthenticatedEvent authenticatedEvent, ISignedUpEvent signedUpEvent)
-    {
-        this.contextFactory = contextFactory;
-        this.dialogService = dialogService;
-        this.signedUpEvent = signedUpEvent;
+	public SignUpSystem(IDbContextFactory<ServerDbContext> contextFactory, ICustomDialogService dialogService, IAuthenticatedEvent authenticatedEvent, ISignedUpEvent signedUpEvent)
+	{
+		this.contextFactory = contextFactory;
+		this.dialogService = dialogService;
+		this.signedUpEvent = signedUpEvent;
 
-        authenticatedEvent.AddHandler(OnPlayerAuthenticated);
-    }
+		authenticatedEvent.AddHandler((player, signedUp, e) =>
+		{
+			if (signedUp)
+			{
+				return Task.CompletedTask;
+			}
+			e.Cancel = true;
+			return ShowSignUpDialog(player);
+		});
+	}
 
-    public async Task OnPlayerAuthenticated(Player player, bool signedUp)
-    {
-        if (signedUp)
-        {
-            return;
-        }
-        await OnPasswordDialogResponse(player, await ShowPasswordDialog(player));
-    }
+	public async Task ShowSignUpDialog(Player player)
+	{
+		var response = await dialogService.ShowInputAsync(player, b => b
+			.SetCaption(t => t.Dialog_Account_SignUp_Caption)
+			.SetContent(t => t.Dialog_Account_SignUp_Content)
+			.SetButton1(t => t.Dialog_Account_SignUp_Button1)
+			.SetButton2(t => t.Dialog_Account_SignUp_Button2)
+			.SetIsPassword(true));
+		await HandleSignUpDialogResponse(player, response);
+	}
 
-    private Task<InputDialogResponse> ShowPasswordDialog(Player player)
-    {
-        var signUpDialog = new InputDialog()
-        {
-            Caption = "<INSERT_SERVER_NAME> - Dang ky tai khoan",
-            Content = "{FFFFFF}Xin chao{7f9eba} " + player.Name +
-                      "{FFFFFF}, tai khoan nay chua duoc dang ky hay nhap mat khau moi vao khung ben duoi.\n\n{D1D1D1}Vi ly do bao mat, hay dat mat khau {C75656}duy nhat {D1D1D1}ma ban chua tung su dung truoc day.",
-            Button1 = "Dang ky",
-            Button2 = "Thoat",
-            IsPassword = true
-        };
-        return dialogService.Show(player, signUpDialog);
-    }
+	private async Task HandleSignUpDialogResponse(Player player, InputDialogResponse response)
+	{
+		if (response.Response != DialogResponse.LeftButton)
+		{
+			player.Kick();
+			return;
+		}
 
-    private async Task OnPasswordDialogResponse(Player player, InputDialogResponse response)
-    {
-        if (response.Response == DialogResponse.RightButtonOrCancel)
-        {
-            player.Kick();
-            return;
-        }
+		var hash = await Task.Run(() => BC.EnhancedHashPassword(response.InputText));
+		var model = new AccountModel()
+		{
+			Name = player.Name,
+			Password = hash
+		};
 
-        var hash = await Task.Run(() => BCrypt.EnhancedHashPassword(response.InputText));
+		await using var context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false);
+		await context.Accounts.AddAsync(model).ConfigureAwait(false);
+		await context.SaveChangesAsync().ConfigureAwait(false);
 
-        AccountModel model = new AccountModel()
-        {
-            Name = player.Name,
-            Password = hash
-        };
-
-        await using var context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false);
-        await context.Accounts.AddAsync(model).ConfigureAwait(false);
-        await context.SaveChangesAsync().ConfigureAwait(false);
-
-        await signedUpEvent.InvokeAsync(player);
-    }
+		player.AddComponent(new AccountComponent { Id = model.Id });
+		await signedUpEvent.InvokeAsync(player);
+	}
 }

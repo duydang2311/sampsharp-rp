@@ -5,7 +5,5 @@ namespace Server.Account.Systems.SignUp;
 
 public sealed class SignedUpEvent : BaseEvent<Player>, ISignedUpEvent
 {
-    public SignedUpEvent(IEventInvoker invoker) : base(invoker)
-    {
-    }
+	public SignedUpEvent(IEventInvoker invoker) : base(invoker) { }
 }
