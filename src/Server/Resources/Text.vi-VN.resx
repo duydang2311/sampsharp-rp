@@ -157,4 +157,46 @@
 	<data name="Dialog_CharacterSelection_Button2">
 		<value>Thoát</value>
 	</data>
+	<data name="Dialog_Character_Creation_Name_Caption">
+		<value>Tên nhân vật</value>
+	</data>
+	<data name="Dialog_Character_Creation_Name_Content">
+		<value>Tên nhân vật của bạn sẽ là?\n\n* Tên nhân vật phải đuợc đặt theo cú pháp Ho_Ten hoặc Ten_Ho.</value>
+	</data>
+	<data name="Dialog_Character_Creation_Name_Button1">
+		<value>Tiếp tục</value>
+	</data>
+	<data name="Dialog_Character_Creation_Name_Button2">
+		<value>Quay lại</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Caption">
+		<value>Giới tính nhân vật</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Button1">
+		<value>Tiếp tục</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Button2">
+		<value>Quay lại</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Header_Column1">
+		<value>Giới tính của nhân vật sẽ là?</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Row_Male">
+		<value>Nam</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Row_Female">
+		<value>Nữ</value>
+	</data>
+	<data name="Dialog_Character_Creation_Age_Caption">
+		<value>Tuổi nhân vật</value>
+	</data>
+	<data name="Dialog_Character_Creation_Age_Content">
+		<value>Nhân vật của bạn bao nhiêu tuổi? (17 tuổi - 80 tuổi)</value>
+	</data>
+	<data name="Dialog_Character_Creation_Age_Button1">
+		<value>Tiếp tục</value>
+	</data>
+	<data name="Dialog_Character_Creation_Age_Button2">
+		<value>Quay lại</value>
+	</data>
 </root>
