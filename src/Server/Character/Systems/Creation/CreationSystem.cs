@@ -26,17 +26,14 @@ public sealed class CreationSystem : ISystem
 	private readonly ICharacterCreatedEvent characterCreatedEvent;
 	private readonly ILoginEvent loginEvent;
 	private readonly IAuthenticationSystem authenticationSystem;
-	private readonly IAuthenticatedEvent authenticatedEvent;
 
-	public CreationSystem(ICharacterSelectedEvent characterSelectedEvent, ICustomDialogService dialogService, IDbContextFactory<ServerDbContext> dbContextFactory, ICharacterCreatedEvent characterCreatedEvent, ILoginEvent
-			loginEvent, IAuthenticationSystem authenticationSystem, IAuthenticatedEvent authenticatedEvent)
+	public CreationSystem(ICharacterSelectedEvent characterSelectedEvent, ICustomDialogService dialogService, IDbContextFactory<ServerDbContext> dbContextFactory, ICharacterCreatedEvent characterCreatedEvent, ILoginEvent loginEvent, IAuthenticationSystem authenticationSystem)
 	{
 		this.dialogService = dialogService;
 		this.dbContextFactory = dbContextFactory;
 		this.characterCreatedEvent = characterCreatedEvent;
 		this.loginEvent = loginEvent;
 		this.authenticationSystem = authenticationSystem;
-		this.authenticatedEvent = authenticatedEvent;
 
 		characterSelectedEvent.AddHandler((player, id, e) =>
 		{
@@ -148,7 +145,7 @@ public sealed class CreationSystem : ISystem
 		var accountComponent = player.GetComponent<AccountComponent>();
 		if (accountComponent is null)
 		{
-			await authenticatedEvent.InvokeAsync(player, await authenticationSystem.IsAccountSignedUpAsync(player));
+			await authenticationSystem.AuthenticateAsync(player);
 			return;
 		}
 

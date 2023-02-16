@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Account.Components;
+using Server.Account.Systems.Authentication;
 using Server.Account.Systems.Login;
 using Server.Account.Systems.SignUp;
 using Server.Character.Systems.Creation;
@@ -15,12 +16,15 @@ public sealed class SelectionSystem : ISystem
 	private readonly IDbContextFactory<ServerDbContext> dbContextFactory;
 	private readonly ICustomDialogService dialogService;
 	private readonly ICharacterSelectedEvent characterSelectedEvent;
+	private readonly IAuthenticationSystem authenticationSystem;
 
-	public SelectionSystem(ILoginEvent loginEvent, ISignedUpEvent signedupEvent, IDbContextFactory<ServerDbContext> dbContextFactory, ICustomDialogService dialogService, ICharacterSelectedEvent characterSelectedEvent, ICharacterCreatedEvent characterCreatedEvent)
+	public SelectionSystem(ILoginEvent loginEvent, ISignedUpEvent signedupEvent, IDbContextFactory<ServerDbContext> dbContextFactory, ICustomDialogService dialogService, ICharacterSelectedEvent characterSelectedEvent, ICharacterCreatedEvent characterCreatedEvent, IAuthenticationSystem authenticationSystem)
 	{
 		this.dbContextFactory = dbContextFactory;
 		this.dialogService = dialogService;
 		this.characterSelectedEvent = characterSelectedEvent;
+		this.authenticationSystem = authenticationSystem;
+
 		loginEvent.AddHandler(ShowCharacterSelectionDialog);
 		signedupEvent.AddHandler(ShowCharacterSelectionDialog);
 		characterCreatedEvent.AddHandler(ShowCharacterSelectionDialog);
@@ -31,7 +35,7 @@ public sealed class SelectionSystem : ISystem
 		var account = player.GetComponent<AccountComponent>();
 		if (account is null)
 		{
-			player.Kick();
+			await authenticationSystem.AuthenticateAsync(player);
 			return;
 		}
 		await using var ctx = await dbContextFactory.CreateDbContextAsync();
