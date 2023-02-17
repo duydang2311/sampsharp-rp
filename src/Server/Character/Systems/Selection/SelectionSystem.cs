@@ -50,24 +50,24 @@ public sealed class SelectionSystem : ISystem
 			b =>
 			{
 				b
-					.AddColumn(t => t.Dialog_CharacterSelection_Header_Column1)
-					.AddColumn(t => t.Dialog_CharacterSelection_Header_Column2)
-					.SetCaption(t => t.Dialog_CharacterSelection_Caption)
-					.SetButton1(t => t.Dialog_CharacterSelection_Button1)
-					.SetButton2(t => t.Dialog_CharacterSelection_Button2);
+					.AddColumn(t => t.Dialog_Character_Selection_Header_Column1)
+					.AddColumn(t => t.Dialog_Character_Selection_Header_Column2)
+					.SetCaption(t => t.Dialog_Character_Selection_Caption)
+					.SetButton1(t => t.Dialog_Character_Selection_Button1)
+					.SetButton2(t => t.Dialog_Character_Selection_Button2);
 				foreach (var model in models)
 				{
 					b
 						.AddRow(b => b
-							.Add(t => t.Dialog_CharacterSelection_Row_Column1, model.Name)
-							.Add(t => t.Dialog_CharacterSelection_Row_Column2, model.Age))
+							.Add(t => t.Dialog_Character_Selection_Row_Column1, model.Name)
+							.Add(t => t.Dialog_Character_Selection_Row_Column2, model.Age))
 						.WithTag(model.Id);
 				}
 				if (models.Length < 3)
 				{
 					b.AddRow(b => b
-						.Add(t => t.Dialog_CharacterSelection_RowNewChar_Column1)
-						.Add(t => t.Dialog_CharacterSelection_RowNewChar_Column2));
+						.Add(t => t.Dialog_Character_Selection_RowNewChar_Column1)
+						.Add(t => t.Dialog_Character_Selection_RowNewChar_Column2));
 				}
 			},
 			async response => await HandleSelectionResponse(player, response));

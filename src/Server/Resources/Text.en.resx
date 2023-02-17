@@ -131,31 +131,31 @@ password that was {C75656}never{D1D1D1} used before.</value>
 	<data name="Dialog_Account_SignUp_Button2">
 		<value>Quit</value>
 	</data>
-	<data name="Dialog_CharacterSelection_Header_Column1">
+	<data name="Dialog_Character_Selection_Header_Column1">
 		<value>Select a character to join the game</value>
 	</data>
-	<data name="Dialog_CharacterSelection_Header_Column2">
+	<data name="Dialog_Character_Selection_Header_Column2">
 		<value></value>
 	</data>
-	<data name="Dialog_CharacterSelection_Row_Column1">
+	<data name="Dialog_Character_Selection_Row_Column1">
 		<value>{0}</value>
 	</data>
-	<data name="Dialog_CharacterSelection_Row_Column2">
+	<data name="Dialog_Character_Selection_Row_Column2">
 		<value>{0} y/o</value>
 	</data>
-	<data name="Dialog_CharacterSelection_RowNewChar_Column1">
+	<data name="Dialog_Character_Selection_RowNewChar_Column1">
 		<value>{D1D1D1}(+) New character</value>
 	</data>
-	<data name="Dialog_CharacterSelection_RowNewChar_Column2">
+	<data name="Dialog_Character_Selection_RowNewChar_Column2">
 		<value></value>
 	</data>
-	<data name="Dialog_CharacterSelection_Caption">
+	<data name="Dialog_Character_Selection_Caption">
 		<value>Characters</value>
 	</data>
-	<data name="Dialog_CharacterSelection_Button1">
+	<data name="Dialog_Character_Selection_Button1">
 		<value>Select</value>
 	</data>
-	<data name="Dialog_CharacterSelection_Button2">
+	<data name="Dialog_Character_Selection_Button2">
 		<value>Exit</value>
 	</data>
 	<data name="Dialog_Character_Creation_Name_Caption">

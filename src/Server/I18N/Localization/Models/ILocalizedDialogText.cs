@@ -11,15 +11,15 @@ public interface ILocalizedDialogText
 	object Dialog_Account_Login_Button1 { get; }
 	object Dialog_Account_Login_Button2 { get; }
 
-	object Dialog_CharacterSelection_Caption { get; }
-	object Dialog_CharacterSelection_Header_Column1 { get; }
-	object Dialog_CharacterSelection_Header_Column2 { get; }
-	object Dialog_CharacterSelection_Row_Column1 { get; }
-	object Dialog_CharacterSelection_Row_Column2 { get; }
-	object Dialog_CharacterSelection_RowNewChar_Column1 { get; }
-	object Dialog_CharacterSelection_RowNewChar_Column2 { get; }
-	object Dialog_CharacterSelection_Button1 { get; }
-	object Dialog_CharacterSelection_Button2 { get; }
+	object Dialog_Character_Selection_Caption { get; }
+	object Dialog_Character_Selection_Header_Column1 { get; }
+	object Dialog_Character_Selection_Header_Column2 { get; }
+	object Dialog_Character_Selection_Row_Column1 { get; }
+	object Dialog_Character_Selection_Row_Column2 { get; }
+	object Dialog_Character_Selection_RowNewChar_Column1 { get; }
+	object Dialog_Character_Selection_RowNewChar_Column2 { get; }
+	object Dialog_Character_Selection_Button1 { get; }
+	object Dialog_Character_Selection_Button2 { get; }
 	object Dialog_Character_Creation_Name_Caption { get; }
 	object Dialog_Character_Creation_Name_Content { get; }
 	object Dialog_Character_Creation_Name_Button1 { get; }
