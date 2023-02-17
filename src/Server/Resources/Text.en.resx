@@ -105,8 +105,9 @@
 	<data name="Dialog_Account_Login_Caption">
 		<value>INSERT_SERVER_NAME - Login</value>
 	</data>
-	<data name="Dialog_Account_Login_Content">
-		<value>Welcome back, {0}!\nEnter your account password to log in and join the game.</value>
+	<data name="Dialog_Account_Login_Content" xml:space="preserve">
+		<value>Welcome back, {0}!
+Enter your account password to log in and join the game.</value>
 	</data>
 	<data name="Dialog_Account_Login_Button1">
 		<value>Login</value>
@@ -117,13 +118,44 @@
 	<data name="Dialog_Account_SignUp_Caption">
 		<value>INSERT_SERVER_NAME - Signing Up</value>
 	</data>
-	<data name="Dialog_Account_SignUp_Content">
-		<value>{FFFFFF}Hello {7f9eba}{0}{FFFFFF}, this account has not been signed up. Enter a new password to the box below to sign up.\n\n{D1D1D1}For security purpose, please use a password that was {C75656}never{D1D1D1} used before.</value>
+	<data name="Dialog_Account_SignUp_Content" xml:space="preserve">
+		<value>{FFFFFF}Hello {7f9eba}{0}{FFFFFF}, this account has not been signed up. Enter a new
+password to the box below to sign up.
+
+{D1D1D1}For security purpose, please use a
+password that was {C75656}never{D1D1D1} used before.</value>
 	</data>
 	<data name="Dialog_Account_SignUp_Button1">
 		<value>Sign Up</value>
 	</data>
 	<data name="Dialog_Account_SignUp_Button2">
 		<value>Quit</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Header_Column1">
+		<value>Select a character to join the game</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Header_Column2">
+		<value></value>
+	</data>
+	<data name="Dialog_CharacterSelection_Row_Column1">
+		<value>{0}</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Row_Column2">
+		<value>{0} y/o</value>
+	</data>
+	<data name="Dialog_CharacterSelection_RowNewChar_Column1">
+		<value>{D1D1D1}(+) New character</value>
+	</data>
+	<data name="Dialog_CharacterSelection_RowNewChar_Column2">
+		<value></value>
+	</data>
+	<data name="Dialog_CharacterSelection_Caption">
+		<value>Characters</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Button1">
+		<value>Select</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Button2">
+		<value>Exit</value>
 	</data>
 </root>

@@ -109,8 +109,9 @@
 	<data name="Dialog_Account_Login_Caption">
 		<value>INSERT_SERVER_NAME - Xác minh tài khoản</value>
 	</data>
-	<data name="Dialog_Account_Login_Content">
-		<value>Chào mừng trở lại, {0}!\nHãy nhập mật khẩu của bạn để đăng nhập tài khoản và tham gia trò chơi.</value>
+	<data name="Dialog_Account_Login_Content" xml:space="preserve">
+		<value>Chào mừng trở lại, {0}!
+Hãy nhập mật khẩu của bạn để đăng nhập tài khoản và tham gia trò chơi.</value>
 	</data>
 	<data name="Dialog_Account_Login_Button1">
 		<value>Đăng nhập</value>
@@ -121,13 +122,86 @@
 	<data name="Dialog_Account_SignUp_Caption">
 		<value>INSERT_SERVER_NAME - Đăng ký tài khoản</value>
 	</data>
-	<data name="Dialog_Account_SignUp_Content">
-		<value>{FFFFFF}Xin chào {7f9eba}{0}{FFFFFF}, tài khoản này chưa đuợc đăng ký. Hãy nhập mật khẩu mới vào khung bên duới.\n\n{D1D1D1}Vì lý do bảo mật, hãy đặt mật khẩu {C75656}duy nhất{D1D1D1} mà bạn chưa từng sử dụng truớc đây.</value>
+	<data name="Dialog_Account_SignUp_Content" xml:space="preserve">
+		<value>{FFFFFF}Xin chào {7f9eba}{0}{FFFFFF}, tài khoản này chưa đuợc đăng ký. Hãy nhập mật
+khẩu mới vào khung bên duới.
+			
+{D1D1D1}Vì lý do bảo mật, hãy đặt mật khẩu {C75656}duy nhất{D1D1D1} mà bạn chưa từng sử dụng truớc đây.</value>
 	</data>
 	<data name="Dialog_Account_SignUp_Button1">
 		<value>Đăng ký</value>
 	</data>
 	<data name="Dialog_Account_SignUp_Button2">
 		<value>Thoát</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Header_Column1">
+		<value>Nhân vật bạn sẽ tham gia là?</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Header_Column2">
+		<value></value>
+	</data>
+	<data name="Dialog_CharacterSelection_Row_Column1">
+		<value>{0}</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Row_Column2">
+		<value>{0} tuổi</value>
+	</data>
+	<data name="Dialog_CharacterSelection_RowNewChar_Column1">
+		<value>{D1D1D1}(+) Tạo nhân vật mới</value>
+	</data>
+	<data name="Dialog_CharacterSelection_RowNewChar_Column2">
+		<value></value>
+	</data>
+	<data name="Dialog_CharacterSelection_Caption">
+		<value>Nhân vật</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Button1">
+		<value>Lựa chọn</value>
+	</data>
+	<data name="Dialog_CharacterSelection_Button2">
+		<value>Thoát</value>
+	</data>
+	<data name="Dialog_Character_Creation_Name_Caption">
+		<value>Tên nhân vật</value>
+	</data>
+	<data name="Dialog_Character_Creation_Name_Content">
+		<value>Tên nhân vật của bạn sẽ là?\n\n* Tên nhân vật phải đuợc đặt theo cú pháp Ho_Ten hoặc
+			Ten_Ho.</value>
+	</data>
+	<data name="Dialog_Character_Creation_Name_Button1">
+		<value>Tiếp tục</value>
+	</data>
+	<data name="Dialog_Character_Creation_Name_Button2">
+		<value>Quay lại</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Caption">
+		<value>Giới tính nhân vật</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Button1">
+		<value>Tiếp tục</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Button2">
+		<value>Quay lại</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Header_Column1">
+		<value>Giới tính của nhân vật sẽ là?</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Row_Male">
+		<value>Nam</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Row_Female">
+		<value>Nữ</value>
+	</data>
+	<data name="Dialog_Character_Creation_Age_Caption">
+		<value>Tuổi nhân vật</value>
+	</data>
+	<data name="Dialog_Character_Creation_Age_Content">
+		<value>Nhân vật của bạn bao nhiêu tuổi? (17 tuổi - 80 tuổi)</value>
+	</data>
+	<data name="Dialog_Character_Creation_Age_Button1">
+		<value>Tiếp tục</value>
+	</data>
+	<data name="Dialog_Character_Creation_Age_Button2">
+		<value>Quay lại</value>
 	</data>
 </root>

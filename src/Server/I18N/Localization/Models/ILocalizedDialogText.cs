@@ -16,6 +16,22 @@ public interface ILocalizedDialogText
 	object Dialog_CharacterSelection_Header_Column2 { get; }
 	object Dialog_CharacterSelection_Row_Column1 { get; }
 	object Dialog_CharacterSelection_Row_Column2 { get; }
+	object Dialog_CharacterSelection_RowNewChar_Column1 { get; }
+	object Dialog_CharacterSelection_RowNewChar_Column2 { get; }
 	object Dialog_CharacterSelection_Button1 { get; }
 	object Dialog_CharacterSelection_Button2 { get; }
+	object Dialog_Character_Creation_Name_Caption { get; }
+	object Dialog_Character_Creation_Name_Content { get; }
+	object Dialog_Character_Creation_Name_Button1 { get; }
+	object Dialog_Character_Creation_Name_Button2 { get; }
+	object Dialog_Character_Creation_Gender_Caption { get; }
+	object Dialog_Character_Creation_Gender_Button1 { get; }
+	object Dialog_Character_Creation_Gender_Button2 { get; }
+	object Dialog_Character_Creation_Gender_Header_Column1 { get; }
+	object Dialog_Character_Creation_Gender_Row_Male { get; }
+	object Dialog_Character_Creation_Gender_Row_Female { get; }
+	object Dialog_Character_Creation_Age_Caption { get; }
+	object Dialog_Character_Creation_Age_Content { get; }
+	object Dialog_Character_Creation_Age_Button1 { get; }
+	object Dialog_Character_Creation_Age_Button2 { get; }
 }
