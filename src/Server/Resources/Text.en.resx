@@ -206,30 +206,30 @@ password that was {C75656}never{D1D1D1} used before.</value>
 		<value>* {0} {1}</value>
 	</data>
 	<data name="MeCommandHelp">
-		<value>/me [hành động]</value>
+		<value>/me [action]</value>
 	</data>
 	<data name="DoCommandText">
 		<value>* {0} (({1}))</value>
 	</data>
 	<data name="DoCommandHelp">
-		<value>/do [trạng thái]</value>
+		<value>/do [status]</value>
 	</data>
 	<data name="ShoutCommand_Text">
-		<value>* {0} hét to: {1}</value>
+		<value>* {0} shouts: {1}</value>
 	</data>
 	<data name="ShoutCommand_Help">
-		<value>/shout [nội dung]</value>
+		<value>/shout [text]</value>
 	</data>
 	<data name="LowCommand_Text">
-		<value>*{0} nói [nhỏ]: {1}</value>
+		<value>*{0} says [low]: {1}</value>
 	</data>
 	<data name="LowCommand_Help">
-		<value>/low [nội dung]</value>
+		<value>/low [text]</value>
 	</data>
 	<data name="AmeCommand_Text">
 		<value>* {0}</value>
 	</data>
 	<data name="AmeCommand_Help">
-		<value>/ame [hành động]</value>
+		<value>/ame [action]</value>
 	</data>
 </root>
