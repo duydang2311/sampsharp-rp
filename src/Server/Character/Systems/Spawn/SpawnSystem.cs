@@ -51,4 +51,35 @@ public sealed class SpawnSystem : ISystem
 		player.Health = model.Health;
 		await characterSpawnedEvent.InvokeAsync(player);
 	}
+
+	[Event]
+	private async void OnPlayerDisconnect(Player player)
+	{
+		var component = player.GetComponent<CharacterComponent>();
+		if (component is null)
+		{
+			return;
+		}
+
+		var position = player.Position;
+		var angle = player.Angle;
+		var world = player.VirtualWorld;
+		var interior = player.Interior;
+		var health = player.Health;
+
+		await using var ctx = await dbContextFactory
+			.CreateDbContextAsync()
+			.ConfigureAwait(false);
+		await ctx.Characters
+			.Where(m => m.Id == component.Id)
+			.ExecuteUpdateAsync(m => m
+				.SetProperty(m => m.X, position.X)
+				.SetProperty(m => m.Y, position.Y)
+				.SetProperty(m => m.Z, position.Z)
+				.SetProperty(m => m.A, angle)
+				.SetProperty(m => m.World, world)
+				.SetProperty(m => m.Interior, interior)
+				.SetProperty(m => m.Health, health))
+			.ConfigureAwait(false);
+	}
 }
