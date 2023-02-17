@@ -14,4 +14,5 @@ public static class SemanticColor
 	public static Color Help => new(0x27, 0xBE, 0xF0);
 	public static Color System => new(163, 163, 163);
 	public static Color ChatMessage => new(241, 245, 249);
+	public static Color Shout => new(Color.White);
 }

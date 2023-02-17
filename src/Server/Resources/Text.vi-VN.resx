@@ -204,4 +204,52 @@ khẩu mới vào khung bên duới.
 	<data name="Dialog_Character_Creation_Age_Button2">
 		<value>Quay lại</value>
 	</data>
+	<data name="MeCommandText">
+		<value>* {0} {1}</value>
+	</data>
+	<data name="MeCommandHelp">
+		<value>Hướng dẫn: /me [hành động]</value>
+	</data>
+	<data name="MeCommandText">
+		<value>* {0} {1}</value>
+	</data>
+	<data name="MeCommandHelp">
+		<value>Hướng dẫn: /me [hành động]</value>
+	</data>
+	<data name="DoCommandText">
+		<value>* {1} (({0}))</value>
+	</data>
+	<data name="DoCommandHelp">
+		<value>Hướng dẫn: /do [trạng thái]</value>
+	</data>
+	<data name="MeCommandText">
+		<value>* {0} {1}</value>
+	</data>
+	<data name="MeCommandHelp">
+		<value>/me [hành động]</value>
+	</data>
+	<data name="DoCommandText">
+		<value>* {0} (({1}))</value>
+	</data>
+	<data name="DoCommandHelp">
+		<value>/do [trạng thái]</value>
+	</data>
+	<data name="ShoutCommand_Text">
+		<value>* {0} hét to: {1}</value>
+	</data>
+	<data name="ShoutCommand_Help">
+		<value>/shout [nội dung]</value>
+	</data>
+	<data name="LowCommand_Text">
+		<value>* {0} nói [nhỏ]: {1}</value>
+	</data>
+	<data name="LowCommand_Help">
+		<value>/low [nội dung]</value>
+	</data>
+	<data name="AmeCommand_Text">
+		<value>* {0}</value>
+	</data>
+	<data name="AmeCommand_Help">
+		<value>/ame [hành động]</value>
+	</data>
 </root>
