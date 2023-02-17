@@ -32,4 +32,5 @@ public sealed class CharacterModel
 	[DefaultValue("vi")]
 	[MaxLength(11)]
 	public string Locale { get; set; } = string.Empty;
+	public float Health { get; set; }
 }
