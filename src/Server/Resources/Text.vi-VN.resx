@@ -208,24 +208,6 @@ khẩu mới vào khung bên duới.
 		<value>* {0} {1}</value>
 	</data>
 	<data name="MeCommandHelp">
-		<value>Hướng dẫn: /me [hành động]</value>
-	</data>
-	<data name="MeCommandText">
-		<value>* {0} {1}</value>
-	</data>
-	<data name="MeCommandHelp">
-		<value>Hướng dẫn: /me [hành động]</value>
-	</data>
-	<data name="DoCommandText">
-		<value>* {1} (({0}))</value>
-	</data>
-	<data name="DoCommandHelp">
-		<value>Hướng dẫn: /do [trạng thái]</value>
-	</data>
-	<data name="MeCommandText">
-		<value>* {0} {1}</value>
-	</data>
-	<data name="MeCommandHelp">
 		<value>/me [hành động]</value>
 	</data>
 	<data name="DoCommandText">
