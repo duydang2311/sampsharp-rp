@@ -158,6 +158,50 @@ password that was {C75656}never{D1D1D1} used before.</value>
 	<data name="Dialog_CharacterSelection_Button2">
 		<value>Exit</value>
 	</data>
+	<data name="Dialog_Character_Creation_Name_Caption">
+		<value>Character's name</value>
+	</data>
+	<data name="Dialog_Character_Creation_Name_Content" xml:space="preserve">
+		<value>What do you name your character?
+
+* Character name must be in the format of Firstname_Lastname or Lastname_Firstname.</value>
+	</data>
+	<data name="Dialog_Character_Creation_Name_Button1">
+		<value>Continue</value>
+	</data>
+	<data name="Dialog_Character_Creation_Name_Button2">
+		<value>Back</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Caption">
+		<value>Character's gender</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Button1">
+		<value>Continue</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Button2">
+		<value>Back</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Header_Column1">
+		<value>What is your character's gender?</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Row_Male">
+		<value>Male</value>
+	</data>
+	<data name="Dialog_Character_Creation_Gender_Row_Female">
+		<value>Female</value>
+	</data>
+	<data name="Dialog_Character_Creation_Age_Caption">
+		<value>Character's age</value>
+	</data>
+	<data name="Dialog_Character_Creation_Age_Content">
+		<value>How old is your character? (from 17 to 80 years old)</value>
+	</data>
+	<data name="Dialog_Character_Creation_Age_Button1">
+		<value>Continue</value>
+	</data>
+	<data name="Dialog_Character_Creation_Age_Button2">
+		<value>Back</value>
+	</data>
 	<data name="MeCommandText">
 		<value>* {0} {1}</value>
 	</data>
