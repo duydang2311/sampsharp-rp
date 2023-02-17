@@ -20,6 +20,7 @@ public static partial class ServiceCollectionExtensions
 			.AddSystem<EnterCommandSystem>()
 			.AddSystem<SelectionSystem>()
 			.AddSystem<CreationSystem>()
+			.AddSystem<SpawnSystem>()
 			.AddSingleton<IEnterCommandEvent, EnterCommandEvent>()
 			.AddSingleton<ICharacterSelectedEvent, CharacterSelectedEvent>()
 			.AddSingleton<ICharacterCreatedEvent, CharacterCreatedEvent>()
