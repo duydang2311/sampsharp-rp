@@ -6,10 +6,8 @@ namespace Server.Geometry.Entities;
 public class PolygonArea : IPolygonArea
 {
 	protected List<Vector2> points = new();
-	protected HashSet<Vector2> rightNormals = new();
 
 	public IReadOnlyCollection<Vector2> Points => points;
-	public IReadOnlyCollection<Vector2> RightNormals => rightNormals;
 
 	public virtual bool Contains(Vector2 position)
 	{
@@ -35,32 +33,27 @@ public class PolygonArea : IPolygonArea
 	public virtual void Add(Vector2 point)
 	{
 		points.Add(point);
-		RestoreRightNormals();
 	}
 
 	public virtual void AddRange(params Vector2[] points)
 	{
 		this.points.AddRange(points);
-		RestoreRightNormals();
 	}
 
 	public virtual void Remove(Vector2 point)
 	{
 		points.Remove(point);
-		RestoreRightNormals();
 	}
 
 	public virtual int Remove(Predicate<Vector2> filter)
 	{
 		var removedCount = points.RemoveAll(filter);
-		RestoreRightNormals();
 		return removedCount;
 	}
 
 	public virtual void RemoveAt(int index)
 	{
 		points.RemoveAt(index);
-		RestoreRightNormals();
 	}
 
 	public virtual bool Overlaps(IArea other)
@@ -85,17 +78,32 @@ public class PolygonArea : IPolygonArea
 			return true;
 		}
 
-		float a, b, c;
-		for (int i = 0, j = points.Count - 1, count = points.Count; i != count; ++i)
+		foreach (var point in points)
 		{
-			var last = points[j];
-			var cur = points[i];
-			GeometryHelper.GetLineFormula(cur, last, out a, out b, out c);
-			if (GeometryHelper.GetDistanceSquaredToLine(a, b, c, other.Center) <= other.RadiusSquared)
+			if (other.Contains(point))
 			{
 				return true;
 			}
-			last = cur;
+		}
+
+		var center = other.Center;
+		for (int i = 0, count = points.Count, j = count - 1; i != count; ++i)
+		{
+			var last = points[j];
+			var cur = points[i];
+			GeometryHelper.GetLineFormula(cur, last, out var a, out var b, out var c);
+			if (GeometryHelper.GetDistanceSquaredToLine(a, b, c, center) <= other.RadiusSquared)
+			{
+				var minX = Math.Min(cur.X, last.X);
+				var maxX = Math.Max(cur.X, last.X);
+				var minY = Math.Min(cur.Y, last.Y);
+				var maxY = Math.Max(cur.Y, last.Y);
+				if (center.X >= minX && center.X <= maxX && center.Y >= minY && center.Y <= maxY)
+				{
+					return true;
+				}
+			}
+			j = i;
 		}
 		return false;
 	}
@@ -107,25 +115,28 @@ public class PolygonArea : IPolygonArea
 			return false;
 		}
 
-		foreach (var normal in RightNormals)
+		var otherPoints = other.Points.ToList();
+		for (int i1 = 0, count1 = otherPoints.Count, j1 = count1 - 1; i1 != count1; ++i1)
 		{
-			var mm1 = FindMaxMinProjection(this, normal);
-			var mm2 = FindMaxMinProjection(other, normal);
-			if (mm1.Max < mm2.Min || mm2.Max < mm1.Min)
+			for (int i2 = 0, count2 = points.Count, j2 = count2 - 1; i2 != count2; ++i2)
 			{
-				return false;
+				if (EdgeIntersects(otherPoints[i1], otherPoints[j1], points[i2], points[j2]))
+				{
+					return true;
+				}
+				j2 = i2;
+			}
+			j1 = i1;
+		}
+
+		foreach (var point in points)
+		{
+			if (other.Contains(point))
+			{
+				return true;
 			}
 		}
-		foreach (var normal in other.RightNormals)
-		{
-			var mm1 = FindMaxMinProjection(this, normal);
-			var mm2 = FindMaxMinProjection(other, normal);
-			if (mm1.Max < mm2.Min || mm2.Max < mm1.Min)
-			{
-				return false;
-			}
-		}
-		return true;
+		return false;
 	}
 
 	public virtual bool Overlaps(IRectangleArea other)
@@ -138,52 +149,23 @@ public class PolygonArea : IPolygonArea
 		return other.Overlaps(this);
 	}
 
-	private static Vector2[] GetRightNormals(IPolygonArea area)
+	private static float Determinant(Vector2 a, Vector2 b)
 	{
-		var points = area.Points.ToArray();
-		var rightNormals = new Vector2[points.Length];
-		for (int i = 0, count = points.Length, j = count - 1; i != count; ++i)
-		{
-			var edge = points[i] - points[j];
-			rightNormals[i] = new Vector2(edge.Y, -edge.X).Normalized();
-		}
-		return rightNormals;
+		return a.X * b.Y - a.Y * b.X;
 	}
 
-	private static MinMax FindMaxMinProjection(IPolygonArea area, Vector2 axis)
+	private static bool EdgeIntersects(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
 	{
-		var points = area.Points.ToArray();
-		var projection = Vector2.Dot(points[0], axis);
-		var max = projection;
-		var min = projection;
-		for (int i = 1, length = points.Length; i != length; ++i)
+		var denom = (d.Y - c.Y) * (b.X - a.X) - (d.X - c.X) * (b.Y - a.Y);
+		var numeA = (d.X - c.X) * (a.Y - c.Y) - (d.Y - c.Y) * (a.X - c.X);
+		var numeB = (b.X - a.X) * (a.Y - c.Y) - (b.Y - a.Y) * (a.X - c.X);
+		if (denom == 0 || (numeA == 0 && numeB == 0))
 		{
-			projection = Vector2.Dot(points[i], axis);
-			max = max > projection ? max : projection;
-			min = min < projection ? min : projection;
+			return false;
 		}
-		return new MinMax(min, max);
-	}
 
-	private void RestoreRightNormals()
-	{
-		rightNormals.Clear();
-		for (int i = 0, count = points.Count, j = count - 1; i != count; ++i)
-		{
-			var edge = points[i] - points[j];
-			rightNormals.Add(new Vector2(edge.Y, -edge.X).Normalized());
-			j = i;
-		}
-	}
-
-	private struct MinMax
-	{
-		public float Min;
-		public float Max;
-		public MinMax(float min, float max)
-		{
-			Min = min;
-			Max = max;
-		}
+		var uA = numeA / denom;
+		var uB = numeB / denom;
+		return uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1;
 	}
 }
