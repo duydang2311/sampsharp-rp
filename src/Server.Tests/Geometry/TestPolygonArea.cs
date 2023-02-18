@@ -1,3 +1,5 @@
+using FluentAssertions;
+using FluentAssertions.Execution;
 using SampSharp.Entities.SAMP;
 using Server.Geometry.Entities;
 
@@ -20,31 +22,31 @@ public class TestPolygonArea
 	[Test]
 	public void Polygon_ContainsPoint()
 	{
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(polygon.Contains(new Vector2(0, 0)), Is.True);
-			Assert.That(polygon.Contains(new Vector2(4.99, 0)), Is.True);
-			Assert.That(polygon.Contains(new Vector2(4.99, 4.99)), Is.True);
-			Assert.That(polygon.Contains(new Vector2(2.499, 2.499)), Is.True);
-			Assert.That(polygon.Contains(new Vector2(0, 7.499)), Is.True);
-			Assert.That(polygon.Contains(new Vector2(1, 1)), Is.True);
-			Assert.That(polygon.Contains(new Vector2(4, 4)), Is.True);
-			Assert.That(polygon.Contains(new Vector2(3, 3)), Is.True);
-			Assert.That(polygon.Contains(new Vector2(1, 5)), Is.True);
-		});
+			polygon.Contains(new Vector2(0, 0)).Should().BeTrue();
+			polygon.Contains(new Vector2(4.99, 0)).Should().BeTrue();
+			polygon.Contains(new Vector2(4.99, 4.99)).Should().BeTrue();
+			polygon.Contains(new Vector2(2.499, 2.499)).Should().BeTrue();
+			polygon.Contains(new Vector2(0, 7.499)).Should().BeTrue();
+			polygon.Contains(new Vector2(1, 1)).Should().BeTrue();
+			polygon.Contains(new Vector2(4, 4)).Should().BeTrue();
+			polygon.Contains(new Vector2(3, 3)).Should().BeTrue();
+			polygon.Contains(new Vector2(1, 5)).Should().BeTrue();
+		}
 	}
 
 	[Test]
 	public void Polygon_Not_ContainsPoint()
 	{
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(polygon.Contains(new Vector2(-0.001, -0.001)), Is.False);
-			Assert.That(polygon.Contains(new Vector2(5.001, 0)), Is.False);
-			Assert.That(polygon.Contains(new Vector2(5.001, 5.001)), Is.False);
-			Assert.That(polygon.Contains(new Vector2(2.5, 2.51)), Is.False);
-			Assert.That(polygon.Contains(new Vector2(0, 7.5001)), Is.False);
-		});
+			polygon.Contains(new Vector2(-0.001, -0.001)).Should().BeFalse();
+			polygon.Contains(new Vector2(5.001, 0)).Should().BeFalse();
+			polygon.Contains(new Vector2(5.001, 5.001)).Should().BeFalse();
+			polygon.Contains(new Vector2(2.5, 2.51)).Should().BeFalse();
+			polygon.Contains(new Vector2(0, 7.5001)).Should().BeFalse();
+		}
 	}
 
 	[Test]
@@ -58,17 +60,17 @@ public class TestPolygonArea
 		IArea circle2 = new CircleArea() { Center = new Vector2(0, 9.5), Radius = 2 };
 		IArea circle3 = new CircleArea() { Center = new Vector2(7, 0), Radius = 2 };
 		IArea circle4 = new CircleArea() { Center = new Vector2(2.5, 5.5), Radius = 2 };
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(polygon.Overlaps(rectangle1), Is.True);
-			Assert.That(polygon.Overlaps(rectangle2), Is.True);
-			Assert.That(polygon.Overlaps(rectangle3), Is.True);
-			Assert.That(polygon.Overlaps(rectangle4), Is.True);
-			Assert.That(polygon.Overlaps(circle1), Is.True);
-			Assert.That(polygon.Overlaps(circle2), Is.True);
-			Assert.That(polygon.Overlaps(circle3), Is.True);
-			Assert.That(polygon.Overlaps(circle4), Is.True);
-		});
+			polygon.Overlaps(rectangle1).Should().BeTrue();
+			polygon.Overlaps(rectangle2).Should().BeTrue();
+			polygon.Overlaps(rectangle3).Should().BeTrue();
+			polygon.Overlaps(rectangle4).Should().BeTrue();
+			polygon.Overlaps(circle1).Should().BeTrue();
+			polygon.Overlaps(circle2).Should().BeTrue();
+			polygon.Overlaps(circle3).Should().BeTrue();
+			polygon.Overlaps(circle4).Should().BeTrue();
+		}
 	}
 
 	[Test]
@@ -82,16 +84,16 @@ public class TestPolygonArea
 		IArea circle2 = new CircleArea() { Center = new Vector2(0, 9.5), Radius = 1.99f };
 		IArea circle3 = new CircleArea() { Center = new Vector2(7, 0), Radius = 1.99f };
 		IArea circle4 = new CircleArea() { Center = new Vector2(2.5, 7), Radius = 2 };
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(polygon.Overlaps(rectangle1), Is.False);
-			Assert.That(polygon.Overlaps(rectangle2), Is.False);
-			Assert.That(polygon.Overlaps(rectangle3), Is.False);
-			Assert.That(polygon.Overlaps(rectangle4), Is.False);
-			Assert.That(polygon.Overlaps(circle1), Is.False);
-			Assert.That(polygon.Overlaps(circle2), Is.False);
-			Assert.That(polygon.Overlaps(circle3), Is.False);
-			Assert.That(polygon.Overlaps(circle4), Is.False);
-		});
+			polygon.Overlaps(rectangle1).Should().BeFalse();
+			polygon.Overlaps(rectangle2).Should().BeFalse();
+			polygon.Overlaps(rectangle3).Should().BeFalse();
+			polygon.Overlaps(rectangle4).Should().BeFalse();
+			polygon.Overlaps(circle1).Should().BeFalse();
+			polygon.Overlaps(circle2).Should().BeFalse();
+			polygon.Overlaps(circle3).Should().BeFalse();
+			polygon.Overlaps(circle4).Should().BeFalse();
+		}
 	}
 }
