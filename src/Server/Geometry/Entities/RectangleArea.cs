@@ -42,10 +42,10 @@ public sealed class RectangleArea : PolygonArea, IRectangleArea
 	public override bool Overlaps(ICircleArea other)
 	{
 		var closestX = Math.Clamp(other.Center.X, TopLeft.X, BottomRight.X);
-		var closestY = Math.Clamp(other.Center.Y, TopLeft.Y, BottomRight.Y);
+		var closestY = Math.Clamp(other.Center.Y, BottomRight.Y, TopLeft.Y);
 		var dx = other.Center.X - closestX;
 		var dy = other.Center.Y - closestY;
-		return dx * dx + dy * dy < other.RadiusSquared;
+		return dx * dx + dy * dy <= other.RadiusSquared;
 	}
 
 	public override bool Overlaps(IPolygonArea other)
