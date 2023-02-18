@@ -4,8 +4,33 @@ namespace Server.Geometry.Entities;
 
 public sealed class RectangleArea : PolygonArea, IRectangleArea
 {
-	public Vector2 TopLeft { get; set; }
-	public Vector2 BottomRight { get; set; }
+	private Vector2 topLeft;
+	private Vector2 bottomRight;
+
+	public Vector2 TopLeft
+	{
+		get => topLeft; set
+		{
+			topLeft = value;
+			RestorePoints();
+		}
+	}
+
+	public Vector2 BottomRight
+	{
+		get => bottomRight; set
+		{
+			bottomRight = value;
+			RestorePoints();
+		}
+	}
+
+	public RectangleArea(Vector2 topLeft, Vector2 bottomRight)
+	{
+		this.topLeft = topLeft;
+		this.bottomRight = bottomRight;
+		RestorePoints();
+	}
 
 	public override void Add(Vector2 point)
 	{
@@ -59,5 +84,17 @@ public sealed class RectangleArea : PolygonArea, IRectangleArea
 			&& BottomRight.X > other.TopLeft.X
 			&& TopLeft.Y > other.BottomRight.Y
 			&& BottomRight.Y < other.TopLeft.Y;
+	}
+
+	private void RestorePoints()
+	{
+		points.Clear();
+		AddRange(new Vector2[]
+		{
+			new Vector2(topLeft.X, topLeft.Y),
+			new Vector2(bottomRight.X, topLeft.Y),
+			new Vector2(bottomRight.X, bottomRight.Y),
+			new Vector2(topLeft.X, bottomRight.Y),
+		});
 	}
 }
