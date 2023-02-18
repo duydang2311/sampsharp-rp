@@ -1,4 +1,6 @@
 using System.Globalization;
+using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.Extensions.DependencyInjection;
 using SampSharp.Entities.SAMP;
 using Server.Chat.Services;
@@ -36,10 +38,10 @@ public class TestChatMessageBuilder
 			.Inline(Color.Red, "different color text")
 			.Build(CultureInfo.InvariantCulture)
 			.ToArray();
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(texts[0], Is.EqualTo("{FFFFFF}Line 1: same color text"));
-			Assert.That(texts[1], Is.EqualTo("{FFFFFF}Line 2: {FF0000}different color text"));
-		});
+			texts[0].Should().Be("{FFFFFF}Line 1: same color text");
+			texts[1].Should().Be("{FFFFFF}Line 2: {FF0000}different color text");
+		}
 	}
 }

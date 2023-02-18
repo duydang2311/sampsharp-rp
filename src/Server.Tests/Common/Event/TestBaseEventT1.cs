@@ -1,3 +1,5 @@
+using FluentAssertions;
+using FluentAssertions.Execution;
 using Server.Common.Event;
 
 namespace Server.Tests.Common.Event;
@@ -20,7 +22,7 @@ public class TestBaseEventT1
 		@event.AddHandler(v => { count += v; });
 		@event.AddHandler(v => { count += v; });
 		@event.Invoke(3);
-		Assert.That(count, Is.EqualTo(9));
+		count.Should().Be(9);
 	}
 	[Test]
 	public async Task InvokeAsync_IncreaseCountTo_9_After_1s()
@@ -31,13 +33,13 @@ public class TestBaseEventT1
 		@event.AddHandler(async v => { await Task.Delay(1000); count += v; });
 		@event.AddHandler(v => { count += v; });
 		var task = @event.InvokeAsync(3);
-		Assert.That(count, Is.EqualTo(3));
-		await task;
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(count, Is.EqualTo(9));
-			Assert.That((DateTime.Now - now).TotalMilliseconds, Is.GreaterThanOrEqualTo(1000 - 100));
-		});
+			count.Should().Be(3);
+			await task;
+			count.Should().Be(9);
+			(DateTime.Now - now).TotalMilliseconds.Should().BeInRange(900, 1100);
+		}
 	}
 
 	[Test]
@@ -49,12 +51,12 @@ public class TestBaseEventT1
 		@event.AddHandler(async v => { await Task.Delay(1000); count += v; });
 		@event.AddHandler(v => { count += v; });
 		var task = @event.InvokeAsyncSerial(3);
-		Assert.That(count, Is.EqualTo(3));
-		await task;
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(count, Is.EqualTo(9));
-			Assert.That((DateTime.Now - now).TotalMilliseconds, Is.GreaterThanOrEqualTo(2000 - 100));
-		});
+			count.Should().Be(3);
+			await task;
+			count.Should().Be(9);
+			(DateTime.Now - now).TotalMilliseconds.Should().BeInRange(1900, 2100);
+		}
 	}
 }

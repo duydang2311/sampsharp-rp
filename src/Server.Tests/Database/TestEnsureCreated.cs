@@ -1,4 +1,5 @@
 using dotenv.net;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Server.Tests.Helper;
@@ -47,6 +48,6 @@ public class TestEnsureCreated
 			Assert.Ignore("CI");
 			return;
 		}
-		Assert.That(provider.GetRequiredService<TestDbContext>().Database.EnsureCreated(), Is.True);
+		provider.GetRequiredService<TestDbContext>().Database.EnsureCreated().Should().BeTrue();
 	}
 }

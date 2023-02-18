@@ -1,4 +1,6 @@
 using System.Globalization;
+using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.I18N.Localization.Services;
@@ -40,13 +42,13 @@ public class TestDialogBuilder
 			.SetButton1("Button1")
 			.SetButton2("Button2")
 			.Build();
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(dialog.Caption, Is.EqualTo("Caption"));
-			Assert.That(dialog.Content, Is.EqualTo("Content"));
-			Assert.That(dialog.Button1, Is.EqualTo("Button1"));
-			Assert.That(dialog.Button2, Is.EqualTo("Button2"));
-		});
+			dialog.Caption.Should().Be("Caption");
+			dialog.Content.Should().Be("Content");
+			dialog.Button1.Should().Be("Button1");
+			dialog.Button2.Should().Be("Button2");
+		}
 	}
 
 	[Test]
@@ -60,14 +62,14 @@ public class TestDialogBuilder
 			.SetButton2("Button2")
 			.SetIsPassword(true)
 			.Build();
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(dialog.Caption, Is.EqualTo("Caption"));
-			Assert.That(dialog.Content, Is.EqualTo("Content"));
-			Assert.That(dialog.Button1, Is.EqualTo("Button1"));
-			Assert.That(dialog.Button2, Is.EqualTo("Button2"));
-			Assert.That(dialog.IsPassword, Is.True);
-		});
+			dialog.Caption.Should().Be("Caption");
+			dialog.Content.Should().Be("Content");
+			dialog.Button1.Should().Be("Button1");
+			dialog.Button2.Should().Be("Button2");
+			dialog.IsPassword.Should().BeTrue();
+		}
 	}
 	[Test]
 	public void Build_ListDialog_Returns_CorrectOutputs()
@@ -85,16 +87,16 @@ public class TestDialogBuilder
 			.WithTag(tag2)
 			.Build();
 		var rows = dialog.Rows.ToArray();
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(dialog.Caption, Is.EqualTo("Caption"));
-			Assert.That(dialog.Button1, Is.EqualTo("Button1"));
-			Assert.That(dialog.Button2, Is.EqualTo("Button2"));
-			Assert.That(rows[0].Text, Is.EqualTo("Row 1"));
-			Assert.That(rows[0].Tag, Is.EqualTo(tag1));
-			Assert.That(rows[1].Text, Is.EqualTo("Row 2"));
-			Assert.That(rows[1].Tag, Is.EqualTo(tag2));
-		});
+			dialog.Caption.Should().Be("Caption");
+			dialog.Button1.Should().Be("Button1");
+			dialog.Button2.Should().Be("Button2");
+			rows[0].Text.Should().Be("Row 1");
+			rows[0].Tag.Should().Be(tag1);
+			rows[1].Text.Should().Be("Row 2");
+			rows[1].Tag.Should().Be(tag2);
+		}
 	}
 	[Test]
 	public void Build_TablistDialog_Returns_CorrectOutputs()
@@ -116,23 +118,23 @@ public class TestDialogBuilder
 			.Build();
 		var rows = dialog.Rows.ToArray();
 		var columns = dialog.Header.Columns.ToArray();
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(dialog.Caption, Is.EqualTo("Caption"));
-			Assert.That(dialog.Button1, Is.EqualTo("Button1"));
-			Assert.That(dialog.Button2, Is.EqualTo("Button2"));
-			Assert.That(columns[0], Is.EqualTo("Header 1"));
-			Assert.That(columns[1], Is.EqualTo("Header 2"));
-			Assert.That(rows[0].Columns.First(), Is.EqualTo("Column 1.1"));
-			Assert.That(rows[0].Columns.Last(), Is.EqualTo("Column 2.1"));
-			Assert.That(rows[0].Tag, Is.EqualTo(tag1));
-			Assert.That(rows[1].Columns.First(), Is.EqualTo("Column 1.2"));
-			Assert.That(rows[1].Columns.Last(), Is.EqualTo("Column 2.2"));
-			Assert.That(rows[1].Tag, Is.EqualTo(tag2));
-			Assert.That(rows[2].Columns.First(), Is.EqualTo("Column 1.3"));
-			Assert.That(rows[2].Columns.Last(), Is.EqualTo("Column 2.3"));
-			Assert.That(rows[2].Tag, Is.Null);
-		});
+			dialog.Caption.Should().Be("Caption");
+			dialog.Button1.Should().Be("Button1");
+			dialog.Button2.Should().Be("Button2");
+			columns[0].Should().Be("Header 1");
+			columns[1].Should().Be("Header 2");
+			rows[0].Columns.First().Should().Be("Column 1.1");
+			rows[0].Columns.Last().Should().Be("Column 2.1");
+			rows[0].Tag.Should().Be(tag1);
+			rows[1].Columns.First().Should().Be("Column 1.2");
+			rows[1].Columns.Last().Should().Be("Column 2.2");
+			rows[1].Tag.Should().Be(tag2);
+			rows[2].Columns.First().Should().Be("Column 1.3");
+			rows[2].Columns.Last().Should().Be("Column 2.3");
+			rows[2].Tag.Should().BeNull();
+		}
 	}
 
 }

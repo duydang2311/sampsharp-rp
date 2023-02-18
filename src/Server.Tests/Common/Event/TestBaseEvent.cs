@@ -1,3 +1,5 @@
+using FluentAssertions;
+using FluentAssertions.Execution;
 using Server.Common.Event;
 
 namespace Server.Tests.Common.Event;
@@ -20,7 +22,7 @@ public class TestBaseEvent
 		@parameterlessEvent.AddHandler(() => { ++count; });
 		@parameterlessEvent.AddHandler(() => { ++count; });
 		@parameterlessEvent.Invoke();
-		Assert.That(count, Is.EqualTo(3));
+		count.Should().Be(3);
 	}
 	[Test]
 	public async Task InvokeAsync_IncreaseCountTo_3_After_1s()
@@ -31,13 +33,13 @@ public class TestBaseEvent
 		@parameterlessEvent.AddHandler(async () => { await Task.Delay(1000); ++count; });
 		@parameterlessEvent.AddHandler(() => { ++count; });
 		var task = @parameterlessEvent.InvokeAsync();
-		Assert.That(count, Is.EqualTo(1));
-		await task;
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(count, Is.EqualTo(3));
-			Assert.That((DateTime.Now - now).TotalMilliseconds, Is.GreaterThanOrEqualTo(1000 - 100));
-		});
+			count.Should().Be(1);
+			await task;
+			count.Should().Be(3);
+			(DateTime.Now - now).TotalMilliseconds.Should().BeInRange(900, 1100);
+		}
 	}
 
 	[Test]
@@ -49,12 +51,12 @@ public class TestBaseEvent
 		@parameterlessEvent.AddHandler(async () => { await Task.Delay(1000); ++count; });
 		@parameterlessEvent.AddHandler(() => { ++count; });
 		var task = @parameterlessEvent.InvokeAsyncSerial();
-		Assert.That(count, Is.EqualTo(1));
-		await task;
-		Assert.Multiple(() =>
+		using (new AssertionScope())
 		{
-			Assert.That(count, Is.EqualTo(3));
-			Assert.That((DateTime.Now - now).TotalMilliseconds, Is.GreaterThanOrEqualTo(2000 - 100));
-		});
+			count.Should().Be(1);
+			await task;
+			count.Should().Be(3);
+			(DateTime.Now - now).TotalMilliseconds.Should().BeInRange(1900, 2100);
+		}
 	}
 }

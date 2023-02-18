@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Server.Common.CancellableEvent;
 
 namespace Server.Tests.Common.CancellableEvent;
@@ -20,7 +21,7 @@ public class TestBaseCancellableEvent
 		parameterlessEvent.AddHandler((e) => { ++count; });
 		parameterlessEvent.AddHandler((e) => { ++count; });
 		parameterlessEvent.Invoke();
-		Assert.That(count, Is.EqualTo(1));
+		count.Should().Be(1);
 	}
 
 	[Test]
@@ -31,6 +32,6 @@ public class TestBaseCancellableEvent
 		parameterlessEvent.AddHandler((e) => { ++count; e.Cancel = true; });
 		parameterlessEvent.AddHandler((e) => { ++count; });
 		parameterlessEvent.Invoke();
-		Assert.That(count, Is.EqualTo(2));
+		count.Should().Be(2);
 	}
 }
