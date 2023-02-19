@@ -56,10 +56,10 @@ public class TestPolygonArea
 		IArea rectangle2 = new RectangleArea(new Vector2(-100, 100), new Vector2(0.001, 0.001));
 		IArea rectangle3 = new RectangleArea(new Vector2(0, 10), new Vector2(2, 7.499));
 		IArea rectangle4 = new RectangleArea(new Vector2(2.4, 2.6), new Vector2(2.6, 2.4));
-		IArea circle1 = new CircleArea() { Center = new Vector2(-2, 0), Radius = 2 };
-		IArea circle2 = new CircleArea() { Center = new Vector2(0, 9.5), Radius = 2 };
-		IArea circle3 = new CircleArea() { Center = new Vector2(7, 0), Radius = 2 };
-		IArea circle4 = new CircleArea() { Center = new Vector2(2.5, 5.5), Radius = 2 };
+		IArea circle1 = new CircleArea(-2, 0) { Radius = 2 };
+		IArea circle2 = new CircleArea(0, 9.5) { Radius = 2 };
+		IArea circle3 = new CircleArea(7, 0) { Radius = 2 };
+		IArea circle4 = new CircleArea(2.5, 5.5) { Radius = 2 };
 		using (new AssertionScope())
 		{
 			polygon.Overlaps(rectangle1).Should().BeTrue();
@@ -80,10 +80,10 @@ public class TestPolygonArea
 		IArea rectangle2 = new RectangleArea(new Vector2(-100, 100), new Vector2(-0.001, -0.001));
 		IArea rectangle3 = new RectangleArea(new Vector2(0, 10), new Vector2(2, 7.5001));
 		IArea rectangle4 = new RectangleArea(new Vector2(2.5, 3), new Vector2(2.51, 2.6));
-		IArea circle1 = new CircleArea() { Center = new Vector2(-2, 0), Radius = 1.99f };
-		IArea circle2 = new CircleArea() { Center = new Vector2(0, 9.5), Radius = 1.99f };
-		IArea circle3 = new CircleArea() { Center = new Vector2(7, 0), Radius = 1.99f };
-		IArea circle4 = new CircleArea() { Center = new Vector2(2.5, 7), Radius = 2 };
+		IArea circle1 = new CircleArea(-2, 0) { Radius = 1.99f };
+		IArea circle2 = new CircleArea(0, 9.5) { Radius = 1.99f };
+		IArea circle3 = new CircleArea(7, 0) { Radius = 1.99f };
+		IArea circle4 = new CircleArea(2.5, 7) { Radius = 2 };
 		using (new AssertionScope())
 		{
 			polygon.Overlaps(rectangle1).Should().BeFalse();
