@@ -16,8 +16,10 @@ public sealed class ServerDbContext : DbContext
 
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
-		// only use when run with efcore optimize
-		// optionsBuilder.UseNpgsql();
+		if (Environment.GetEnvironmentVariable("OPTIMIZE_EF") is not null)
+		{
+			optionsBuilder.UseNpgsql();
+		}
 	}
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
