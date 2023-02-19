@@ -55,8 +55,8 @@ public sealed class RectangleArea : PolygonArea, IRectangleArea
 	{
 		return position.X >= TopLeft.X
 			&& position.X <= BottomRight.X
-			&& position.Y >= TopLeft.Y
-			&& position.Y <= BottomRight.Y;
+			&& position.Y <= TopLeft.Y
+			&& position.Y >= BottomRight.Y;
 	}
 
 	public override bool Overlaps(IArea other)
