@@ -21,8 +21,8 @@ public class Grid : BaseCell, IGrid
 		Rows = builder.Rows;
 		cells = new BaseCell[Rows, Columns];
 		Area = new RectangleArea(new Vector2(builder.Left, builder.Top), new Vector2(builder.Right, builder.Bottom));
-		cellWidth = (Area.BottomRight.X - Area.TopLeft.X) / Columns;
-		cellHeight = (Area.TopLeft.Y - Area.BottomRight.Y) / Rows;
+		cellWidth = (Area.RightBottom.X - Area.LeftTop.X) / Columns;
+		cellHeight = (Area.LeftTop.Y - Area.RightBottom.Y) / Rows;
 		for (var row = 0; row != Rows; ++row)
 		{
 			for (var col = 0; col != Columns; ++col)
@@ -63,7 +63,7 @@ public class Grid : BaseCell, IGrid
 
 	private LinkedList<(int Row, int Column)> FilterIndex(int row, int col, IArea area)
 	{
-		var size = new Vector2(area.BottomRight.X - area.TopLeft.X, area.TopLeft.Y - area.BottomRight.Y);
+		var size = new Vector2(area.RightBottom.X - area.LeftTop.X, area.LeftTop.Y - area.RightBottom.Y);
 		return FilterIndex(row, col, (float)Math.Sqrt(size.X * size.X + size.Y * size.Y) / 2);
 	}
 
@@ -164,21 +164,21 @@ public class Grid : BaseCell, IGrid
 			column = default;
 			return false;
 		}
-		column = (int)((position.X - Area.TopLeft.X) / cellWidth);
-		row = (int)((Area.TopLeft.Y - position.Y) / cellHeight);
+		column = (int)((position.X - Area.LeftTop.X) / cellWidth);
+		row = (int)((Area.LeftTop.Y - position.Y) / cellHeight);
 		return true;
 	}
 
 	private bool TryComputeIndex(IArea area, out int row, out int column)
 	{
-		column = Math.Clamp((int)Math.Round((area.TopLeft.X - Area.TopLeft.X) / cellWidth), 0, Columns);
-		row = Math.Clamp((int)Math.Round((Area.TopLeft.Y - area.TopLeft.Y) / cellHeight), 0, Rows);
+		column = Math.Clamp((int)Math.Round((area.LeftTop.X - Area.LeftTop.X) / cellWidth), 0, Columns);
+		row = Math.Clamp((int)Math.Round((Area.LeftTop.Y - area.LeftTop.Y) / cellHeight), 0, Rows);
 		return area.Overlaps(GetCellArea(row, column));
 	}
 
 	private IRectangleArea GetCellArea(int row, int col)
 	{
-		var cellTopleft = Area.TopLeft + new Vector2(col * cellWidth, -row * cellHeight);
+		var cellTopleft = Area.LeftTop + new Vector2(col * cellWidth, -row * cellHeight);
 		return new RectangleArea(cellTopleft, cellTopleft + new Vector2(cellWidth, -cellHeight));
 	}
 }

@@ -4,15 +4,15 @@ namespace Server.Geometry.Entities;
 
 public sealed class RectangleArea : PolygonArea, IRectangleArea
 {
-	public override Vector2 TopLeft { get; }
+	public override Vector2 LeftTop { get; }
 	public override Vector2 Center { get; }
-	public override Vector2 BottomRight { get; }
+	public override Vector2 RightBottom { get; }
 
-	public RectangleArea(Vector2 topLeft, Vector2 bottomRight)
+	public RectangleArea(Vector2 leftTop, Vector2 rightBottom)
 	{
-		TopLeft = topLeft;
-		Center = new Vector2(topLeft.X + (bottomRight.X - topLeft.X) / 2, topLeft.Y - (topLeft.Y - bottomRight.Y) / 2);
-		BottomRight = bottomRight;
+		LeftTop = leftTop;
+		Center = new Vector2(leftTop.X + (rightBottom.X - leftTop.X) / 2, leftTop.Y - (leftTop.Y - rightBottom.Y) / 2);
+		RightBottom = rightBottom;
 		RestorePoints();
 	}
 
@@ -37,10 +37,10 @@ public sealed class RectangleArea : PolygonArea, IRectangleArea
 
 	public override bool Contains(Vector2 position)
 	{
-		return position.X >= TopLeft.X
-			&& position.X <= BottomRight.X
-			&& position.Y <= TopLeft.Y
-			&& position.Y >= BottomRight.Y;
+		return position.X >= LeftTop.X
+			&& position.X <= RightBottom.X
+			&& position.Y <= LeftTop.Y
+			&& position.Y >= RightBottom.Y;
 	}
 
 	public override bool Overlaps(IArea other)
@@ -50,8 +50,8 @@ public sealed class RectangleArea : PolygonArea, IRectangleArea
 
 	public override bool Overlaps(ICircleArea other)
 	{
-		var closestX = Math.Clamp(other.Center.X, TopLeft.X, BottomRight.X);
-		var closestY = Math.Clamp(other.Center.Y, BottomRight.Y, TopLeft.Y);
+		var closestX = Math.Clamp(other.Center.X, LeftTop.X, RightBottom.X);
+		var closestY = Math.Clamp(other.Center.Y, RightBottom.Y, LeftTop.Y);
 		var dx = other.Center.X - closestX;
 		var dy = other.Center.Y - closestY;
 		return dx * dx + dy * dy <= other.RadiusSquared;
@@ -64,10 +64,10 @@ public sealed class RectangleArea : PolygonArea, IRectangleArea
 
 	public override bool Overlaps(IRectangleArea other)
 	{
-		return TopLeft.X < other.BottomRight.X
-			&& BottomRight.X > other.TopLeft.X
-			&& TopLeft.Y > other.BottomRight.Y
-			&& BottomRight.Y < other.TopLeft.Y;
+		return LeftTop.X < other.RightBottom.X
+			&& RightBottom.X > other.LeftTop.X
+			&& LeftTop.Y > other.RightBottom.Y
+			&& RightBottom.Y < other.LeftTop.Y;
 	}
 
 	private void RestorePoints()
@@ -75,10 +75,10 @@ public sealed class RectangleArea : PolygonArea, IRectangleArea
 		points.Clear();
 		AddRange(new Vector2[]
 		{
-			new Vector2(TopLeft.X, TopLeft.Y),
-			new Vector2(BottomRight.X, TopLeft.Y),
-			new Vector2(BottomRight.X, BottomRight.Y),
-			new Vector2(TopLeft.X, BottomRight.Y),
+			new Vector2(LeftTop.X, LeftTop.Y),
+			new Vector2(RightBottom.X, LeftTop.Y),
+			new Vector2(RightBottom.X, RightBottom.Y),
+			new Vector2(LeftTop.X, RightBottom.Y),
 		});
 	}
 }

@@ -7,9 +7,9 @@ public class PolygonArea : IPolygonArea
 {
 	protected List<Vector2> points = new();
 
-	public virtual Vector2 TopLeft => throw new NotImplementedException();
+	public virtual Vector2 LeftTop => throw new NotImplementedException();
 	public virtual Vector2 Center => throw new NotImplementedException();
-	public virtual Vector2 BottomRight => throw new NotImplementedException();
+	public virtual Vector2 RightBottom => throw new NotImplementedException();
 	public IReadOnlyCollection<Vector2> Points => points;
 
 	public virtual bool Contains(Vector2 position)

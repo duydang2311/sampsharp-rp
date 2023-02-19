@@ -8,25 +8,25 @@ public sealed class CircleArea : ICircleArea
 	private Vector2 center;
 	private Vector2 bottomRight;
 
-	public Vector2 TopLeft { get; }
+	public Vector2 LeftTop { get; }
 	public Vector2 Center => center;
-	public Vector2 BottomRight => bottomRight;
+	public Vector2 RightBottom => bottomRight;
 	public float Radius
 	{
 		get => radius; set
 		{
 			radius = value;
-			center = TopLeft + new Vector2(radius, -radius);
-			bottomRight = TopLeft + new Vector2(2 * radius, -2 * radius);
+			center = LeftTop + new Vector2(radius, -radius);
+			bottomRight = LeftTop + new Vector2(2 * radius, -2 * radius);
 		}
 	}
 	public float RadiusSquared => Radius * Radius;
 
 	public CircleArea(float left, float top)
 	{
-		TopLeft = new(left, top);
-		center = TopLeft + new Vector2(radius, -radius);
-		bottomRight = TopLeft + new Vector2(2 * radius, -2 * radius);
+		LeftTop = new(left, top);
+		center = LeftTop + new Vector2(radius, -radius);
+		bottomRight = LeftTop + new Vector2(2 * radius, -2 * radius);
 	}
 
 	public CircleArea(double left, double top) : this((float)left, (float)top) { }
