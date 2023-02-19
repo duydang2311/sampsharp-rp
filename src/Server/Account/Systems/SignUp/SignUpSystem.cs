@@ -37,7 +37,7 @@ public sealed class SignUpSystem : ISystem
 	{
 		var response = await dialogService.ShowInputAsync(player, b => b
 			.SetCaption(t => t.Dialog_Account_SignUp_Caption)
-			.SetContent(t => t.Dialog_Account_SignUp_Content)
+			.SetContent(t => t.Dialog_Account_SignUp_Content, player.Name)
 			.SetButton1(t => t.Dialog_Account_SignUp_Button1)
 			.SetButton2(t => t.Dialog_Account_SignUp_Button2)
 			.SetIsPassword(true));
