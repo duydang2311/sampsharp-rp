@@ -4,6 +4,7 @@ using SampSharp.Entities.SAMP;
 using Server.Account.Systems.Authentication;
 using Server.Character.Components;
 using Server.Character.Systems.Selection;
+using Server.Chat.Components;
 using Server.Database;
 
 namespace Server.Character.Systems.Spawn;
@@ -46,6 +47,8 @@ public sealed class SpawnSystem : ISystem
 		}
 
 		player.AddComponent(new CharacterComponent { Id = id });
+		player.AddComponent(new PermissionComponent(PermissionLevel.Player));
+		player.ToggleSpectating(false);
 		player.SetSpawnInfo(255, model.Skin, new Vector3(model.X, model.Y, model.Z), model.A);
 		player.Spawn();
 		player.Health = model.Health;
