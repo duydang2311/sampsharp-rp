@@ -8,6 +8,7 @@ public class PolygonArea : IPolygonArea
 	protected List<Vector2> points = new();
 
 	public virtual Vector2 TopLeft => points.Count > 0 ? points[0] : default;
+	public virtual Vector2 BottomRight => points.Count > 0 ? points[^1] : default;
 	public IReadOnlyCollection<Vector2> Points => points;
 
 	public virtual bool Contains(Vector2 position)

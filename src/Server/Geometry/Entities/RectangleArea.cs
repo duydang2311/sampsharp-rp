@@ -5,7 +5,7 @@ namespace Server.Geometry.Entities;
 public sealed class RectangleArea : PolygonArea, IRectangleArea
 {
 	public override Vector2 TopLeft { get; }
-	public Vector2 BottomRight { get; }
+	public override Vector2 BottomRight { get; }
 
 	public RectangleArea(Vector2 topLeft, Vector2 bottomRight)
 	{
