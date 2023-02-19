@@ -18,19 +18,15 @@ public sealed class CharacterModel
 	public string Name { get; set; } = string.Empty;
 	public int Age { get; set; }
 	public bool Gender { get; set; }
-	[DefaultValue(1659.8188f)]
-	public float X { get; set; }
-	[DefaultValue(-1680.4004f)]
-	public float Y { get; set; }
-	[DefaultValue(21.4228f)]
-	public float Z { get; set; }
-	[DefaultValue(180.0f)]
-	public float A { get; set; }
+	public float X { get; set; } = 1659.8188f;
+	public float Y { get; set; } = -1680.4004f;
+	public float Z { get; set; } = 21.4228f;
+	public float A { get; set; } = 180.0f;
 	public int World { get; set; }
 	public int Interior { get; set; }
 	public int Skin { get; set; }
 	[DefaultValue("vi")]
 	[MaxLength(11)]
-	public string Locale { get; set; } = string.Empty;
-	public float Health { get; set; }
+	public string Locale { get; set; } = "vi";
+	public float Health { get; set; } = 100;
 }
