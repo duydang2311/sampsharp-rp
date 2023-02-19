@@ -53,7 +53,7 @@ public sealed class SpawnSystem : ISystem
 	}
 
 	[Event]
-	private async void OnPlayerDisconnect(Player player)
+	private async void OnPlayerDisconnect(Player player, int reason)
 	{
 		var component = player.GetComponent<CharacterComponent>();
 		if (component is null)
