@@ -4,5 +4,5 @@ namespace Server.Geometry.Entities;
 
 public interface IRectangleArea : IPolygonArea
 {
-	Vector2 BottomRight { get; set; }
+	Vector2 BottomRight { get; }
 }
