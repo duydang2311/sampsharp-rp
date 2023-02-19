@@ -7,6 +7,7 @@ public class PolygonArea : IPolygonArea
 {
 	protected List<Vector2> points = new();
 
+	public Vector2 TopLeft => points.Count > 0 ? points[0] : default;
 	public IReadOnlyCollection<Vector2> Points => points;
 
 	public virtual bool Contains(Vector2 position)
@@ -147,11 +148,6 @@ public class PolygonArea : IPolygonArea
 		}
 
 		return other.Overlaps(this);
-	}
-
-	private static float Determinant(Vector2 a, Vector2 b)
-	{
-		return a.X * b.Y - a.Y * b.X;
 	}
 
 	private static bool EdgeIntersects(Vector2 a, Vector2 b, Vector2 c, Vector2 d)

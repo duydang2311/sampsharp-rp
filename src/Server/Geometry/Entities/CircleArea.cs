@@ -4,7 +4,8 @@ namespace Server.Geometry.Entities;
 
 public sealed class CircleArea : ICircleArea
 {
-	public Vector2 Center { get; set; }
+	public Vector2 TopLeft { get; }
+	public Vector2 Center => TopLeft + new Vector2(Radius);
 	public float Radius { get; set; }
 	public float RadiusSquared => Radius * Radius;
 

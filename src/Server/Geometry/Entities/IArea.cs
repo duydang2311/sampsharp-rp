@@ -4,6 +4,7 @@ namespace Server.Geometry.Entities;
 
 public interface IArea
 {
+	Vector2 TopLeft { get; }
 	bool Contains(Vector2 position);
 	bool Overlaps(IArea other);
 	bool Overlaps(ICircleArea other);
