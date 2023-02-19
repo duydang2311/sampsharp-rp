@@ -1,15 +1,13 @@
-using SampSharp.Entities.SAMP;
+using Server.Geometry.Entities;
 
 namespace Server.SpatialGrid.Components;
 
 public abstract class BaseSpatialComponent : ISpatialComponent
 {
-	public Vector3 Position { get; set; }
-	public float Radius { get; set; }
+	public IArea Area { get; set; }
 
-	public BaseSpatialComponent(float x, float y, float z, float radius)
+	public BaseSpatialComponent(IArea area)
 	{
-		Position = new Vector3(x, y, z);
-		Radius = radius;
+		Area = area;
 	}
 }

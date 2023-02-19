@@ -1,9 +1,8 @@
-using SampSharp.Entities.SAMP;
+using Server.Geometry.Entities;
 
 namespace Server.SpatialGrid.Components;
 
 public interface ISpatialComponent
 {
-	Vector3 Position { get; set; }
-	float Radius { get; set; }
+	IArea Area { get; set; }
 }

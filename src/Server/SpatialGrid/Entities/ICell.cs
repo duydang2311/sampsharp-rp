@@ -4,5 +4,5 @@ namespace Server.SpatialGrid.Entities;
 
 public interface ICell : IBaseCell
 {
-	IEnumerable<ISpatialComponent> Components { get; }
+	IReadOnlyCollection<ISpatialComponent> Components { get; }
 }

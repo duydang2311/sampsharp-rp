@@ -1,4 +1,5 @@
 ﻿using SampSharp.Entities.SAMP;
+using Server.Geometry.Entities;
 using Server.SpatialGrid.Components;
 using Server.SpatialGrid.Services;
 
@@ -7,41 +8,36 @@ namespace Server.SpatialGrid.Entities;
 public class Grid : BaseCell, IGrid
 {
 	private readonly IBaseCell[,] cells;
+	private readonly float cellWidth;
+	private readonly float cellHeight;
 
-	public Vector2 End { get; }
+	public IRectangleArea Area { get; }
 	public int Columns { get; }
 	public int Rows { get; }
-	public float CellWidth => (End.X - Start.X) / Columns;
-	public float CellHeight => (End.Y - Start.Y) / Rows;
 
-	public Grid(IGridBuilder builder) : base(builder.Left, builder.Top)
+	public Grid(IGridBuilder builder)
 	{
 		Columns = builder.Columns;
 		Rows = builder.Rows;
-		End = new Vector2(builder.Right, builder.Bottom);
 		cells = new BaseCell[Rows, Columns];
+		Area = new RectangleArea(new Vector2(builder.Left, builder.Top), new Vector2(builder.Right, builder.Bottom));
+		cellWidth = (Area.BottomRight.X - Area.TopLeft.X) / Columns;
+		cellHeight = (Area.TopLeft.Y - Area.BottomRight.Y) / Rows;
 		for (var row = 0; row != Rows; ++row)
 		{
 			for (var col = 0; col != Columns; ++col)
 			{
-				if (builder.InnerGrids.TryGetValue((row, col), out var innerBuilder))
-				{
-					cells[row, col] = innerBuilder.BuildGrid();
-				}
-				else
-				{
-					var cellTop = Start.Y + (row * CellHeight);
-					var cellLeft = Start.X + (col * CellWidth);
-					cells[row, col] = new Cell(cellLeft, cellTop);
-				}
+				cells[row, col] = builder.InnerGrids.TryGetValue((row, col), out var innerBuilder)
+					? innerBuilder.BuildGrid()
+					: new Cell();
 			}
 		}
 	}
 
-	private LinkedList<IBaseCell> GetSurroundingCells(int row, int col, float radius)
+	private LinkedList<(int Row, int Column)> FilterIndex(int row, int col, float radius)
 	{
-		var cells = new LinkedList<IBaseCell>();
-		var depth = (int)Math.Ceiling(radius / Math.Min(CellWidth, CellHeight));
+		var cells = new LinkedList<(int, int)>();
+		var depth = (int)Math.Ceiling(radius / Math.Min(cellWidth, cellHeight));
 		var limit = 1 + depth;
 		for (var offRow = -1 * depth; offRow != limit; ++offRow)
 		{
@@ -59,77 +55,54 @@ public class Grid : BaseCell, IGrid
 					continue;
 				}
 
-				cells.AddLast(this.cells[computedRow, computedCol]);
+				cells.AddLast((computedRow, computedCol));
 			}
 		}
 		return cells;
 	}
 
-	public bool TryComputeIndex(Vector2 position, out int row, out int column)
+	private LinkedList<(int Row, int Column)> FilterIndex(int row, int col, IArea area)
 	{
-		if (position.X < Start.X || position.X >= End.X || position.Y < Start.Y || position.Y >= End.Y)
-		{
-			row = default;
-			column = default;
-			return false;
-		}
-		column = (int)((position.X - Start.X) / CellWidth);
-		row = (int)((position.Y - Start.Y) / CellHeight);
-		return true;
+		var size = new Vector2(area.BottomRight.X - area.TopLeft.X, area.TopLeft.Y - area.BottomRight.Y);
+		return FilterIndex(row, col, (float)Math.Sqrt(size.X * size.X + size.Y * size.Y) / 2);
 	}
 
-	public override bool Add(ISpatialComponent component)
+	public override int Add(ISpatialComponent component)
 	{
-		if (!TryComputeIndex(component.Position.XY, out var row, out var col))
+		if (!TryComputeIndex(component.Area, out var row, out var col))
 		{
-			return false;
+			return 0;
 		}
 
-		var baseCells = GetSurroundingCells(row, col, component.Radius);
-		foreach (var baseCell in baseCells)
+		var indexes = FilterIndex(row, col, component.Area);
+		var count = 0;
+		foreach (var (Row, Column) in indexes)
 		{
-			if (!TryComputeIndex(baseCell.Start, out row, out col)
-			|| !IsIntersect(component, cells[row, col]))
+			if (component.Area.Overlaps(GetCellArea(Row, Column)))
 			{
-				continue;
-			}
-			if (baseCell is ICell cell)
-			{
-				cell.Add(component);
-			}
-			if (baseCell is IGrid grid)
-			{
-				grid.Add(component);
+				count += cells[Row, Column].Add(component);
 			}
 		}
-		return baseCells.Any();
+		return count;
 	}
 
-	public override bool Remove(ISpatialComponent component)
+	public override int Remove(ISpatialComponent component)
 	{
-		if (!TryComputeIndex(component.Position.XY, out var row, out var col))
+		if (!TryComputeIndex(component.Area, out var row, out var col))
 		{
-			return false;
+			return 0;
 		}
 
-		var baseCells = GetSurroundingCells(row, col, component.Radius);
-		foreach (var baseCell in baseCells)
+		var indexes = FilterIndex(row, col, component.Area);
+		var count = 0;
+		foreach (var (Row, Column) in indexes)
 		{
-			if (!TryComputeIndex(baseCell.Start, out row, out col)
-			|| !IsIntersect(component, cells[row, col]))
+			if (component.Area.Overlaps(GetCellArea(Row, Column)))
 			{
-				continue;
-			}
-			if (baseCell is ICell cell)
-			{
-				cell.Remove(component);
-			}
-			if (baseCell is IGrid grid)
-			{
-				grid.Remove(component);
+				count += cells[Row, Column].Remove(component);
 			}
 		}
-		return baseCells.Any();
+		return count;
 	}
 
 	public override void Clear()
@@ -143,20 +116,6 @@ public class Grid : BaseCell, IGrid
 		}
 	}
 
-	private bool IsIntersect(ISpatialComponent component, IBaseCell cell)
-	{
-		var width = CellWidth;
-		var height = CellHeight;
-		var dx = Math.Abs(component.Position.X - cell.Start.X);
-		var dy = Math.Abs(component.Position.Y - cell.Start.Y);
-		if (dx > ((width / 2) + component.Radius)
-		|| dy > ((height / 2) + component.Radius))
-		{
-			return false;
-		}
-		return dx <= width / 2 || dy <= height / 2;
-	}
-
 	public IEnumerable<IBaseCell> FindCells(Vector2 position, float radius)
 	{
 		if (!TryComputeIndex(position, out var row, out var col))
@@ -164,7 +123,7 @@ public class Grid : BaseCell, IGrid
 			return Array.Empty<IBaseCell>();
 		}
 
-		return GetSurroundingCells(row, col, radius);
+		return FilterIndex(row, col, radius).Select(i => cells[i.Row, i.Column]);
 	}
 
 	public IEnumerable<ISpatialComponent> FindComponents(Vector2 position, float radius)
@@ -175,9 +134,10 @@ public class Grid : BaseCell, IGrid
 		}
 
 		var components = new LinkedList<ISpatialComponent>();
-		var baseCells = GetSurroundingCells(row, col, radius);
-		foreach (var baseCell in baseCells)
+		var indexes = FilterIndex(row, col, radius);
+		foreach (var (Row, Column) in indexes)
 		{
+			var baseCell = cells[Row, Column];
 			if (baseCell is ICell cell)
 			{
 				foreach (var component in cell.Components)
@@ -194,5 +154,31 @@ public class Grid : BaseCell, IGrid
 			}
 		}
 		return components;
+	}
+
+	private bool TryComputeIndex(Vector2 position, out int row, out int column)
+	{
+		if (!Area.Contains(position))
+		{
+			row = default;
+			column = default;
+			return false;
+		}
+		column = (int)((position.X - Area.TopLeft.X) / cellWidth);
+		row = (int)((Area.TopLeft.Y - position.Y) / cellHeight);
+		return true;
+	}
+
+	private bool TryComputeIndex(IArea area, out int row, out int column)
+	{
+		column = Math.Clamp((int)Math.Round((area.TopLeft.X - Area.TopLeft.X) / cellWidth), 0, Columns);
+		row = Math.Clamp((int)Math.Round((Area.TopLeft.Y - area.TopLeft.Y) / cellHeight), 0, Rows);
+		return area.Overlaps(GetCellArea(row, column));
+	}
+
+	private IRectangleArea GetCellArea(int row, int col)
+	{
+		var cellTopleft = Area.TopLeft + new Vector2(col * cellWidth, -row * cellHeight);
+		return new RectangleArea(cellTopleft, cellTopleft + new Vector2(cellWidth, -cellHeight));
 	}
 }
