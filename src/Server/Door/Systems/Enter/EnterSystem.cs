@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Character.Systems.EnterCommand;
-using Server.Chat.Components;
 using Server.Database;
 using Server.Door.Components;
 using Server.Door.Entities;
@@ -42,12 +41,13 @@ public sealed partial class EnterSystem : ISystem
 		{
 			if (interaction.Door is not ILogicalDoor logicalDoor
 			|| logicalDoor.EntranceInteraction is null
-			|| logicalDoor.ExitInteraction is null)
+			|| logicalDoor.ExitInteraction is null
+			|| !interaction.Area.Contains(player.Position.XY))
 			{
 				continue;
 			}
 
-			distanceSquared = Vector3.DistanceSquared(interaction.Position, player.Position);
+			distanceSquared = Vector3.DistanceSquared(new Vector3(interaction.Area.Center, interaction.Z), player.Position);
 			if (distanceSquared < minDistanceSquared)
 			{
 				closestInteraction = (logicalDoor.EntranceInteraction == interaction)
@@ -62,7 +62,7 @@ public sealed partial class EnterSystem : ISystem
 		}
 
 		e.Cancel = true;
-		player.Position = closestInteraction.Position;
+		player.Position = new Vector3(closestInteraction.Area.Center, closestInteraction.Z);
 		player.VirtualWorld = closestInteraction.World;
 		player.Interior = closestInteraction.Interior;
 		player.Angle = closestInteraction.Angle;
