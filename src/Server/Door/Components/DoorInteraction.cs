@@ -12,7 +12,7 @@ public sealed class DoorInteraction : BaseSpatialComponent, IDoorInteraction
 	public int World { get; set; }
 	public int Interior { get; set; }
 
-	public DoorInteraction(IDoor door, float x, float y, float z, float angle, int world, int interior) : base(new CircleArea(x, y))
+	public DoorInteraction(IDoor door, IArea area, float z, float angle, int world, int interior) : base(area)
 	{
 		Z = z;
 		Door = door;

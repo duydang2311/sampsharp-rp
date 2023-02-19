@@ -3,6 +3,7 @@ using SampSharp.Entities.SAMP;
 using SampSharp.Streamer.Entities;
 using Server.Door.Components;
 using Server.Door.Entities;
+using Server.Geometry.Services;
 using Server.SpatialGrid.Entities;
 
 namespace Server.Door.Services;
@@ -11,6 +12,7 @@ public sealed partial class DoorFactory : IDoorFactory
 {
 	private readonly IStreamerService streamerService;
 	private readonly ILogger<DoorFactory> logger;
+	private readonly IAreaFactory areaFactory;
 	private readonly IDictionary<long, IDoor> doorDictionary = new Dictionary<long, IDoor>();
 
 	public IEnumerable<IDoor> Doors => doorDictionary.Values;
@@ -22,10 +24,11 @@ public sealed partial class DoorFactory : IDoorFactory
 		Message = "A door of type {Type} was created with invalid Id {Id}")]
 	public partial void LogInvalidDoorCreation(Type type, long id);
 
-	public DoorFactory(IStreamerService streamerService, ILogger<DoorFactory> logger, ISanAndreasGrid sanAndreasGrid)
+	public DoorFactory(IStreamerService streamerService, ILogger<DoorFactory> logger, ISanAndreasGrid sanAndreasGrid, IAreaFactory areaFactory)
 	{
 		this.streamerService = streamerService;
 		this.logger = logger;
+		this.areaFactory = areaFactory;
 		Grid = sanAndreasGrid;
 	}
 
@@ -102,7 +105,7 @@ public sealed partial class DoorFactory : IDoorFactory
 
 	public IDoorInteraction CreateDoorInteraction(IDoor door, Vector3 position, float angle, int world, int interior)
 	{
-		var interaction = new DoorInteraction(door, position.X, position.Y, position.Z, angle, world, interior);
+		var interaction = new DoorInteraction(door, areaFactory.CreateCircle(position.X, position.Y, 2), position.Z, angle, world, interior);
 		Grid.Add(interaction);
 		return interaction;
 	}
