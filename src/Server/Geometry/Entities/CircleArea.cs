@@ -9,6 +9,13 @@ public sealed class CircleArea : ICircleArea
 	public float Radius { get; set; }
 	public float RadiusSquared => Radius * Radius;
 
+	public CircleArea(float left, float top)
+	{
+		TopLeft = new(left, top);
+	}
+
+	public CircleArea(double left, double top) : this((float)left, (float)top) { }
+
 	public bool Contains(Vector2 position)
 	{
 		return Vector2.DistanceSquared(Center, position) <= RadiusSquared;
