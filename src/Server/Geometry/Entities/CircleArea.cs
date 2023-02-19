@@ -4,21 +4,29 @@ namespace Server.Geometry.Entities;
 
 public sealed class CircleArea : ICircleArea
 {
-	private readonly float radius;
-	private readonly Vector2 center;
-	private readonly Vector2 bottomRight;
+	private float radius;
+	private Vector2 center;
+	private Vector2 bottomRight;
 
 	public Vector2 TopLeft { get; }
-	public Vector2 BottomRight => bottomRight;
 	public Vector2 Center => center;
-	public float Radius => radius;
-	public float RadiusSquared => radius * radius;
+	public Vector2 BottomRight => bottomRight;
+	public float Radius
+	{
+		get => radius; set
+		{
+			radius = value;
+			center = TopLeft + new Vector2(radius, -radius);
+			bottomRight = TopLeft + new Vector2(2 * radius, -2 * radius);
+		}
+	}
+	public float RadiusSquared => Radius * Radius;
 
 	public CircleArea(float left, float top)
 	{
 		TopLeft = new(left, top);
-		center = TopLeft + new Vector2(Radius, -Radius);
-		bottomRight = TopLeft + new Vector2(2 * Radius, -2 * Radius);
+		center = TopLeft + new Vector2(radius, -radius);
+		bottomRight = TopLeft + new Vector2(2 * radius, -2 * radius);
 	}
 
 	public CircleArea(double left, double top) : this((float)left, (float)top) { }

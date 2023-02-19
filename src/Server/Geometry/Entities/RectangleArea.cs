@@ -5,11 +5,13 @@ namespace Server.Geometry.Entities;
 public sealed class RectangleArea : PolygonArea, IRectangleArea
 {
 	public override Vector2 TopLeft { get; }
+	public override Vector2 Center { get; }
 	public override Vector2 BottomRight { get; }
 
 	public RectangleArea(Vector2 topLeft, Vector2 bottomRight)
 	{
 		TopLeft = topLeft;
+		Center = new Vector2(topLeft.X + (bottomRight.X - topLeft.X) / 2, topLeft.Y - (topLeft.Y - bottomRight.Y) / 2);
 		BottomRight = bottomRight;
 		RestorePoints();
 	}
