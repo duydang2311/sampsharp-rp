@@ -48,7 +48,7 @@ public sealed partial class DoorCommandSystem : ISystem
 			doorFactory.Grid.Remove(logicalDoor.ExitInteraction);
 		}
 		logicalDoor.ExitInteraction = doorFactory.CreateDoorInteraction(logicalDoor, position, angle, world, interior);
-		await using var ctx = await dbContextFactory.CreateDbContextAsync().ConfigureAwait(false);
+		using var ctx = dbContextFactory.CreateDbContext();
 		await ctx
 			.Doors
 			.Where(m => m.Id == id)

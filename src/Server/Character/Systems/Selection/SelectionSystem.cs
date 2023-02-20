@@ -38,7 +38,7 @@ public sealed class SelectionSystem : ISystem
 			await authenticationSystem.AuthenticateAsync(player).ConfigureAwait(false);
 			return;
 		}
-		await using var ctx = await dbContextFactory.CreateDbContextAsync();
+		using var ctx = dbContextFactory.CreateDbContext();
 		var models = await ctx.Characters
 			.Where(m => m.AccountId == account.Id)
 			.Select(m => new { m.Id, m.Name, m.Age })

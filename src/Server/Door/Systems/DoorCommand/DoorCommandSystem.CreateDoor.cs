@@ -31,7 +31,7 @@ public sealed partial class DoorCommandSystem : ISystem
 					var world = player.VirtualWorld;
 					var interior = player.Interior;
 
-					await using var ctx = await dbContextFactory.CreateDbContextAsync().ConfigureAwait(false);
+					using var ctx = dbContextFactory.CreateDbContext();
 					var model = new DoorModel()
 					{
 						EntranceX = position.X,

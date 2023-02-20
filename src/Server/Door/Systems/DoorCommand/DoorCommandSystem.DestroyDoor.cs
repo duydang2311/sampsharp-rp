@@ -31,7 +31,7 @@ public sealed partial class DoorCommandSystem : ISystem
 			return;
 		}
 
-		await using var ctx = await dbContextFactory.CreateDbContextAsync().ConfigureAwait(false);
+		using var ctx = dbContextFactory.CreateDbContext();
 		var affected = await ctx.Doors.Where(m => m.Id == id).ExecuteDeleteAsync().ConfigureAwait(false);
 		if (affected == 0)
 		{

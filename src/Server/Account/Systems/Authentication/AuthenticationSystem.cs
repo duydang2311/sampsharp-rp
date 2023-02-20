@@ -32,7 +32,7 @@ public sealed class AuthenticationSystem : IAuthenticationSystem
 
 	public async Task AuthenticateAsync(Player player)
 	{
-		await using var context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false);
+		using var context = contextFactory.CreateDbContext();
 		var any = await context.Accounts.AnyAsync(model => player.Name == model.Name).ConfigureAwait(false);
 		await authenticatedEvent.InvokeAsync(player, any).ConfigureAwait(false);
 	}

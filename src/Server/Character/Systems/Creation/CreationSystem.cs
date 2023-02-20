@@ -200,7 +200,7 @@ public sealed class CreationSystem : ISystem
 		}
 
 		creationDataComponent.Age = age;
-		await using var context = await dbContextFactory.CreateDbContextAsync().ConfigureAwait(false);
+		using var ctx = dbContextFactory.CreateDbContext();
 
 		var model = new CharacterModel()
 		{
@@ -210,8 +210,8 @@ public sealed class CreationSystem : ISystem
 			Age = creationDataComponent.Age,
 			Skin = creationDataComponent.Skin
 		};
-		context.Characters.Add(model);
-		await context.SaveChangesAsync().ConfigureAwait(false);
+		ctx.Characters.Add(model);
+		await ctx.SaveChangesAsync().ConfigureAwait(false);
 		await characterCreatedEvent.InvokeAsync(player).ConfigureAwait(false);
 	}
 }

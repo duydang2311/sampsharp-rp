@@ -53,7 +53,7 @@ public sealed class LoginSystem : ISystem
 			player.Kick();
 			return;
 		}
-		await using var context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false);
+		using var context = contextFactory.CreateDbContext();
 		var account = (await context
 			.Accounts
 			.Where(model => player.Name == model.Name)

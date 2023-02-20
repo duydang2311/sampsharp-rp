@@ -36,7 +36,7 @@ public sealed class SpawnSystem : ISystem
 
 	private async Task SpawnCharacter(Player player, long id)
 	{
-		await using var ctx = await dbContextFactory.CreateDbContextAsync().ConfigureAwait(false);
+		using var ctx = dbContextFactory.CreateDbContext();
 		var model = await ctx.Characters
 			.Where(m => m.Id == id)
 			.Select(m => new
@@ -80,25 +80,17 @@ public sealed class SpawnSystem : ISystem
 			return;
 		}
 
-		var position = player.Position;
-		var angle = player.Angle;
-		var world = player.VirtualWorld;
-		var interior = player.Interior;
-		var health = player.Health;
-
-		await using var ctx = await dbContextFactory
-			.CreateDbContextAsync()
-			.ConfigureAwait(false);
+		using var ctx = dbContextFactory.CreateDbContext();
 		await ctx.Characters
 			.Where(m => m.Id == component.Id)
 			.ExecuteUpdateAsync(m => m
-				.SetProperty(m => m.X, position.X)
-				.SetProperty(m => m.Y, position.Y)
-				.SetProperty(m => m.Z, position.Z)
-				.SetProperty(m => m.A, angle)
-				.SetProperty(m => m.World, world)
-				.SetProperty(m => m.Interior, interior)
-				.SetProperty(m => m.Health, health))
+				.SetProperty(m => m.X, player.Position.X)
+				.SetProperty(m => m.Y, player.Position.Y)
+				.SetProperty(m => m.Z, player.Position.Z)
+				.SetProperty(m => m.A, player.Angle)
+				.SetProperty(m => m.World, player.VirtualWorld)
+				.SetProperty(m => m.Interior, player.Interior)
+				.SetProperty(m => m.Health, player.Health))
 			.ConfigureAwait(false);
 	}
 }

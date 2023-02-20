@@ -63,7 +63,7 @@ public sealed class SignUpSystem : ISystem
 			Password = hash
 		};
 
-		await using var context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false);
+		using var context = contextFactory.CreateDbContext();
 		await context.Accounts.AddAsync(model).ConfigureAwait(false);
 		await context.SaveChangesAsync().ConfigureAwait(false);
 
