@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
+using SampSharp.Core;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Account.Systems.Authentication;
@@ -58,12 +60,14 @@ public sealed class SpawnSystem : ISystem
 			return;
 		}
 
+		await TaskHelper.SwitchToMainThread();
 		player.AddComponent(new CharacterComponent { Id = id });
 		player.AddComponent(new PermissionComponent(model.PermissionLevel));
 		player.ToggleSpectating(false);
 		player.SetSpawnInfo(255, model.Skin, new Vector3(model.X, model.Y, model.Z), model.A);
 		player.Spawn();
 		player.Health = model.Health;
+		player.Skin = model.Skin;
 		await characterSpawnedEvent.InvokeAsync(player).ConfigureAwait(false);
 	}
 
