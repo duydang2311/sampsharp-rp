@@ -41,7 +41,7 @@ public sealed class SignUpSystem : ISystem
 			.SetButton1(t => t.Dialog_Account_SignUp_Button1)
 			.SetButton2(t => t.Dialog_Account_SignUp_Button2)
 			.SetIsPassword(true));
-		await HandleSignUpDialogResponse(player, response);
+		await HandleSignUpDialogResponse(player, response).ConfigureAwait(false);
 	}
 
 	private async Task HandleSignUpDialogResponse(Player player, InputDialogResponse response)
@@ -52,7 +52,9 @@ public sealed class SignUpSystem : ISystem
 			return;
 		}
 
-		var hash = await Task.Run(() => BC.EnhancedHashPassword(response.InputText));
+		var hash = await Task
+			.Run(() => BC.EnhancedHashPassword(response.InputText))
+			.ConfigureAwait(false);
 		var model = new AccountModel()
 		{
 			Name = player.Name,
@@ -64,6 +66,6 @@ public sealed class SignUpSystem : ISystem
 		await context.SaveChangesAsync().ConfigureAwait(false);
 
 		player.AddComponent(new AccountComponent { Id = model.Id });
-		await signedUpEvent.InvokeAsync(player);
+		await signedUpEvent.InvokeAsync(player).ConfigureAwait(false);
 	}
 }

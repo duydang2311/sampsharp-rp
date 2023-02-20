@@ -34,11 +34,12 @@ public sealed class SpawnSystem : ISystem
 
 	private async Task SpawnCharacter(Player player, long id)
 	{
-		await using var ctx = await dbContextFactory.CreateDbContextAsync();
+		await using var ctx = await dbContextFactory.CreateDbContextAsync().ConfigureAwait(false);
 		var model = await ctx.Characters
 			.Where(m => m.Id == id)
 			.Select(m => new { m.Skin, m.X, m.Y, m.Z, m.A, m.Interior, m.World, m.Health })
-			.FirstOrDefaultAsync();
+			.FirstOrDefaultAsync()
+			.ConfigureAwait(false);
 
 		if (model is null)
 		{
@@ -52,7 +53,7 @@ public sealed class SpawnSystem : ISystem
 		player.SetSpawnInfo(255, model.Skin, new Vector3(model.X, model.Y, model.Z), model.A);
 		player.Spawn();
 		player.Health = model.Health;
-		await characterSpawnedEvent.InvokeAsync(player);
+		await characterSpawnedEvent.InvokeAsync(player).ConfigureAwait(false);
 	}
 
 	[Event]

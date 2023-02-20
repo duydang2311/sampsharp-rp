@@ -41,7 +41,7 @@ public sealed class LoginSystem : ISystem
 			.SetButton1(t => t.Dialog_Account_Login_Button1)
 			.SetButton2(t => t.Dialog_Account_Login_Button2)
 			.SetIsPassword(true));
-		await HandleLoginDialogResponse(player, response);
+		await HandleLoginDialogResponse(player, response).ConfigureAwait(false);
 	}
 
 	private async Task HandleLoginDialogResponse(Player player, InputDialogResponse response)
@@ -51,22 +51,25 @@ public sealed class LoginSystem : ISystem
 			player.Kick();
 			return;
 		}
-		await using var context = await contextFactory.CreateDbContextAsync();
+		await using var context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false);
 		var account = (await context
 			.Accounts
 			.Where(model => player.Name == model.Name)
 			.Select(model => new { model.Password, model.Id })
-			.FirstOrDefaultAsync())!;
-		var success = await Task.Run(() => BC.EnhancedVerify(response.InputText, account.Password));
+			.FirstOrDefaultAsync()
+			.ConfigureAwait(false))!;
+		var success = await Task
+			.Run(() => BC.EnhancedVerify(response.InputText, account.Password))
+			.ConfigureAwait(false);
 
 		if (success)
 		{
 			player.AddComponent(new AccountComponent() { Id = account.Id });
-			await loginEvent.InvokeAsync(player);
+			await loginEvent.InvokeAsync(player).ConfigureAwait(false);
 		}
 		else
 		{
-			await ShowLoginDialog(player);
+			await ShowLoginDialog(player).ConfigureAwait(false);
 		}
 		return;
 	}

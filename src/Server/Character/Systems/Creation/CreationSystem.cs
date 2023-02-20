@@ -57,10 +57,10 @@ public sealed class CreationSystem : ISystem
 				.AddColumn(t => t.Dialog_Character_Creation_Gender_Header_Column1)
 				.AddRow(b => b.Add(t => t.Dialog_Character_Creation_Gender_Row_Male))
 				.AddRow(b => b.Add(t => t.Dialog_Character_Creation_Gender_Row_Female)),
-			(response) => HandleCharacterGenderDialogResponse(player, response));
+			async (response) => await HandleCharacterGenderDialogResponse(player, response).ConfigureAwait(false));
 	}
 
-	private async void HandleCharacterGenderDialogResponse(Player player, TablistDialogResponse response)
+	private async Task HandleCharacterGenderDialogResponse(Player player, TablistDialogResponse response)
 	{
 		if (response.Response != DialogResponse.LeftButton)
 		{
@@ -131,7 +131,7 @@ public sealed class CreationSystem : ISystem
 				.SetContent(t => t.Dialog_Character_Creation_Age_Content)
 				.SetButton1(t => t.Dialog_Character_Creation_Age_Button1)
 				.SetButton2(t => t.Dialog_Character_Creation_Age_Button2),
-			async response => await HandleCharacterAgeDialogResponse(player, response));
+			async response => await HandleCharacterAgeDialogResponse(player, response).ConfigureAwait(false));
 	}
 
 	private async Task HandleCharacterAgeDialogResponse(Player player, InputDialogResponse response)
@@ -163,7 +163,7 @@ public sealed class CreationSystem : ISystem
 		}
 
 		creationDataComponent.Age = age;
-		await using var context = await dbContextFactory.CreateDbContextAsync();
+		await using var context = await dbContextFactory.CreateDbContextAsync().ConfigureAwait(false);
 
 		var model = new CharacterModel()
 		{
@@ -174,6 +174,6 @@ public sealed class CreationSystem : ISystem
 		};
 		await context.Characters.AddAsync(model).ConfigureAwait(false);
 		await context.SaveChangesAsync().ConfigureAwait(false);
-		await characterCreatedEvent.InvokeAsync(player);
+		await characterCreatedEvent.InvokeAsync(player).ConfigureAwait(false);
 	}
 }

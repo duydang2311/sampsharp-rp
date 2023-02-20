@@ -27,12 +27,13 @@ public sealed class AuthenticationSystem : IAuthenticationSystem
 			.Add(t => t.Badge_System)
 			.Inline(t => t.Account_Authentication_Loading));
 		player.ToggleSpectating(true);
-		await AuthenticateAsync(player);
+		await AuthenticateAsync(player).ConfigureAwait(false);
 	}
 
 	public async Task AuthenticateAsync(Player player)
 	{
-		await using var context = await contextFactory.CreateDbContextAsync();
-		await authenticatedEvent.InvokeAsync(player, await context.Accounts.AnyAsync(model => player.Name == model.Name));
+		await using var context = await contextFactory.CreateDbContextAsync().ConfigureAwait(false);
+		var any = await context.Accounts.AnyAsync(model => player.Name == model.Name).ConfigureAwait(false);
+		await authenticatedEvent.InvokeAsync(player, any).ConfigureAwait(false);
 	}
 }

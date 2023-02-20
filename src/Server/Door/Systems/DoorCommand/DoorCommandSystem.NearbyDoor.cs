@@ -35,7 +35,8 @@ public sealed partial class DoorCommandSystem : ISystem
 				m.EntranceInterior,
 			})
 			.AsNoTracking()
-			.ToArrayAsync();
+			.ToArrayAsync()
+			.ConfigureAwait(false);
 		if (models.Length == 0)
 		{
 			chatService.SendMessage(player, b => b

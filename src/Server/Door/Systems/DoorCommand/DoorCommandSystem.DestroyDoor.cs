@@ -31,8 +31,8 @@ public sealed partial class DoorCommandSystem : ISystem
 			return;
 		}
 
-		await using var ctx = await dbContextFactory.CreateDbContextAsync();
-		var affected = await ctx.Doors.Where(m => m.Id == id).ExecuteDeleteAsync();
+		await using var ctx = await dbContextFactory.CreateDbContextAsync().ConfigureAwait(false);
+		var affected = await ctx.Doors.Where(m => m.Id == id).ExecuteDeleteAsync().ConfigureAwait(false);
 		if (affected == 0)
 		{
 			chatService.SendMessage(player, b => b

@@ -31,7 +31,7 @@ public sealed partial class DoorCommandSystem : ISystem
 					var world = player.VirtualWorld;
 					var interior = player.Interior;
 
-					await using var ctx = await dbContextFactory.CreateDbContextAsync();
+					await using var ctx = await dbContextFactory.CreateDbContextAsync().ConfigureAwait(false);
 					var model = new DoorModel()
 					{
 						EntranceX = position.X,
@@ -42,7 +42,7 @@ public sealed partial class DoorCommandSystem : ISystem
 						EntranceInterior = interior,
 					};
 					ctx.Doors.Add(model);
-					await ctx.SaveChangesAsync();
+					await ctx.SaveChangesAsync().ConfigureAwait(false);
 					if (model.Id == 0)
 					{
 						chatService.SendMessage(player, b => b

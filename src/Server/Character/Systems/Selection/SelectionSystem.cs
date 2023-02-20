@@ -35,7 +35,7 @@ public sealed class SelectionSystem : ISystem
 		var account = player.GetComponent<AccountComponent>();
 		if (account is null)
 		{
-			await authenticationSystem.AuthenticateAsync(player);
+			await authenticationSystem.AuthenticateAsync(player).ConfigureAwait(false);
 			return;
 		}
 		await using var ctx = await dbContextFactory.CreateDbContextAsync();
@@ -44,7 +44,8 @@ public sealed class SelectionSystem : ISystem
 			.Select(m => new { m.Id, m.Name, m.Age })
 			.OrderBy(m => m.Id)
 			.Take(3)
-			.ToArrayAsync();
+			.ToArrayAsync()
+			.ConfigureAwait(false);
 		dialogService.ShowTablist(
 			player,
 			b =>
@@ -70,7 +71,7 @@ public sealed class SelectionSystem : ISystem
 						.Add(t => t.Dialog_Character_Selection_RowNewChar_Column2));
 				}
 			},
-			async response => await HandleSelectionResponse(player, response));
+			async response => await HandleSelectionResponse(player, response).ConfigureAwait(false));
 	}
 
 	private Task HandleSelectionResponse(Player player, TablistDialogResponse response)
