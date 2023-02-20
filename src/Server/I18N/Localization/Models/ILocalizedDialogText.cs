@@ -30,6 +30,10 @@ public interface ILocalizedDialogText
 	object Dialog_Character_Creation_Gender_Header_Column1 { get; }
 	object Dialog_Character_Creation_Gender_Row_Male { get; }
 	object Dialog_Character_Creation_Gender_Row_Female { get; }
+	object Dialog_Character_Creation_Skin_Caption { get; }
+	object Dialog_Character_Creation_Skin_Content { get; }
+	object Dialog_Character_Creation_Skin_Button1 { get; }
+	object Dialog_Character_Creation_Skin_Button2 { get; }
 	object Dialog_Character_Creation_Age_Caption { get; }
 	object Dialog_Character_Creation_Age_Content { get; }
 	object Dialog_Character_Creation_Age_Button1 { get; }

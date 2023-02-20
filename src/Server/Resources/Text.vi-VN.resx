@@ -193,6 +193,20 @@ khẩu mới vào khung bên duới.
 	<data name="Dialog_Character_Creation_Gender_Row_Female">
 		<value>Nữ</value>
 	</data>
+	<data name="Dialog_Character_Creation_Skin_Caption">
+		<value>Trang phục nhân vật</value>
+	</data>
+	<data name="Dialog_Character_Creation_Skin_Content" xml:space="preserve">
+		<value>Trang phục nhân vật của bạn là gì?
+			
+* Trang phục có ID từ 1 đến 311 và không bao gồm 74.</value>
+	</data>
+	<data name="Dialog_Character_Creation_Skin_Button1">
+		<value>Tiếp tục</value>
+	</data>
+	<data name="Dialog_Character_Creation_Skin_Button2">
+		<value>Quay lại</value>
+	</data>
 	<data name="Dialog_Character_Creation_Age_Caption">
 		<value>Tuổi nhân vật</value>
 	</data>

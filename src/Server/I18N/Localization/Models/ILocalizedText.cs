@@ -40,5 +40,4 @@ public interface ILocalizedText : ILocalizedBadge
 	object LowCommand_Help { get; }
 	object AmeCommand_Text { get; }
 	object AmeCommand_Help { get; }
-
 }

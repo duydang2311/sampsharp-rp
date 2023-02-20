@@ -16,9 +16,10 @@ public sealed class CreationSystem : ISystem
 {
 	private sealed class CreationDataComponent : Component
 	{
-		public string Name { get; set; } = string.Empty;
-		public bool IsMale { get; set; }
-		public int Age { get; set; }
+		public string Name = string.Empty;
+		public bool IsMale;
+		public int Age;
+		public int Skin;
 	}
 
 	private readonly ICustomDialogService dialogService;
@@ -114,11 +115,47 @@ public sealed class CreationSystem : ISystem
 		var component = player.GetComponent<CreationDataComponent>();
 		if (component is null)
 		{
-			ShowCharacterNameDialog(player);
+			ShowCharacterGenderDialog(player);
 			return;
 		}
 
 		component.Name = inputText;
+		ShowCharacterSkinDialog(player);
+	}
+
+	private void ShowCharacterSkinDialog(Player player)
+	{
+		dialogService.ShowInput(player, b => b
+			.SetCaption(t => t.Dialog_Character_Creation_Skin_Caption)
+			.SetContent(t => t.Dialog_Character_Creation_Skin_Content)
+			.SetButton1(t => t.Dialog_Character_Creation_Skin_Button1)
+			.SetButton2(t => t.Dialog_Character_Creation_Skin_Button2),
+			response => HandleCharacterSkinDialogResponse(player, response));
+	}
+
+	private void HandleCharacterSkinDialogResponse(Player player, InputDialogResponse response)
+	{
+		if (response.Response != DialogResponse.LeftButton)
+		{
+			ShowCharacterNameDialog(player);
+			return;
+		}
+
+		var inputText = response.InputText.Trim();
+		if (!int.TryParse(inputText, out var skin) || skin < 1 || skin == 74 || skin > 311)
+		{
+			ShowCharacterSkinDialog(player);
+			return;
+		}
+
+		var component = player.GetComponent<CreationDataComponent>();
+		if (component is null)
+		{
+			ShowCharacterGenderDialog(player);
+			return;
+		}
+
+		component.Skin = skin;
 		ShowCharacterAgeDialog(player);
 	}
 
@@ -138,7 +175,7 @@ public sealed class CreationSystem : ISystem
 	{
 		if (response.Response != DialogResponse.LeftButton)
 		{
-			ShowCharacterNameDialog(player);
+			ShowCharacterSkinDialog(player);
 			return;
 		}
 
@@ -170,9 +207,10 @@ public sealed class CreationSystem : ISystem
 			AccountId = accountComponent.Id,
 			Name = creationDataComponent.Name,
 			Gender = creationDataComponent.IsMale,
-			Age = creationDataComponent.Age
+			Age = creationDataComponent.Age,
+			Skin = creationDataComponent.Skin
 		};
-		await context.Characters.AddAsync(model).ConfigureAwait(false);
+		context.Characters.Add(model);
 		await context.SaveChangesAsync().ConfigureAwait(false);
 		await characterCreatedEvent.InvokeAsync(player).ConfigureAwait(false);
 	}

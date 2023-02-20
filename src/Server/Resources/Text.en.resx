@@ -190,6 +190,20 @@ password that was {C75656}never{D1D1D1} used before.</value>
 	<data name="Dialog_Character_Creation_Gender_Row_Female">
 		<value>Female</value>
 	</data>
+	<data name="Dialog_Character_Creation_Skin_Caption">
+		<value>Character model</value>
+	</data>
+	<data name="Dialog_Character_Creation_Skin_Content" xml:space="preserve">
+		<value>What should your character's model be?
+			
+* Model ID ranges from 1 to 311 and not including 74.</value>
+	</data>
+	<data name="Dialog_Character_Creation_Skin_Button1">
+		<value>Continue</value>
+	</data>
+	<data name="Dialog_Character_Creation_Skin_Button2">
+		<value>Back</value>
+	</data>
 	<data name="Dialog_Character_Creation_Age_Caption">
 		<value>Character's age</value>
 	</data>
