@@ -35,6 +35,6 @@ public sealed class DoCommandSystem : ISystem
 			player,
 		 	b => b
 				.Add(model => model.Badge_Help)
-				.Inline((SemanticColor.Roleplay), model => model.DoCommandHelp));
+				.Inline(model => model.DoCommandHelp));
 	}
 }

@@ -42,7 +42,7 @@ public sealed class ShoutCommandSystem : ISystem
             player, 
             b => b
                 .Add(model => model.Badge_Help) 
-                .Inline(SemanticColor.Shout, model => model.ShoutCommand_Help)
+                .Inline(model => model.ShoutCommand_Help)
         );
 	}
 

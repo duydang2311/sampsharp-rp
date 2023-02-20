@@ -43,7 +43,7 @@ public sealed class LowCommandSystem : ISystem
 			player,
 			b => b
 				.Add(model => model.Badge_Help)
-				.Inline(SemanticColor.LowAttention, model => model.LowCommand_Help)
+				.Inline(model => model.LowCommand_Help)
 		);
 	}
 }

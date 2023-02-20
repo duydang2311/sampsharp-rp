@@ -48,7 +48,7 @@ public sealed class MeCommandSystem : ISystem
 	{
 		chatService.SendMessage(player, b => b
 			.Add(model => model.Badge_Help)
-			.Inline(SemanticColor.Roleplay, model => model.MeCommandHelp));
+			.Inline(model => model.MeCommandHelp));
 //		chatService.SendMessage(
 //			player, factory => factory.Create(Color.FromInteger(0xC2A2DA, ColorFormat.RGB), "Usage: /me [action]."));
 	}
