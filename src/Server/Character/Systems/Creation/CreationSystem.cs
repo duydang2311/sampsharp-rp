@@ -58,14 +58,14 @@ public sealed class CreationSystem : ISystem
 				.AddColumn(t => t.Dialog_Character_Creation_Gender_Header_Column1)
 				.AddRow(b => b.Add(t => t.Dialog_Character_Creation_Gender_Row_Male))
 				.AddRow(b => b.Add(t => t.Dialog_Character_Creation_Gender_Row_Female)),
-			async (response) => await HandleCharacterGenderDialogResponse(player, response).ConfigureAwait(false));
+			response => HandleCharacterGenderDialogResponse(player, response));
 	}
 
-	private async Task HandleCharacterGenderDialogResponse(Player player, TablistDialogResponse response)
+	private void HandleCharacterGenderDialogResponse(Player player, TablistDialogResponse response)
 	{
 		if (response.Response != DialogResponse.LeftButton)
 		{
-			await loginEvent.InvokeAsync(player);
+			_ = loginEvent.InvokeAsync(player);
 			return;
 		}
 		var component = player.GetComponent<CreationDataComponent>();
@@ -82,11 +82,13 @@ public sealed class CreationSystem : ISystem
 
 	private void ShowCharacterNameDialog(Player player)
 	{
-		dialogService.ShowInput(player, b => b
-			.SetCaption(t => t.Dialog_Character_Creation_Name_Caption)
-			.SetContent(t => t.Dialog_Character_Creation_Name_Content)
-			.SetButton1(t => t.Dialog_Character_Creation_Name_Button1)
-			.SetButton2(t => t.Dialog_Character_Creation_Name_Button2),
+		dialogService.ShowInput(
+			player,
+			b => b
+				.SetCaption(t => t.Dialog_Character_Creation_Name_Caption)
+				.SetContent(t => t.Dialog_Character_Creation_Name_Content)
+				.SetButton1(t => t.Dialog_Character_Creation_Name_Button1)
+				.SetButton2(t => t.Dialog_Character_Creation_Name_Button2),
 			response => HandleCharacterNameDialogResponse(player, response));
 	}
 
@@ -125,11 +127,13 @@ public sealed class CreationSystem : ISystem
 
 	private void ShowCharacterSkinDialog(Player player)
 	{
-		dialogService.ShowInput(player, b => b
-			.SetCaption(t => t.Dialog_Character_Creation_Skin_Caption)
-			.SetContent(t => t.Dialog_Character_Creation_Skin_Content)
-			.SetButton1(t => t.Dialog_Character_Creation_Skin_Button1)
-			.SetButton2(t => t.Dialog_Character_Creation_Skin_Button2),
+		dialogService.ShowInput(
+			player,
+			b => b
+				.SetCaption(t => t.Dialog_Character_Creation_Skin_Caption)
+				.SetContent(t => t.Dialog_Character_Creation_Skin_Content)
+				.SetButton1(t => t.Dialog_Character_Creation_Skin_Button1)
+				.SetButton2(t => t.Dialog_Character_Creation_Skin_Button2),
 			response => HandleCharacterSkinDialogResponse(player, response));
 	}
 
@@ -182,7 +186,7 @@ public sealed class CreationSystem : ISystem
 		var accountComponent = player.GetComponent<AccountComponent>();
 		if (accountComponent is null)
 		{
-			await authenticationSystem.AuthenticateAsync(player);
+			await authenticationSystem.AuthenticateAsync(player).ConfigureAwait(false);
 			return;
 		}
 
@@ -211,7 +215,7 @@ public sealed class CreationSystem : ISystem
 			Skin = creationDataComponent.Skin
 		};
 		ctx.Characters.Add(model);
-		await ctx.SaveChangesAsync().ConfigureAwait(false);
+		await ctx.SaveChangesAsync();
 		await characterCreatedEvent.InvokeAsync(player).ConfigureAwait(false);
 	}
 }

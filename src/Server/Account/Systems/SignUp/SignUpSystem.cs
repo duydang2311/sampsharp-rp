@@ -54,12 +54,13 @@ public sealed class SignUpSystem : ISystem
 			return;
 		}
 
+		var name = player.Name;
 		var hash = await Task
 			.Run(() => BC.EnhancedHashPassword(response.InputText))
 			.ConfigureAwait(false);
 		var model = new AccountModel()
 		{
-			Name = player.Name,
+			Name = name,
 			Password = hash
 		};
 

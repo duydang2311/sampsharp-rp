@@ -44,8 +44,7 @@ public sealed class SelectionSystem : ISystem
 			.Select(m => new { m.Id, m.Name, m.Age })
 			.OrderBy(m => m.Id)
 			.Take(3)
-			.ToArrayAsync()
-			.ConfigureAwait(false);
+			.ToArrayAsync();
 		dialogService.ShowTablist(
 			player,
 			b =>

@@ -1,6 +1,4 @@
-using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using SampSharp.Core;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Account.Systems.Authentication;
@@ -51,8 +49,7 @@ public sealed class SpawnSystem : ISystem
 				m.Health,
 				m.PermissionLevel
 			})
-			.FirstOrDefaultAsync()
-			.ConfigureAwait(false);
+			.FirstOrDefaultAsync();
 
 		if (model is null)
 		{
@@ -60,7 +57,6 @@ public sealed class SpawnSystem : ISystem
 			return;
 		}
 
-		await TaskHelper.SwitchToMainThread();
 		player.AddComponent(new CharacterComponent { Id = id });
 		player.AddComponent(new PermissionComponent(model.PermissionLevel));
 		player.ToggleSpectating(false);

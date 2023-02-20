@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using SampSharp.Core;
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Account.Components;
@@ -64,6 +65,7 @@ public sealed class LoginSystem : ISystem
 			.Run(() => BC.EnhancedVerify(response.InputText, account.Password))
 			.ConfigureAwait(false);
 
+		await TaskHelper.SwitchToMainThread();
 		if (success)
 		{
 			player.AddComponent(new AccountComponent() { Id = account.Id });
