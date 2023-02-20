@@ -26,22 +26,24 @@ public sealed class SignUpSystem : ISystem
 		{
 			if (signedUp)
 			{
-				return Task.CompletedTask;
+				return;
 			}
 			e.Cancel = true;
-			return ShowSignUpDialog(player);
+			ShowSignUpDialog(player);
 		});
 	}
 
-	public async Task ShowSignUpDialog(Player player)
+	public void ShowSignUpDialog(Player player)
 	{
-		var response = await dialogService.ShowInputAsync(player, b => b
-			.SetCaption(t => t.Dialog_Account_SignUp_Caption)
-			.SetContent(t => t.Dialog_Account_SignUp_Content, player.Name)
-			.SetButton1(t => t.Dialog_Account_SignUp_Button1)
-			.SetButton2(t => t.Dialog_Account_SignUp_Button2)
-			.SetIsPassword(true));
-		await HandleSignUpDialogResponse(player, response).ConfigureAwait(false);
+		dialogService.ShowInput(
+			player,
+			b => b
+				.SetCaption(t => t.Dialog_Account_SignUp_Caption)
+				.SetContent(t => t.Dialog_Account_SignUp_Content, player.Name)
+				.SetButton1(t => t.Dialog_Account_SignUp_Button1)
+				.SetButton2(t => t.Dialog_Account_SignUp_Button2)
+				.SetIsPassword(true),
+			async response => await HandleSignUpDialogResponse(player, response).ConfigureAwait(false));
 	}
 
 	private async Task HandleSignUpDialogResponse(Player player, InputDialogResponse response)
