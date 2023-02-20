@@ -71,7 +71,7 @@ public sealed class LoginSystem : ISystem
 		}
 		else
 		{
-			await ShowLoginDialog(player).ConfigureAwait(false);
+			ShowLoginDialog(player);
 		}
 		return;
 	}
