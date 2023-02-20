@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using SampSharp.Entities.SAMP;
+using Server.Chat.Components;
 
 namespace Server.Character.Models;
 
@@ -29,4 +30,5 @@ public sealed class CharacterModel
 	[MaxLength(11)]
 	public string Locale { get; set; } = "vi";
 	public float Health { get; set; } = 100;
+	public PermissionLevel PermissionLevel { get; set; } = PermissionLevel.Player;
 }

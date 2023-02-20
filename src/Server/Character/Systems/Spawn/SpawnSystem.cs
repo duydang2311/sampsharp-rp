@@ -37,7 +37,18 @@ public sealed class SpawnSystem : ISystem
 		await using var ctx = await dbContextFactory.CreateDbContextAsync().ConfigureAwait(false);
 		var model = await ctx.Characters
 			.Where(m => m.Id == id)
-			.Select(m => new { m.Skin, m.X, m.Y, m.Z, m.A, m.Interior, m.World, m.Health })
+			.Select(m => new
+			{
+				m.Skin,
+				m.X,
+				m.Y,
+				m.Z,
+				m.A,
+				m.Interior,
+				m.World,
+				m.Health,
+				m.PermissionLevel
+			})
 			.FirstOrDefaultAsync()
 			.ConfigureAwait(false);
 
@@ -48,7 +59,7 @@ public sealed class SpawnSystem : ISystem
 		}
 
 		player.AddComponent(new CharacterComponent { Id = id });
-		player.AddComponent(new PermissionComponent(PermissionLevel.Player));
+		player.AddComponent(new PermissionComponent(model.PermissionLevel));
 		player.ToggleSpectating(false);
 		player.SetSpawnInfo(255, model.Skin, new Vector3(model.X, model.Y, model.Z), model.A);
 		player.Spawn();
