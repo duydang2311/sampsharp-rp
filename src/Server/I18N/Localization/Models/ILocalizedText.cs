@@ -40,4 +40,8 @@ public interface ILocalizedText : ILocalizedBadge
 	object LowCommand_Help { get; }
 	object AmeCommand_Text { get; }
 	object AmeCommand_Help { get; }
+	object CreateVehicleCommand_Help { get; }
+	object CreateVehicleCommand_InvalidModel { get; }
+	object CreateVehicleCommand_Error { get; }
+	object CreateVehicleCommand_Success { get; }
 }

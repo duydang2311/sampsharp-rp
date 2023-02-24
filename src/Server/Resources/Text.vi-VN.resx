@@ -249,4 +249,16 @@ khẩu mới vào khung bên duới.
 	<data name="AmeCommand_Help">
 		<value>/ame [hành động]</value>
 	</data>
+	<data name="CreateVehicleCommand_Help">
+		<value>/createvehicle [model] (màu chính = 1) (màu phụ = 1) (thêm siren = false).</value>
+	</data>
+	<data name="CreateVehicleCommand_InvalidModel">
+		<value>Model '{0}' không hợp lệ. Giá trị hợp lệ từ 400 đến 611.</value>
+	</data>
+	<data name="CreateVehicleCommand_Error">
+		<value>Tạo phương tiện thất bại.</value>
+	</data>
+	<data name="CreateVehicleCommand_Success">
+		<value>Phương tiện mới đã được tạo (ID: {0}).</value>
+	</data>
 </root>
