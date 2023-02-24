@@ -20,5 +20,5 @@ public sealed class VehicleModel
 	public int PrimaryColor { get; set; }
 	public int SecondaryColor { get; set; }
 
-	public CharacterModel? CharacterModel { get; set; }
+	public CharacterModel? Character { get; set; }
 }

@@ -11,12 +11,12 @@ public static partial class ModelBuilderExtensions
 			.Property<long?>("CharacterId")
 			.IsRequired(false);
 		vehicle
-			.HasOne(m => m.CharacterModel)
+			.HasOne(m => m.Character)
 			.WithMany()
 			.HasForeignKey("CharacterId")
 			.OnDelete(DeleteBehavior.Cascade);
 		vehicle
-			.Navigation(m => m.CharacterModel)
+			.Navigation(m => m.Character)
 			.UsePropertyAccessMode(PropertyAccessMode.Property);
 	}
 }
