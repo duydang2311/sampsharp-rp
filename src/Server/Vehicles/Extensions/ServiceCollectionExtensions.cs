@@ -10,6 +10,9 @@ public static partial class ServiceCollectionExtensions
 	{
 		return self
 			.AddSystem<CreateVehicleCommandSystem>()
+			.AddSystem<InsertVehicleCommandSystem>()
+			.AddSystem<LoadDbVehicleSystem>()
+			.AddSystem<SaveVehicleInfoSystem>()
 			.AddSingleton<IVehicleFactory, VehicleFactory>();
 	}
 }

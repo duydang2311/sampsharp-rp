@@ -261,4 +261,16 @@ khẩu mới vào khung bên duới.
 	<data name="CreateVehicleCommand_Success">
 		<value>Phương tiện mới đã được tạo (ID: {0}).</value>
 	</data>
+	<data name="InsertVehicleCommand_Help">
+		<value>/insertvehicle [vehicle id]. </value>
+	</data>
+	<data name="InsertVehicleCommand_IdNotFound">
+		<value>Không tìm thấy phương tiện nào với ID '{0}'.</value>
+	</data>
+	<data name="InsertVehicleCommand_Error">
+		<value>Thêm phương tiện '{0}' vào database thất bại.</value>
+	</data>
+	<data name="InsertVehicleCommand_Success">
+		<value>Phương tiện '{0}' đã được thêm vào database (ID: '{1}').</value>
+	</data>
 </root>

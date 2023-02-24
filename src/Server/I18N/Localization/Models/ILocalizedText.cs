@@ -44,4 +44,8 @@ public interface ILocalizedText : ILocalizedBadge
 	object CreateVehicleCommand_InvalidModel { get; }
 	object CreateVehicleCommand_Error { get; }
 	object CreateVehicleCommand_Success { get; }
+	object InsertVehicleCommand_Help { get; }
+	object InsertVehicleCommand_IdNotFound { get; }
+	object InsertVehicleCommand_Error { get; }
+	object InsertVehicleCommand_Success { get; }
 }

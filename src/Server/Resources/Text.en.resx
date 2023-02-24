@@ -256,6 +256,18 @@ password that was {C75656}never{D1D1D1} used before.</value>
 		<value>Unable to create vehicle.</value>
 	</data>
 	<data name="CreateVehicleCommand_Success">
-		<value>A new vehicle (ID: {0}) is created.</value>
+		<value>A new vehicle (ID: {0}) has been created.</value>
+	</data>
+	<data name="InsertVehicleCommand_Help">
+		<value>/insertvehicle [vehicle id]. </value>
+	</data>
+	<data name="InsertVehicleCommand_IdNotFound">
+		<value>No vehicle found with ID '{0}'.</value>
+	</data>
+	<data name="InsertVehicleCommand_Error">
+		<value>Unable to insert the vehicle '{0}' into database.</value>
+	</data>
+	<data name="InsertVehicleCommand_Success">
+		<value>Vehicle '{0}' has been inserted to database (ID: '{1}').</value>
 	</data>
 </root>
