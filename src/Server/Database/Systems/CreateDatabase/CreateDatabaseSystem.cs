@@ -7,7 +7,7 @@ public sealed class CreateDatabaseSystem : ISystem
 {
 	public CreateDatabaseSystem(IDbContextFactory<ServerDbContext> dbContextFactory)
 	{
-		var ctx = dbContextFactory.CreateDbContext();
+		using var ctx = dbContextFactory.CreateDbContext();
 		ctx.Database.EnsureDeleted();
 		ctx.Database.EnsureCreated();
 	}
