@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using SampSharp.Entities.SAMP;
 using Server.Character.Models;
 
 namespace Server.Vehicles.Models;
@@ -9,7 +10,7 @@ public sealed class VehicleModel
 	[Key]
 	[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public long Id { get; set; }
-	public int Model { get; set; }
+	public VehicleModelType Model { get; set; }
 	public float X { get; set; }
 	public float Y { get; set; }
 	public float Z { get; set; }

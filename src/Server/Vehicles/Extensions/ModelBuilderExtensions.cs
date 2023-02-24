@@ -1,3 +1,4 @@
+using SampSharp.Entities.SAMP;
 using Server.Vehicles.Models;
 
 namespace Microsoft.EntityFrameworkCore;
@@ -18,5 +19,8 @@ public static partial class ModelBuilderExtensions
 		vehicle
 			.Navigation(m => m.Character)
 			.UsePropertyAccessMode(PropertyAccessMode.Property);
+		vehicle
+			.Property(m => m.Model)
+			.HasConversion(v => v.ToString(), v => Enum.Parse<VehicleModelType>(v));
 	}
 }
