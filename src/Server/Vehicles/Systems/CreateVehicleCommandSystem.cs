@@ -4,7 +4,7 @@ using Server.Chat.Components;
 using Server.Chat.Services;
 using Server.Vehicles.Services;
 
-namespace Server.Vehicles.Systems.CreateVehicleCommand;
+namespace Server.Vehicles.Systems;
 
 public sealed class CreateVehicleCommandSystem : ISystem
 {
