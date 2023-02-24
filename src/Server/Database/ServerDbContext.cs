@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Server.Account.Models;
 using Server.Character.Models;
 using Server.Door.Models;
-using Server.Vehicle.Models;
+using Server.Vehicles.Models;
 
 namespace Server.Database;
 
