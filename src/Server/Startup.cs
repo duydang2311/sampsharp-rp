@@ -27,7 +27,8 @@ namespace Server
 				.WithCommon()
 				.WithDoor()
 				.WithSpatialGrid()
-				.WithGeometry();
+				.WithGeometry()
+				.WithVehicles();
 		}
 
 		public void Configure(IEcsBuilder builder)
