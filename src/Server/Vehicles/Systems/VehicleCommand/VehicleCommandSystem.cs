@@ -19,8 +19,9 @@ public sealed partial class VehicleCommandSystem : ISystem
 		{
 			m.Name = "vehicle";
 			m.Delegate = HandleVehicleCommand;
+			m.HelpDelegate = HelpVehicleCommand;
 		});
-		commandService.RegisterHelper("vehicle", HelpVehicleCommand);
+		commandService.RegisterAlias("vehicle", "v");
 	}
 
 	private void HelpVehicleCommand(Player player)
