@@ -9,6 +9,6 @@ public interface ICommandService
 	CommandModel GetCommandModel(string command);
 	object? InvokeCommand(string command, object?[]? arguments);
 	object? InvokeHelper(string command, object?[]? arguments);
-	void RegisterHelper(string command, Delegate handler);
 	void RegisterCommand(Action<CommandModel> modelAction);
+	void RegisterAlias(string command, params string[] aliases);
 }

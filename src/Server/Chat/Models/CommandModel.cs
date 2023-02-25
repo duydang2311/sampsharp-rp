@@ -7,4 +7,5 @@ public sealed class CommandModel
 	public string Name { get; set; } = string.Empty;
 	public PermissionLevel PermissionLevel { get; set; }
 	public Delegate? Delegate { get; set; }
+	public Delegate? HelpDelegate { get; set; }
 }

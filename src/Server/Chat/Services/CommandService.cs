@@ -7,7 +7,6 @@ public sealed class CommandService : ICommandService
 {
 	private readonly ICommandModelFactory commandModelFactory;
 	private readonly IDictionary<string, CommandModel> commandDict = new Dictionary<string, CommandModel>();
-	private readonly IDictionary<string, Delegate> helperDict = new Dictionary<string, Delegate>();
 
 	public CommandService(ICommandModelFactory commandModelFactory)
 	{
@@ -21,7 +20,7 @@ public sealed class CommandService : ICommandService
 
 	public bool HasHelper(string command)
 	{
-		return helperDict.ContainsKey(command);
+		return commandDict[command].HelpDelegate is not null;
 	}
 
 	public CommandModel GetCommandModel(string command)
@@ -42,14 +41,9 @@ public sealed class CommandService : ICommandService
 
 	public object? InvokeHelper(string command, object?[]? arguments)
 	{
-		var @delegate = helperDict[command];
+		var @delegate = commandDict[command].HelpDelegate!;
 		var method = @delegate.Method;
 		return method.Invoke(@delegate.Target, arguments);
-	}
-
-	public void RegisterHelper(string command, Delegate handler)
-	{
-		helperDict.Add(command, handler);
 	}
 
 	public void RegisterCommand(Action<CommandModel> modelAction)
@@ -58,5 +52,14 @@ public sealed class CommandService : ICommandService
 		model.PermissionLevel = PermissionLevel.Player;
 		modelAction(model);
 		commandDict.Add(model.Name, model);
+	}
+
+	public void RegisterAlias(string command, params string[] aliases)
+	{
+		var model = commandDict[command];
+		foreach (var alias in aliases)
+		{
+			commandDict.Add(alias, model);
+		}
 	}
 }
