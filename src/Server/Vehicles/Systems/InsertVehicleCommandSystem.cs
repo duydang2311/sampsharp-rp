@@ -5,6 +5,7 @@ using Server.Chat.Components;
 using Server.Chat.Services;
 using Server.Database;
 using Server.Vehicles.Components;
+using Server.Vehicles.Entities;
 using Server.Vehicles.Models;
 using Server.Vehicles.Services;
 
@@ -40,7 +41,7 @@ public sealed class InsertVehicleCommandSystem : ISystem
 
 	private async Task InsertVehicleAsync(Player player, int vehicleid)
 	{
-		var vehicle = vehicleFactory.GetVehicle(vehicleid);
+		var vehicle = (ServerVehicle?)vehicleFactory.GetVehicle(vehicleid);
 		if (vehicle is null)
 		{
 			chatService.SendMessage(player, b => b
@@ -57,6 +58,7 @@ public sealed class InsertVehicleCommandSystem : ISystem
 			Y = vehicle.Position.Y,
 			Z = vehicle.Position.Z,
 			A = vehicle.Angle,
+			Interior = vehicle.Interior,
 			World = vehicle.VirtualWorld,
 			Health = vehicle.Health,
 		};

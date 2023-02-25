@@ -35,7 +35,7 @@ public sealed class CreateVehicleCommandSystem : ISystem
 	private void CreateVehicle(Player player, int model, int primaryColor = 1, int secondaryColor = 1, bool addSiren = false)
 	{
 		var eModel = (VehicleModelType)model;
-		if (!Enum.IsDefined<VehicleModelType>((VehicleModelType)model))
+		if (!Enum.IsDefined((VehicleModelType)model))
 		{
 			chatService.SendMessage(player, b => b
 				.Add(t => t.Badge_Error)
@@ -44,7 +44,7 @@ public sealed class CreateVehicleCommandSystem : ISystem
 		}
 
 
-		var vehicle = vehicleFactory.CreateVehicle(eModel, player.Position, player.Angle, primaryColor, secondaryColor, addSiren: addSiren);
+		var vehicle = vehicleFactory.CreateVehicle(eModel, player.Position, player.Angle, player.Interior, player.VirtualWorld, primaryColor, secondaryColor, addSiren: addSiren);
 		if (vehicle is null)
 		{
 			chatService.SendMessage(player, b => b

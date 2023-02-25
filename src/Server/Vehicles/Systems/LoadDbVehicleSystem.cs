@@ -39,7 +39,7 @@ public sealed class LoadDbVehicleSystem : ISystem
 				m.SecondaryColor
 			}))
 		{
-			var vehicle = vehicleFactory.CreateVehicle(m.Model, new Vector3(m.X, m.Y, m.Z), m.A, m.PrimaryColor, m.SecondaryColor);
+			var vehicle = vehicleFactory.CreateVehicle(m.Model, new Vector3(m.X, m.Y, m.Z), m.A, m.Interior, m.World, m.PrimaryColor, m.SecondaryColor);
 			if (vehicle is null)
 			{
 				continue;
