@@ -10,33 +10,32 @@ public sealed class VehicleFactory : IVehicleFactory
 	private readonly IEntityManager entityManager;
 	private readonly WorldServiceNative worldServiceNative;
 
-	public VehicleFactory(IEntityManager entityManager, WorldServiceNative worldServiceNative)
+	public VehicleFactory(IEntityManager entityManager, INativeProxy<WorldServiceNative> worldServiceNativeProxy)
 	{
 		this.entityManager = entityManager;
-		this.worldServiceNative = worldServiceNative;
+		worldServiceNative = worldServiceNativeProxy.Instance;
 	}
 
 	public Vehicle? CreateVehicle(VehicleModelType type, Vector3 position, float rotation, int interior, int world, int color1, int color2, int respawnDelay = -1, bool addSiren = false)
 	{
 		var id = worldServiceNative.CreateVehicle((int)type, position.X, position.Y, position.Z, rotation, color1, color2, respawnDelay, addSiren);
-
 		if (id == NativeVehicle.InvalidId)
 		{
 			return default;
 		}
-		var entity = SampEntities.GetVehicleId(id);
-		entityManager.Create(entity, EntityId.Empty);
 
-		var vehicle = new ServerVehicle()
-		{
-			Interior = interior,
-			VirtualWorld = world,
-			// TODO: reduce 2 native calls here
-			PrimaryColor = color1,
-			SecondaryColor = color2,
-		};
-		entityManager.AddComponent(entity, new NativeVehicle());
+		var entity = SampEntities.GetVehicleId(id);
+		entityManager.Create(entity, default);
+
+		var vehicle = new ServerVehicle();
+		entityManager.AddComponent<NativeVehicle>(entity);
 		entityManager.AddComponent<Vehicle>(entity, vehicle);
+
+		vehicle.Interior = interior;
+		vehicle.VirtualWorld = world;
+		// TODO: reduce 2 native calls here
+		vehicle.PrimaryColor = color1;
+		vehicle.SecondaryColor = color2;
 		return vehicle;
 	}
 

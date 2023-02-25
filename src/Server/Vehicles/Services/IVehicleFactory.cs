@@ -1,7 +1,6 @@
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Vehicles.Components;
-using Server.Vehicles.Entities;
 
 namespace Server.Vehicles.Services;
 
