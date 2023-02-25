@@ -18,17 +18,17 @@ public sealed partial class VehicleCommandSystem : ISystem
 		var vehicle = vehicleFactory.GetVehicle(player.Vehicle)!;
 		vehicle.Bonnet = !vehicle.Bonnet;
 
-		if (vehicle.Engine)
+		if (vehicle.Bonnet)
 		{
 			chatService.SendMessage(player, b => b
 				.Add(t => t.Badge_Success)
-				.Inline(t => t.VehicleCommand_Hood_On));
+				.Inline(t => t.VehicleCommand_Hood_Opened));
 		}
 		else
 		{
 			chatService.SendMessage(player, b => b
 				.Add(t => t.Badge_Success)
-				.Inline(t => t.VehicleCommand_Hood_Off));
+				.Inline(t => t.VehicleCommand_Hood_Closed));
 		}
 	}
 }

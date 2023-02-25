@@ -294,16 +294,16 @@ password that was {C75656}never{D1D1D1} used before.</value>
 	<data name="VehicleCommand_Lights_Off">
 		<value>The vehicle's lights has been turned off.</value>
 	</data>
-	<data name="VehicleCommand_Hood_On">
+	<data name="VehicleCommand_Hood_Opened">
 		<value>The vehicle's hood has been opened.</value>
 	</data>
-	<data name="VehicleCommand_Hood_Off">
+	<data name="VehicleCommand_Hood_Closed">
 		<value>The vehicle's hood has been closed.</value>
 	</data>
-	<data name="VehicleCommand_Trunk_On">
+	<data name="VehicleCommand_Trunk_Opened">
 		<value>The vehicle's trunk has been opened.</value>
 	</data>
-	<data name="VehicleCommand_Trunk_Off">
+	<data name="VehicleCommand_Trunk_Closed">
 		<value>The vehicle's trunk has been closed.</value>
 	</data>
 	<data name="VehicleCommand_Locked">

@@ -18,7 +18,7 @@ public sealed partial class VehicleCommandSystem : ISystem
 		var vehicle = vehicleFactory.GetVehicle(player.Vehicle)!;
 		vehicle.Lights = !vehicle.Lights;
 
-		if (vehicle.Engine)
+		if (vehicle.Lights)
 		{
 			chatService.SendMessage(player, b => b
 				.Add(t => t.Badge_Success)

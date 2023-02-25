@@ -297,17 +297,17 @@ khẩu mới vào khung bên duới.
 	<data name="VehicleCommand_Lights_Off">
 		<value>Đèn của phương tiện đã được tắt.</value>
 	</data>
-	<data name="VehicleCommand_Hood_On">
-		<value>Mui của phương tiện đã được bật.</value>
+	<data name="VehicleCommand_Hood_Opened">
+		<value>Mui của phương tiện đã được mở.</value>
 	</data>
-	<data name="VehicleCommand_Hood_Off">
-		<value>Mui của phương tiện đã được tắt.</value>
+	<data name="VehicleCommand_Hood_Closed">
+		<value>Mui của phương tiện đã được đóng.</value>
 	</data>
-	<data name="VehicleCommand_Trunk_On">
-		<value>Cóp của phương tiện đã được bật.</value>
+	<data name="VehicleCommand_Trunk_Opened">
+		<value>Cóp của phương tiện đã được mở.</value>
 	</data>
-	<data name="VehicleCommand_Trunk_Off">
-		<value>Cóp của phương tiện đã được tắt.</value>
+	<data name="VehicleCommand_Trunk_Closed">
+		<value>Cóp của phương tiện đã được đóng.</value>
 	</data>
 	<data name="VehicleCommand_Locked">
 		<value>Phương tiện đã được khóa.</value>

@@ -56,10 +56,10 @@ public interface ILocalizedText : ILocalizedBadge
 	object VehicleCommand_Engine_Off { get; }
 	object VehicleCommand_Lights_On { get; }
 	object VehicleCommand_Lights_Off { get; }
-	object VehicleCommand_Hood_On { get; }
-	object VehicleCommand_Hood_Off { get; }
-	object VehicleCommand_Trunk_On { get; }
-	object VehicleCommand_Trunk_Off { get; }
+	object VehicleCommand_Hood_Opened { get; }
+	object VehicleCommand_Hood_Closed { get; }
+	object VehicleCommand_Trunk_Opened { get; }
+	object VehicleCommand_Trunk_Closed { get; }
 	object VehicleCommand_Locked { get; }
 	object VehicleCommand_Unlocked { get; }
 }
