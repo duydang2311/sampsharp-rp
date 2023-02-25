@@ -270,4 +270,46 @@ password that was {C75656}never{D1D1D1} used before.</value>
 	<data name="InsertVehicleCommand_Success">
 		<value>Vehicle '{0}' has been inserted to database (ID: '{1}').</value>
 	</data>
+	<data name="VehicleCommand_Help">
+		<value>/vehicle [options].</value>
+	</data>
+	<data name="VehicleCommand_Options">
+		<value>Available options: 'engine', 'lights', 'hood', 'trunk', 'lock'.</value>
+	</data>
+	<data name="VehicleCommand_NotDrivingAnyVehicle">
+		<value>You must be a driver of a vehicle to perform this command.</value>
+	</data>
+	<data name="VehicleCommand_NoNearbyVehicle">
+		<value>You must stay near to a vehicle to perform this command.</value>
+	</data>
+	<data name="VehicleCommand_Engine_On">
+		<value>The vehicle's engine has been turned on.</value>
+	</data>
+	<data name="VehicleCommand_Engine_Off">
+		<value>The vehicle's engine has been turned off.</value>
+	</data>
+	<data name="VehicleCommand_Lights_On">
+		<value>The vehicle's lights has been turned on.</value>
+	</data>
+	<data name="VehicleCommand_Lights_Off">
+		<value>The vehicle's lights has been turned off.</value>
+	</data>
+	<data name="VehicleCommand_Hood_On">
+		<value>The vehicle's hood has been opened.</value>
+	</data>
+	<data name="VehicleCommand_Hood_Off">
+		<value>The vehicle's hood has been closed.</value>
+	</data>
+	<data name="VehicleCommand_Trunk_On">
+		<value>The vehicle's trunk has been opened.</value>
+	</data>
+	<data name="VehicleCommand_Trunk_Off">
+		<value>The vehicle's trunk has been closed.</value>
+	</data>
+	<data name="VehicleCommand_Locked">
+		<value>The vehicle's doors have been locked.</value>
+	</data>
+	<data name="VehicleCommand_Unlocked">
+		<value>The vehicle's doors have been unlocked.</value>
+	</data>
 </root>
