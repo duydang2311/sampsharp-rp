@@ -40,4 +40,26 @@ public interface ILocalizedText : ILocalizedBadge
 	object LowCommand_Help { get; }
 	object AmeCommand_Text { get; }
 	object AmeCommand_Help { get; }
+	object CreateVehicleCommand_Help { get; }
+	object CreateVehicleCommand_InvalidModel { get; }
+	object CreateVehicleCommand_Error { get; }
+	object CreateVehicleCommand_Success { get; }
+	object InsertVehicleCommand_Help { get; }
+	object InsertVehicleCommand_IdNotFound { get; }
+	object InsertVehicleCommand_Error { get; }
+	object InsertVehicleCommand_Success { get; }
+	object VehicleCommand_Help { get; }
+	object VehicleCommand_Options { get; }
+	object VehicleCommand_NotDrivingAnyVehicle { get; }
+	object VehicleCommand_NoNearbyVehicle { get; }
+	object VehicleCommand_Engine_On { get; }
+	object VehicleCommand_Engine_Off { get; }
+	object VehicleCommand_Lights_On { get; }
+	object VehicleCommand_Lights_Off { get; }
+	object VehicleCommand_Hood_On { get; }
+	object VehicleCommand_Hood_Off { get; }
+	object VehicleCommand_Trunk_On { get; }
+	object VehicleCommand_Trunk_Off { get; }
+	object VehicleCommand_Locked { get; }
+	object VehicleCommand_Unlocked { get; }
 }

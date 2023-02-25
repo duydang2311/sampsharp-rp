@@ -246,4 +246,28 @@ password that was {C75656}never{D1D1D1} used before.</value>
 	<data name="AmeCommand_Help">
 		<value>/ame [action]</value>
 	</data>
+	<data name="CreateVehicleCommand_Help">
+		<value>/createvehicle [model] (primary color = 1) (secondary color = 1) (add siren = false).</value>
+	</data>
+	<data name="CreateVehicleCommand_InvalidModel">
+		<value>'{0}' is not a valid vehicle model which ranges from 400 to 611.</value>
+	</data>
+	<data name="CreateVehicleCommand_Error">
+		<value>Unable to create vehicle.</value>
+	</data>
+	<data name="CreateVehicleCommand_Success">
+		<value>A new vehicle (ID: {0}) has been created.</value>
+	</data>
+	<data name="InsertVehicleCommand_Help">
+		<value>/insertvehicle [vehicle id]. </value>
+	</data>
+	<data name="InsertVehicleCommand_IdNotFound">
+		<value>No vehicle found with ID '{0}'.</value>
+	</data>
+	<data name="InsertVehicleCommand_Error">
+		<value>Unable to insert the vehicle '{0}' into database.</value>
+	</data>
+	<data name="InsertVehicleCommand_Success">
+		<value>Vehicle '{0}' has been inserted to database (ID: '{1}').</value>
+	</data>
 </root>

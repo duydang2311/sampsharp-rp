@@ -249,4 +249,70 @@ khẩu mới vào khung bên duới.
 	<data name="AmeCommand_Help">
 		<value>/ame [hành động]</value>
 	</data>
+	<data name="CreateVehicleCommand_Help">
+		<value>/createvehicle [model] (màu chính = 1) (màu phụ = 1) (thêm siren = false).</value>
+	</data>
+	<data name="CreateVehicleCommand_InvalidModel">
+		<value>Model '{0}' không hợp lệ. Giá trị hợp lệ từ 400 đến 611.</value>
+	</data>
+	<data name="CreateVehicleCommand_Error">
+		<value>Tạo phương tiện thất bại.</value>
+	</data>
+	<data name="CreateVehicleCommand_Success">
+		<value>Phương tiện mới đã được tạo (ID: {0}).</value>
+	</data>
+	<data name="InsertVehicleCommand_Help">
+		<value>/insertvehicle [vehicle id]. </value>
+	</data>
+	<data name="InsertVehicleCommand_IdNotFound">
+		<value>Không tìm thấy phương tiện nào với ID '{0}'.</value>
+	</data>
+	<data name="InsertVehicleCommand_Error">
+		<value>Thêm phương tiện '{0}' vào database thất bại.</value>
+	</data>
+	<data name="InsertVehicleCommand_Success">
+		<value>Phương tiện '{0}' đã được thêm vào database (ID: '{1}').</value>
+	</data>
+	<data name="VehicleCommand_Help">
+		<value>/vehicle [lựa chọn].</value>
+	</data>
+	<data name="VehicleCommand_Options">
+		<value>Các lựa chọn: 'engine', 'lights', 'hood', 'trunk', 'lock'.</value>
+	</data>
+	<data name="VehicleCommand_NotDrivingAnyVehicle">
+		<value>Nhân vật cần điều khiển một phương tiện để sử dụng lệnh.</value>
+	</data>
+	<data name="VehicleCommand_NoNearbyVehicle">
+		<value>Nhân vật cần ở gần một phương tiện để sử dụng lệnh.</value>
+	</data>
+	<data name="VehicleCommand_Engine_On">
+		<value>Động cơ của phương tiện đã được bật.</value>
+	</data>
+	<data name="VehicleCommand_Engine_Off">
+		<value>Động cơ của phương tiện đã được tắt.</value>
+	</data>
+	<data name="VehicleCommand_Lights_On">
+		<value>Đèn của phương tiện đã được bật.</value>
+	</data>
+	<data name="VehicleCommand_Lights_Off">
+		<value>Đèn của phương tiện đã được tắt.</value>
+	</data>
+	<data name="VehicleCommand_Hood_On">
+		<value>Mui của phương tiện đã được bật.</value>
+	</data>
+	<data name="VehicleCommand_Hood_Off">
+		<value>Mui của phương tiện đã được tắt.</value>
+	</data>
+	<data name="VehicleCommand_Trunk_On">
+		<value>Cóp của phương tiện đã được bật.</value>
+	</data>
+	<data name="VehicleCommand_Trunk_Off">
+		<value>Cóp của phương tiện đã được tắt.</value>
+	</data>
+	<data name="VehicleCommand_Locked">
+		<value>Phương tiện đã được khóa.</value>
+	</data>
+	<data name="VehicleCommand_Unlocked">
+		<value>Phương tiện đã được mở khóa.</value>
+	</data>
 </root>
