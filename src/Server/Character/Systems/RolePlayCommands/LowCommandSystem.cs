@@ -25,17 +25,13 @@ public sealed class LowCommandSystem : ISystem
 	{
 		chatService.SendMessage(
 			p => Vector3.DistanceSquared(p.Position, player.Position) <= 7f * 7f,
-			b => b.Add(SemanticColor.LowAttention, model => model.LowCommand_Text, player.Name, text)
-		);
+			b => b.Add(SemanticColor.LowAttention, model => model.LowCommand_Text, player.Name, text));
 	}
 	public void HelpLowCommand(Player player)
 	{
-		chatService.SendMessage(
-			player,
-			b => b
-				.Add(model => model.Badge_Help)
-				.Inline(SemanticColor.LowAttention, model => model.LowCommand_Help)
-		);
+		chatService.SendMessage(player, b => b
+			.Add(model => model.Badge_Help)
+			.Inline(model => model.LowCommand_Help));
 	}
 }
 

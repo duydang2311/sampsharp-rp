@@ -24,8 +24,7 @@ public sealed class MeCommandSystem : ISystem
 	{
 		chatService.SendMessage(
 			p => Vector3.DistanceSquared(p.Position, player.Position) < 15f * 15f,
-			b => b
-				.Add(Color.FromInteger(0xC2A2DA, ColorFormat.RGB), model => model.MeCommandText, player.Name, text));
+			b => b.Add(Color.FromInteger(0xC2A2DA, ColorFormat.RGB), model => model.MeCommandText, player.Name, text));
 	}
 
 
@@ -33,6 +32,6 @@ public sealed class MeCommandSystem : ISystem
 	{
 		chatService.SendMessage(player, b => b
 			.Add(model => model.Badge_Help)
-			.Inline(SemanticColor.Roleplay, model => model.MeCommandHelp));
+			.Inline(model => model.MeCommandHelp));
 	}
 }

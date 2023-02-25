@@ -24,17 +24,20 @@ public sealed class AmeCommandSystem : ISystem
 			m.HelpDelegate = HelpAmeCommand;
 		});
 	}
-	public void AmeCommand(Player player, string input)
+
+	private void HelpAmeCommand(Player player)
 	{
-		player.SetChatBubble(textLocalizerService.Get(nameof(ILocalizedText.AmeCommand_Text), input), SemanticColor.Roleplay, 15f, 5000);
+		chatService.SendMessage(player, b => b
+			.Add(m => m.Badge_Help)
+			.Inline(m => m.AmeCommand_Help));
 	}
-	public void HelpAmeCommand(Player player)
+
+	private void AmeCommand(Player player, string input)
 	{
-		chatService.SendMessage(
-			player,
-			b => b
-				.Add(m => m.Badge_Help)
-				.Inline(m => m.AmeCommand_Help)
-		);
+		player.SetChatBubble(
+			textLocalizerService.Get(nameof(ILocalizedText.AmeCommand_Text), input),
+			SemanticColor.Roleplay,
+			15f,
+			5000);
 	}
 }

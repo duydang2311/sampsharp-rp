@@ -24,16 +24,13 @@ public sealed class DoCommandSystem : ISystem
 	{
 		chatService.SendMessage(
 			p => Vector3.DistanceSquared(p.Position, player.Position) <= 15f * 15f,
-			b => b.Add(SemanticColor.Roleplay, ex => ex.DoCommandText, text, player.Name)
-		);
+			b => b.Add(SemanticColor.Roleplay, ex => ex.DoCommandText, text, player.Name));
 	}
 
 	public void DoCommandHelp(Player player)
 	{
-		chatService.SendMessage(
-			player,
-		 	b => b
-				.Add(model => model.Badge_Help)
-				.Inline(SemanticColor.Roleplay, model => model.DoCommandHelp));
+		chatService.SendMessage(player, b => b
+			.Add(model => model.Badge_Help)
+			.Inline(model => model.DoCommandHelp));
 	}
 }
