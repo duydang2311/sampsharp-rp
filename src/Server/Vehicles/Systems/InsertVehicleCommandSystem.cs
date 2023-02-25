@@ -28,8 +28,8 @@ public sealed class InsertVehicleCommandSystem : ISystem
 			m.Name = "insertvehicle";
 			m.PermissionLevel = PermissionLevel.Admin;
 			m.Delegate = InsertVehicleAsync;
+			m.HelpDelegate = HelpInsertVehicle;
 		});
-		commandService.RegisterHelper("insertvehicle", HelpInsertVehicle);
 	}
 
 	private void HelpInsertVehicle(Player player)

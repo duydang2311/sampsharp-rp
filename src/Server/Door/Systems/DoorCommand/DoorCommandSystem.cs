@@ -24,10 +24,10 @@ public sealed partial class DoorCommandSystem : ISystem
 		commandService.RegisterCommand(m =>
 		{
 			m.Name = "door";
-			m.Delegate = DoorCommand;
 			m.PermissionLevel = PermissionLevel.Admin;
+			m.Delegate = DoorCommand;
+			m.HelpDelegate = HelpDoorCommand;
 		});
-		commandService.RegisterHelper("door", HelpDoorCommand);
 	}
 
 	private void HelpDoorCommand(Player player)

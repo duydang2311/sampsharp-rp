@@ -1,49 +1,39 @@
-
-
 using SampSharp.Entities;
-using Server.Chat.Services;
-using Server.I18N.Localization.Services;
-using Server.Common.Colors;
 using SampSharp.Entities.SAMP;
+using Server.Chat.Services;
+using Server.Common.Colors;
+
+namespace Server.Character.Systems.RolePlayCommands;
 
 public sealed class ShoutCommandSystem : ISystem
 {
 	private readonly IChatService chatService;
-	private readonly ITextLocalizerService textLocalizerService;
 
-	public ShoutCommandSystem(ICommandService commandService, IChatService chatService,
-		ITextLocalizerService textLocalizerService)
+	public ShoutCommandSystem(ICommandService commandService, IChatService chatService)
 	{
 		this.chatService = chatService;
-		this.textLocalizerService = textLocalizerService;
-		commandService.RegisterCommand(modelAction =>
+		commandService.RegisterCommand(m =>
 		{
-			modelAction.Name = "s";
-			modelAction.Delegate = ShoutCommand;
+			m.Name = "shout";
+			m.Delegate = ShoutCommand;
+			m.HelpDelegate = HelpShoutCommand;
 		});
-		commandService.RegisterCommand(modelAction =>
-		{
-			modelAction.Name = "shout";
-			modelAction.Delegate = ShoutCommand;
-		});
-		commandService.RegisterHelper("s", HelpShoutCommand);
-		commandService.RegisterHelper("shout", HelpShoutCommand);
+		commandService.RegisterAlias("shout", "s");
 	}
 	public void ShoutCommand(Player player, string text)
 	{
 		chatService.SendMessage(
-			p => (Vector3.DistanceSquared(p.Position, player.Position) <= 15f * 15f),
+			p => Vector3.DistanceSquared(p.Position, player.Position) <= 15f * 15f,
 			b => b.Add(SemanticColor.Shout, model => model.ShoutCommand_Text, player.Name, text)
 		);
 	}
 	public void HelpShoutCommand(Player player)
 	{
-        chatService.SendMessage(
-            player, 
-            b => b
-                .Add(model => model.Badge_Help) 
-                .Inline(SemanticColor.Shout, model => model.ShoutCommand_Help)
-        );
+		chatService.SendMessage(
+			player,
+			b => b
+				.Add(model => model.Badge_Help)
+				.Inline(SemanticColor.Shout, model => model.ShoutCommand_Help)
+		);
 	}
-
 }

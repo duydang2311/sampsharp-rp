@@ -19,8 +19,8 @@ public sealed class LanguageCommandSystem : ISystem
 			m.Name = "language";
 			m.PermissionLevel = PermissionLevel.None;
 			m.Delegate = ChangeLanguage;
+			m.HelpDelegate = HelpChangeLanguage;
 		});
-		commandService.RegisterHelper("language", HelpChangeLanguage);
 	}
 
 	private void HelpChangeLanguage(Player player)

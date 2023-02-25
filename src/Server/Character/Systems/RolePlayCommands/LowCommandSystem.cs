@@ -1,33 +1,24 @@
-
-
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Chat.Services;
 using Server.Common.Colors;
-using Server.I18N.Localization.Services;
+
+namespace Server.Character.Systems.RolePlayCommands;
 
 public sealed class LowCommandSystem : ISystem
 {
 	private readonly IChatService chatService;
-	private readonly ITextLocalizerService textLocalizerService;
 
-	public LowCommandSystem(ICommandService commandService, IChatService chatService,
-		ITextLocalizerService textLocalizerService)
+	public LowCommandSystem(ICommandService commandService, IChatService chatService)
 	{
 		this.chatService = chatService;
-		this.textLocalizerService = textLocalizerService;
-		commandService.RegisterCommand(m =>
-		{
-			m.Name = "l";
-			m.Delegate = LowCommand;
-		});
 		commandService.RegisterCommand(m =>
 		{
 			m.Name = "low";
 			m.Delegate = LowCommand;
+			m.HelpDelegate = HelpLowCommand;
 		});
-		commandService.RegisterHelper("l", HelpLowCommand);
-		commandService.RegisterHelper("low", HelpLowCommand);
+		commandService.RegisterAlias("low", "l");
 
 	}
 	public void LowCommand(Player player, string text)

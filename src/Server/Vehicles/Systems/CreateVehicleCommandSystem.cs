@@ -21,8 +21,8 @@ public sealed class CreateVehicleCommandSystem : ISystem
 			m.Name = "createvehicle";
 			m.PermissionLevel = PermissionLevel.Admin;
 			m.Delegate = CreateVehicle;
+			m.HelpDelegate = HelpCreateVehicle;
 		});
-		commandService.RegisterHelper("createvehicle", HelpCreateVehicle);
 	}
 
 	private void HelpCreateVehicle(Player player)

@@ -1,5 +1,3 @@
-
-
 using SampSharp.Entities;
 using SampSharp.Entities.SAMP;
 using Server.Chat.Services;
@@ -7,9 +5,10 @@ using Server.Common.Colors;
 using Server.I18N.Localization.Models;
 using Server.I18N.Localization.Services;
 
+namespace Server.Character.Systems.RolePlayCommands;
+
 public sealed class AmeCommandSystem : ISystem
 {
-
 	private readonly ITextLocalizerService textLocalizerService;
 	private readonly IChatService chatService;
 
@@ -22,8 +21,8 @@ public sealed class AmeCommandSystem : ISystem
 		{
 			m.Name = "ame";
 			m.Delegate = AmeCommand;
+			m.HelpDelegate = HelpAmeCommand;
 		});
-		commandService.RegisterHelper("ame", HelpAmeCommand);
 	}
 	public void AmeCommand(Player player, string input)
 	{
